@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI求职工具 - 简历诊断 · 模拟面试 · 职业规划</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+    .fade-in{animation:fadeIn 0.5s ease-in}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .score-ring{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:bold}
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+  <nav class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <span class="text-xl font-bold text-blue-600">🚀 AI求职助手</span>
+      <div class="flex gap-4">
+        <a href="#interview" class="text-sm text-gray-600 hover:text-blue-600">模拟面试</a>
+        <a href="#career" class="text-sm text-gray-600 hover:text-blue-600">职业规划</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="py-16 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
+    <h1 class="text-4xl font-bold mb-4">用<span class="text-blue-600">AI</span>帮你搞定求职</h1>
+    <p class="text-lg text-gray-600 mb-8">模拟面试 · 职业规划 —— 免费使用</p>
+  </section>
+
+  <!-- 模拟面试 -->
+  <section id="interview" class="py-12 px-4 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-6 text-center">🎤 AI模拟面试</h2>
+    <div class="bg-white border rounded-xl p-6">
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">目标岗位 *</label>
+        <input id="jobTitle" type="text" placeholder="例：AI产品经理" class="w-full border rounded-lg px-4 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">目标公司</label>
+        <input id="company" type="text" placeholder="例：小米" class="w-full border rounded-lg px-4 py-2">
+      </div>
+      <button id="genBtn" onclick="generateQuestions()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition">🎯 生成面试题</button>
+      <div id="questions" class="mt-6 hidden"></div>
+    </div>
+  </section>
+
+  <!-- 职业规划 -->
+  <section id="career" class="py-12 px-4 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-6 text-center">🧭 AI职业规划</h2>
+    <div class="bg-white border rounded-xl p-6">
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">你的专业 *</label>
+        <input id="major" type="text" placeholder="例：计算机科学" class="w-full border rounded-lg px-4 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">兴趣领域</label>
+        <input id="interests" type="text" placeholder="例：AI, 产品设计" class="w-full border rounded-lg px-4 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">已有技能</label>
+        <input id="skills" type="text" placeholder="例：Python, 写作" class="w-full border rounded-lg px-4 py-2">
+      </div>
+      <button id="careerBtn" onclick="generateCareer()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition">🗺️ 生成职业规划</button>
+      <div id="careerResult" class="mt-6 hidden"></div>
+    </div>
+  </section>
+
+  <footer class="border-t bg-gray-50 mt-12">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
+      <p>© 2026 AI求职助手 · 用小米MiMo大模型驱动</p>
+    </div>
+  </footer>
+
+  <script>
+    // API地址 - 你的Cloudflare Worker
+    const API_BASE = "https://ai-career-api.YOUR-SUBDOMAIN.workers.dev";
+
+    async function generateQuestions() {
+      const jobTitle = document.getElementById('jobTitle').value;
+      const company = document.getElementById('company').value;
+      if (!jobTitle) return alert('请填写目标岗位');
+
+      const btn = document.getElementById('genBtn');
+      btn.disabled = true; btn.textContent = '⏳ AI生成中...';
+
+      try {
+        const res = await fetch(API_BASE + '/api/interview', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({action:'generate', jobTitle, company})
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        const qs = data.questions || [];
+        let html = '<div class="space-y-4">';
+        qs.forEach((q, i) => {
+          const diffColor = q.difficulty==='hard'?'red':q.difficulty==='medium'?'yellow':'green';
+          html += `<div class="border-l-4 border-blue-400 pl-4 py-2 fade-in">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">${q.category||'面试题'}</span>
+              <span class="text-xs bg-${diffColor}-100 text-${diffColor}-700 px-2 py-0.5 rounded">${q.difficulty==='hard'?'困难':q.difficulty==='medium'?'中等':'简单'}</span>
+            </div>
+            <p class="font-medium">${i+1}. ${q.question}</p>
+            <p class="text-sm text-gray-500 mt-1">💡 ${q.tips||''}</p>
+          </div>`;
+        });
+        html += '</div>';
+        document.getElementById('questions').innerHTML = html;
+        document.getElementById('questions').classList.remove('hidden');
+      } catch(e) {
+        alert('生成失败: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = '🎯 生成面试题';
+      }
+    }
+
+    async function generateCareer() {
+      const major = document.getElementById('major').value;
+      if (!major) return alert('请填写专业');
+
+      const interests = document.getElementById('interests').value.split(/[,，、]/).filter(Boolean);
+      const skills = document.getElementById('skills').value.split(/[,，、]/).filter(Boolean);
+      const btn = document.getElementById('careerBtn');
+      btn.disabled = true; btn.textContent = '⏳ 分析中...';
+
+      try {
+        const res = await fetch(API_BASE + '/api/career', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({major, interests, skills})
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        const paths = data.career_paths || [];
+        let html = '';
+        if (data.overall_advice) {
+          html += `<div class="bg-blue-50 rounded-lg p-4 mb-4"><p class="text-blue-800">💡 ${data.overall_advice}</p></div>`;
+        }
+        paths.forEach(p => {
+          html += `<div class="border rounded-lg p-4 mb-4 fade-in">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold">${p.title}</h3>
+              <span class="text-2xl font-bold text-blue-600">${p.match_score}%</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-2">${p.description}</p>
+            <div class="text-sm">💰 ${p.salary_range} | 📈 ${p.growth_potential==='high'?'高增长':'中增长'}</div>
+            ${p.skill_gaps?.length ? `<div class="mt-2 text-sm text-red-600">⚠️ 缺少: ${p.skill_gaps.join('、')}</div>` : ''}
+          </div>`;
+        });
+        document.getElementById('careerResult').innerHTML = html;
+        document.getElementById('careerResult').classList.remove('hidden');
+      } catch(e) {
+        alert('生成失败: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = '🗺️ 生成职业规划';
+      }
+    }
+  </script>
+</body>
+</html>
