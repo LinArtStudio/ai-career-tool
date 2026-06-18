@@ -4,9 +4,10 @@ import { verifyCode } from "@/lib/auth/code-store";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { method, phone, email, code, password } = body;
+    const { method, phone, email, code, password, captchaToken } = body;
     const target = method === "phone" ? phone : email;
 
+    if (!captchaToken) return NextResponse.json({ error: "请先完成人机验证" }, { status: 400 });
     if (!target) return NextResponse.json({ error: "请输入手机号或邮箱" }, { status: 400 });
     if (!password || password.length < 6) return NextResponse.json({ error: "密码至少6位" }, { status: 400 });
     if (!code) return NextResponse.json({ error: "请先获取验证码" }, { status: 400 });

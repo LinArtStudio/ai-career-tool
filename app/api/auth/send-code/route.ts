@@ -8,7 +8,11 @@ function generateCode(): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { target, method } = body;
+    const { target, method, captchaToken } = body;
+
+    if (!captchaToken) {
+      return NextResponse.json({ error: "请先完成人机验证" }, { status: 400 });
+    }
 
     if (!target || !method) {
       return NextResponse.json({ error: "缺少参数" }, { status: 400 });
@@ -28,17 +32,13 @@ export async function POST(req: NextRequest) {
     const code = generateCode();
     saveCode(method, target, code);
 
-    if (method === "phone") {
-      // TODO: 接入腾讯云SMS
-      console.log(`[SMS] ${target}: ${code}`);
-    } else {
-      // TODO: 接入邮件服务
-      console.log(`[Email] ${target}: ${code}`);
-    }
+    // TODO: 接入真实短信/邮件服务
+    // 目前：返回验证码供测试
+    console.log(`[验证码] ${method}:${target} = ${code}`);
 
     return NextResponse.json({
       message: `验证码已发送`,
-      dev_code: process.env.NODE_ENV === "development" ? code : undefined,
+      dev_code: code, // 生产环境删除此行
     });
   } catch (err) {
     console.error("Send code error:", err);
