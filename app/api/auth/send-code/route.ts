@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { saveCode, hasRecentCode } from "@/lib/auth/code-store";
+import { sendVerificationEmail } from "@/lib/auth/email-sender";
 
 function generateCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -32,13 +33,17 @@ export async function POST(req: NextRequest) {
     const code = generateCode();
     saveCode(method, target, code);
 
-    // TODO: 接入真实短信/邮件服务
-    // 目前：返回验证码供测试
-    console.log(`[验证码] ${method}:${target} = ${code}`);
+    if (method === "email") {
+      await sendVerificationEmail(target, code);
+    } else {
+      console.log(`[SMS] ${target}: ${code}`);
+    }
+
+    const isDev = !process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === "re_demo_key";
 
     return NextResponse.json({
-      message: `验证码已发送`,
-      dev_code: code, // 生产环境删除此行
+      message: "验证码已发送",
+      dev_code: isDev ? code : undefined,
     });
   } catch (err) {
     console.error("Send code error:", err);

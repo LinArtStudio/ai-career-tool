@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import MathCaptcha from "../components/MathCaptcha";
+import MathCaptcha from "@/components/MathCaptcha";
 
 type AuthMode = "login" | "register";
 type LoginMethod = "phone" | "email";
@@ -21,8 +21,10 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [captchaToken, setCaptchaToken] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const sendCode = async () => {
+    if (!agreed) { setError("请先同意服务协议和隐私政策"); return; }
     if (!captchaToken) { setError("请先完成人机验证"); return; }
     const target = method === "phone" ? phone : email;
     if (!target) { setError(method === "phone" ? "请输入手机号" : "请输入邮箱"); return; }
@@ -46,6 +48,7 @@ export default function DashboardPage() {
   };
 
   const handleAuth = async () => {
+    if (!agreed) { setError("请先同意服务协议和隐私政策"); return; }
     if (!captchaToken) { setError("请先完成人机验证"); return; }
     setError(""); setLoading(true);
     try {
@@ -121,11 +124,17 @@ export default function DashboardPage() {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={mode === "register" ? "设置密码（至少6位）" : "请输入密码"} className="w-full border rounded-lg px-4 py-2.5 text-base" />
         </div>
 
+        <div className="flex items-start gap-2">
+          <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-1 w-4 h-4" />
+          <label htmlFor="agree" className="text-sm text-gray-600">
+            我已阅读并同意 <a href="/terms" className="text-blue-600 hover:underline">《服务协议》</a> 和 <a href="/privacy" className="text-blue-600 hover:underline">《隐私政策》</a>
+          </label>
+        </div>
         <MathCaptcha onVerify={setCaptchaToken} />
 
         {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-lg text-sm">{error}</div>}
 
-        <button onClick={handleAuth} disabled={loading || !captchaToken} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition text-base">
+        <button onClick={handleAuth} disabled={loading || !captchaToken || !agreed} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition text-base">
           {loading ? "处理中..." : mode === "login" ? "登录" : "注册"}
         </button>
 
