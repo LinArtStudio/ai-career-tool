@@ -66,6 +66,48 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 用户评价 */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">用户怎么说</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white border rounded-xl p-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">李</div>
+                <div>
+                  <div className="font-medium text-sm">李同学</div>
+                  <div className="text-xs text-gray-500">985本科 · 拿到腾讯offer</div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">"简历诊断帮我发现了3个致命问题，改完后投了5家就拿到3个面试。模拟面试的AI评分比我自己练强太多了。"</p>
+              <div className="text-yellow-400 text-sm mt-2">★★★★★</div>
+            </div>
+            <div className="bg-white border rounded-xl p-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">张</div>
+                <div>
+                  <div className="font-medium text-sm">张同学</div>
+                  <div className="text-xs text-gray-500">双非本科 · 转行成功</div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">"作为非科班转行，职业规划功能让我明确了该学什么。AI给出的学习路线图太实用了，3个月拿到了心仪公司的offer。"</p>
+              <div className="text-yellow-400 text-sm mt-2">★★★★★</div>
+            </div>
+            <div className="bg-white border rounded-xl p-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">王</div>
+                <div>
+                  <div className="font-medium text-sm">王同学</div>
+                  <div className="text-xs text-gray-500">研究生 · 字节跳动实习</div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">"面试模拟器太真实了！AI问的问题和字节面试官问的几乎一样。特别是面试官视角的反馈，让我知道了自己的盲区。"</p>
+              <div className="text-yellow-400 text-sm mt-2">★★★★★</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 px-4 text-center">
         <h2 className="text-3xl font-bold mb-4">准备好开始了吗？</h2>

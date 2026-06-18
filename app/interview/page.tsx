@@ -16,6 +16,7 @@ interface Evaluation {
   weaknesses: string[];
   improved_answer: string;
   key_points: string[];
+  interviewer_notes?: string;
 }
 
 export default function InterviewPage() {
@@ -240,6 +241,12 @@ export default function InterviewPage() {
                 <h4 className="font-medium text-blue-800 mb-2">📝 参考答案</h4>
                 <p className="text-sm text-blue-700">{evaluation.improved_answer}</p>
               </div>
+              {evaluation.interviewer_notes && (
+                <div className="bg-purple-50 rounded-lg p-4">
+                  <h4 className="font-medium text-purple-800 mb-2">👔 面试官视角</h4>
+                  <p className="text-sm text-purple-700">{evaluation.interviewer_notes}</p>
+                </div>
+              )}
 
               <button
                 onClick={nextQuestion}
