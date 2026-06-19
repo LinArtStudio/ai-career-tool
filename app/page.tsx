@@ -3,11 +3,14 @@ export default function HomePage() {
     <div>
       {/* Hero */}
       <section className="py-20 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
+        <div className="inline-block bg-red-50 text-red-600 text-sm px-4 py-1.5 rounded-full mb-4 font-medium">
+          📊 2025年AIGC人才需求增长351% · 1222万毕业生竞争
+        </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           用<span className="text-blue-600">AI</span>帮你搞定求职全流程
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          简历诊断 · 模拟面试 · 职业规划 —— 三大工具，一站式解决你的求职焦虑
+          简历诊断 · 模拟面试 · JD匹配 · 职业规划 —— 四大工具，一站式解决你的求职焦虑
         </p>
         <div className="flex gap-4 justify-center">
           <a
@@ -58,9 +61,9 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">为什么选择我们？</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatCard number="5000+" label="简历已诊断" />
-            <StatCard number="92%" label="用户满意度" />
-            <StatCard number="3秒" label="AI响应速度" />
+            <StatCard number="351%" label="AIGC人才需求增长" />
+            <StatCard number="1222万" label="2025届毕业生" />
+            <StatCard number="¥8K-25K" label="AI岗位起薪" />
             <StatCard number="¥0" label="基础版免费" />
           </div>
         </div>

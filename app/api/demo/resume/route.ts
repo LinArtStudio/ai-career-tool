@@ -1,17 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { chat, parseJSON } from "@/lib/llm/deepseek";
 
-const DIAGNOSE_PROMPT = `你是资深HR顾问。分析简历，输出JSON：
-{score:0-100,summary:"一句话评价",dimensions:{structure:{score:0-100,comment:""},content:{score:0-100,comment:""},keywords:{score:0-100,comment:""},impact:{score:0-100,comment:""},format:{score:0-100,comment:""}},top_issues:[{severity:"high/medium/low",issue:"",fix:""}],optimized_lines:[{original:"",improved:"",reason":""}],comparison:"排名前X%"}`;
+const DIAGNOSE_PROMPT = `你是资深HR顾问，精通AIGC/互联网行业。分析简历并给出专业评分。
 
-const REWRITE_PROMPT = `你是简历优化专家。根据原始简历和诊断结果，输出一份优化后的完整简历。
+评分维度：
+- 结构(20分)：模块划分是否清晰（教育/经历/技能/项目）
+- 内容(25分)：经历描述是否有深度
+- 关键词(20分)：是否包含行业关键词（特别关注AIGC相关：Prompt Engineering、大模型、AIGC、AI Agent、Stable Diffusion等）
+- 成果量化(25分)：是否用数据量化成果
+- 格式(10分)：排版是否整洁专业
+
+输出JSON：{score:0-100,summary:"一句话评价",dimensions:{structure:{score,comment},content:{score,comment},keywords:{score,comment},impact:{score,comment},format:{score,comment}},top_issues:[{severity:"high/medium/low",issue:"",fix:""}],optimized_lines:[{original:"",improved:"",reason":""}],comparison:"排名前X%",aicg_keywords:["简历中已有的AIGC关键词"],"missing_aigc_keywords":["建议添加的AIGC关键词"]}`;
+
+const REWRITE_PROMPT = `你是简历优化专家，精通AIGC/互联网行业。根据原始简历和诊断结果，输出优化后的完整简历。
 要求：
 1. 保留所有真实信息，不编造经历
 2. 用STAR法则重写工作经历（情境-任务-行动-结果）
 3. 量化所有成果（数字、百分比、金额）
-4. 添加行业关键词
+4. 添加行业关键词（特别是AIGC相关：Prompt Engineering、大模型、AI Agent等）
 5. 优化格式和排版
-输出JSON：{optimized_resume:"优化后的完整简历文本",key_improvements:["改进点1","改进点2","改进点3"]}`;
+输出JSON：{optimized_resume:"优化后的完整简历",key_improvements:["改进点1","改进点2","改进点3"]}`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,7 +44,6 @@ export async function POST(req: NextRequest) {
     } else {
       const body = await req.json();
       text = body.text || "";
-      // If action is "rewrite", do rewrite
       if (body.action === "rewrite" && body.original && body.diagnosis) {
         const result = await chat([
           { role: "system", content: REWRITE_PROMPT },

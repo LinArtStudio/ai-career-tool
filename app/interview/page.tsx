@@ -17,6 +17,7 @@ interface Evaluation {
   improved_answer: string;
   key_points: string[];
   interviewer_notes?: string;
+  industry_insight?: string;
 }
 
 export default function InterviewPage() {
@@ -134,8 +135,16 @@ export default function InterviewPage() {
               className="w-full border rounded-lg px-4 py-2"
             />
           </div>
-          <button
-            onClick={generateQuestions}
+          <div className="flex flex-wrap gap-2 mb-4">
+              {["AI产品经理", "AIGC运营", "Prompt工程师", "数据科学家", "前端开发", "后端开发"].map((job) => (
+                <button key={job} onClick={() => { document.querySelector('input[placeholder*="AI产品经理"]')?.setAttribute('value', job); }}
+                  className="text-xs bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-600 px-3 py-1.5 rounded-full transition">
+                  {job}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={generateQuestions}
             disabled={!jobTitle || loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition"
           >
@@ -241,6 +250,12 @@ export default function InterviewPage() {
                 <h4 className="font-medium text-blue-800 mb-2">📝 参考答案</h4>
                 <p className="text-sm text-blue-700">{evaluation.improved_answer}</p>
               </div>
+              {evaluation.industry_insight && (
+                <div className="bg-orange-50 rounded-lg p-4">
+                  <h4 className="font-medium text-orange-800 mb-2">📊 行业洞察</h4>
+                  <p className="text-sm text-orange-700">{evaluation.industry_insight}</p>
+                </div>
+              )}
               {evaluation.interviewer_notes && (
                 <div className="bg-purple-50 rounded-lg p-4">
                   <h4 className="font-medium text-purple-800 mb-2">👔 面试官视角</h4>

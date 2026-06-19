@@ -1,19 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { chat, parseJSON } from "@/lib/llm/deepseek";
 
-const GENERATE_PROMPT = `你是资深面试官。为指定岗位生成面试题。
-输出JSON：{questions:[{id:"q1",question:"问题",category:"自我介绍/行为面试/技术面试/情景模拟",difficulty:"easy/medium/hard",tips:"回答提示"}]}
-要求：5道题，从易到难，覆盖4种类型。`;
+const GENERATE_PROMPT = `你是资深面试官，精通AIGC/互联网行业。为指定岗位生成面试题。
+
+岗位类型参考：
+- AI产品经理：大模型应用、AI功能设计、数据驱动决策
+- AIGC运营：内容生成策略、Prompt优化、AI工具应用
+- AI算法工程师：模型选型、训练优化、部署落地
+- 数据科学家：数据清洗、特征工程、模型评估
+- Prompt Engineer：提示词设计、Few-shot、Chain-of-Thought
+- 前端/后端开发：AI集成、API设计、性能优化
+
+输出JSON：{questions:[{id:"q1",question:"问题",category:"自我介绍/行为面试/技术面试/情景模拟/Prompt设计",difficulty:"easy/medium/hard",tips:"回答提示"}]}
+要求：5道题，从易到难，覆盖4种类型，贴合岗位实际工作。`;
 
 const EVALUATE_PROMPT = `你是资深面试官和职业教练。评估候选人的回答。
+评分标准：
+- 内容相关性(30%)：是否回答了问题
+- 结构清晰度(20%)：是否有逻辑框架（如STAR）
+- 具体性(25%)：是否有具体例子和数据
+- 岗位匹配度(15%)：是否体现岗位所需能力
+- 表达流畅度(10%)：语言是否简洁有力
+
 输出JSON：
 {
   "score": 0-100,
   "strengths": ["优点"],
   "weaknesses": ["不足"],
-  "improved_answer": "优化后的参考回答(用STAR法则)",
+  "improved_answer": "优化后的参考回答(用STAR法则，200字以内)",
   "key_points": ["应该覆盖的关键点"],
-  "interviewer_notes": "如果你是面试官，你会怎么评价这个回答？你会录用这个人吗？为什么？(50字以内)"
+  "interviewer_notes": "面试官视角：你会录用吗？为什么？(50字)",
+  "industry_insight": "这个岗位在行业中的现状和趋势(30字)"
 }`;
 
 export async function POST(req: NextRequest) {
