@@ -1,21 +1,61 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { searchMajors, searchInterests, searchSkills } from "@/lib/data/jobs";
 
 interface CareerPath {
-  title: string;
-  match_score: number;
-  description: string;
-  salary_range: string;
-  growth_potential: string;
-  required_skills: string[];
-  skill_gaps: string[];
-  learning_path: Array<{
-    stage: string;
-    duration: string;
-    actions: string[];
-    resources: string[];
-  }>;
+  title: string; match_score: number; description: string; salary_range: string;
+  growth_potential: string; required_skills: string[]; skill_gaps: string[];
+  learning_path: Array<{ stage: string; duration: string; actions: string[]; resources: string[] }>;
+}
+
+function AutoComplete({ value, onChange, placeholder, suggestions, icon, multi }: {
+  value: string; onChange: (v: string) => void; placeholder: string;
+  suggestions: (q: string) => string[]; icon: string; multi?: boolean;
+}) {
+  const [show, setShow] = useState(false);
+  const [items, setItems] = useState<string[]>([]);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setShow(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const handleChange = (v: string) => { onChange(v); setItems(suggestions(v)); setShow(true); };
+  const handleFocus = () => { setItems(suggestions(value)); setShow(true); };
+  const handleSelect = (v: string) => {
+    if (multi) {
+      const parts = value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+      if (!parts.includes(v)) {
+        onChange([...parts, v].join("、"));
+      }
+    } else {
+      onChange(v);
+    }
+    setShow(false);
+  };
+
+  return (
+    <div ref={ref} className="relative">
+      <input type="text" value={value} onChange={(e) => handleChange(e.target.value)}
+        onFocus={handleFocus} placeholder={placeholder}
+        className="w-full border rounded-lg px-4 py-2.5 pr-10" />
+      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</span>
+      {show && items.length > 0 && (
+        <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+          {items.map((item, i) => (
+            <div key={i} onClick={() => handleSelect(item)}
+              className="px-4 py-2 text-sm cursor-pointer hover:bg-blue-50 hover:text-blue-700">
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function CareerPage() {
@@ -29,56 +69,45 @@ export default function CareerPage() {
 
   const handleSubmit = async () => {
     if (!major) return;
-    setLoading(true);
-    setError("");
-
+    setLoading(true); setError("");
     try {
       const res = await fetch("/api/demo/career", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           major,
           interests: interests.split(/[,，、]/).filter(Boolean),
           skills: skills.split(/[,，、]/).filter(Boolean),
         }),
       });
-
       const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "生成失败");
-        return;
-      }
-
-      setPaths(data.career_paths);
-      setAdvice(data.overall_advice);
-    } catch {
-      setError("网络错误");
-    } finally {
-      setLoading(false);
-    }
+      if (!res.ok) { setError(data.error || "生成失败"); return; }
+      setPaths(data.career_paths || []);
+      setAdvice(data.overall_advice || "");
+    } catch { setError("网络错误"); }
+    finally { setLoading(false); }
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold mb-2">🧭 AI职业规划</h1>
-      <p className="text-gray-600 mb-8">输入你的背景，AI为你生成个性化职业路径</p>
+      <p className="text-gray-600 mb-8">输入你的背景，AI为你生成个性化职业路径和学习计划</p>
 
       {paths.length === 0 ? (
         <div className="bg-white border rounded-xl p-8 max-w-lg mx-auto">
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">你的专业 *</label>
-            <input type="text" value={major} onChange={(e) => setMajor(e.target.value)}
-              placeholder="例：计算机科学" className="w-full border rounded-lg px-4 py-2" />
+            <AutoComplete value={major} onChange={setMajor}
+              placeholder="输入专业名称，如：计算机科学与技术" suggestions={searchMajors} icon="🎓" />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">兴趣领域</label>
-            <input type="text" value={interests} onChange={(e) => setInterests(e.target.value)}
-              placeholder="例：AI, 产品设计, 数据分析" className="w-full border rounded-lg px-4 py-2" />
+            <label className="block text-sm font-medium mb-1">兴趣领域（可多选，用顿号分隔）</label>
+            <AutoComplete value={interests} onChange={setInterests}
+              placeholder="点击选择或输入，如：人工智能、产品设计" suggestions={searchInterests} icon="💡" multi />
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-1">已有技能</label>
-            <input type="text" value={skills} onChange={(e) => setSkills(e.target.value)}
-              placeholder="例：Python, PS, 写作" className="w-full border rounded-lg px-4 py-2" />
+            <label className="block text-sm font-medium mb-1">已有技能（可多选，用顿号分隔）</label>
+            <AutoComplete value={skills} onChange={setSkills}
+              placeholder="点击选择或输入，如：Python、写作" suggestions={searchSkills} icon="🛠️" multi />
           </div>
           <button onClick={handleSubmit} disabled={!major || loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition">
@@ -108,12 +137,12 @@ export default function CareerPage() {
               <div className="mb-4">
                 <h4 className="font-medium mb-2">需要的技能</h4>
                 <div className="flex flex-wrap gap-2">
-                  {path.required_skills.map((s, j) => (
+                  {path.required_skills?.map((s, j) => (
                     <span key={j} className="bg-gray-100 px-3 py-1 rounded-full text-sm">{s}</span>
                   ))}
                 </div>
               </div>
-              {path.skill_gaps.length > 0 && (
+              {path.skill_gaps?.length > 0 && (
                 <div className="mb-4">
                   <h4 className="font-medium mb-2 text-red-600">⚠️ 你缺少的技能</h4>
                   <div className="flex flex-wrap gap-2">
@@ -125,13 +154,13 @@ export default function CareerPage() {
               )}
               <div>
                 <h4 className="font-medium mb-3">🗺️ 学习路径</h4>
-                {path.learning_path.map((step, j) => (
+                {path.learning_path?.map((step, j) => (
                   <div key={j} className="border-l-2 border-blue-300 pl-4 mb-4">
                     <div className="font-medium">{step.stage} <span className="text-gray-400 text-sm">({step.duration})</span></div>
                     <ul className="text-sm text-gray-600 mt-1 space-y-1">
-                      {step.actions.map((a, k) => <li key={k}>• {a}</li>)}
+                      {step.actions?.map((a, k) => <li key={k}>• {a}</li>)}
                     </ul>
-                    {step.resources.length > 0 && (
+                    {step.resources?.length > 0 && (
                       <div className="text-xs text-blue-600 mt-1">📚 {step.resources.join("、")}</div>
                     )}
                   </div>
