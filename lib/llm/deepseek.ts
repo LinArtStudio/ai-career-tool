@@ -1,5 +1,3 @@
-// LLM API 封装 - 支持小米MiMo / DeepSeek等OpenAI兼容API
-
 interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
@@ -20,10 +18,7 @@ function getLLMConfig() {
   };
 }
 
-export async function chat(
-  messages: ChatMessage[],
-  options?: ChatOptions
-): Promise<string> {
+export async function chat(messages: ChatMessage[], options?: ChatOptions): Promise<string> {
   const config = getLLMConfig();
   if (!config.apiKey) throw new Error("LLM_API_KEY not set");
 
@@ -40,10 +35,7 @@ export async function chat(
 
   const response = await fetch(config.apiUrl, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${config.apiKey}`,
-    },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${config.apiKey}` },
     body: JSON.stringify(body),
   });
 
@@ -54,23 +46,68 @@ export async function chat(
 
   const data = await response.json();
   const msg = data.choices[0].message;
-
-  // 优先取content，若为空则取reasoning_content（MiMo等推理模型）
   let text = msg.content || msg.reasoning_content || "";
-
-  // 去除markdown代码块包裹
   text = text.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
-
   return text;
 }
 
-/** 解析LLM返回的JSON，带容错 */
 export function parseJSON<T>(text: string): T {
+  // Try direct parse first
   try {
     return JSON.parse(text);
-  } catch {
-    const match = text.match(/\{[\s\S]*\}/);
-    if (match) return JSON.parse(match[0]);
-    throw new Error("Failed to parse JSON from LLM response: " + text.slice(0, 200));
+  } catch {}
+
+  // Try to extract JSON object
+  const objMatch = text.match(/\{[\s\S]*\}/);
+  if (objMatch) {
+    try {
+      return JSON.parse(objMatch[0]);
+    } catch {
+      // Try fixing common JSON errors
+      let fixed = objMatch[0];
+      // Fix trailing commas
+      fixed = fixed.replace(/,\s*([}\]])/g, "$1");
+      // Fix missing quotes on keys
+      fixed = fixed.replace(/(\s)(\w+)(\s*:)/g, '$1"$2"$3');
+      // Fix single quotes
+      fixed = fixed.replace(/'/g, '"');
+      // Fix unescaped newlines in strings
+      try {
+        return JSON.parse(fixed);
+      } catch {}
+    }
   }
+
+  // Try to extract JSON array
+  const arrMatch = text.match(/\[[\s\S]*\]/);
+  if (arrMatch) {
+    try {
+      return JSON.parse(arrMatch[0]);
+    } catch {
+      let fixed = arrMatch[0];
+      fixed = fixed.replace(/,\s*([}\]])/g, "$1");
+      try {
+        return JSON.parse(fixed);
+      } catch {}
+    }
+  }
+
+  throw new Error("Failed to parse JSON: " + text.slice(0, 200));
+}
+
+export async function chatWithRetry(
+  messages: ChatMessage[],
+  options?: ChatOptions,
+  maxRetries: number = 2
+): Promise<string> {
+  let lastError: Error | null = null;
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      return await chat(messages, { ...options, temperature: (options?.temperature ?? 0.7) - i * 0.2 });
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      if (i < maxRetries) await new Promise(r => setTimeout(r, 1000));
+    }
+  }
+  throw lastError;
 }
