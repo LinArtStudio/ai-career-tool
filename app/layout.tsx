@@ -26,6 +26,12 @@ export default function RootLayout({
               <a href="/resume" className="text-sm text-gray-600 hover:text-blue-600">
                 简历诊断
               </a>
+              <a href="/resume-builder" className="text-sm text-gray-600 hover:text-blue-600">
+                AI生成简历
+              </a>
+              <a href="/interview-bank" className="text-sm text-gray-600 hover:text-blue-600">
+                面试真题
+              </a>
               <a href="/jd-match" className="text-sm text-gray-600 hover:text-blue-600">
                 JD匹配
               </a>
