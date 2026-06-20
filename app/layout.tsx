@@ -18,38 +18,33 @@ export default function RootLayout({
     <html lang="zh-CN">
       <body className={inter.className}>
         <nav className="border-b bg-white sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="/" className="text-xl font-bold text-blue-600">
-              🚀 AI求职助手
-            </a>
-            <div className="flex items-center gap-6">
-              <a href="/resume" className="text-sm text-gray-600 hover:text-blue-600">
-                简历诊断
-              </a>
-              <a href="/resume-builder" className="text-sm text-gray-600 hover:text-blue-600">
-                AI生成简历
-              </a>
-              <a href="/interview-bank" className="text-sm text-gray-600 hover:text-blue-600">
-                面试真题
-              </a>
-              <a href="/jd-match" className="text-sm text-gray-600 hover:text-blue-600">
-                JD匹配
-              </a>
-              <a href="/interview" className="text-sm text-gray-600 hover:text-blue-600">
-                模拟面试
-              </a>
-              <a href="/career" className="text-sm text-gray-600 hover:text-blue-600">
-                职业规划
-              </a>
-              <a href="/pricing" className="text-sm text-gray-600 hover:text-blue-600">
-                定价
-              </a>
-              <a
-                href="/dashboard"
-                className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                登录
-              </a>
+          <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
+            <a href="/" className="text-lg md:text-xl font-bold text-blue-600">🚀 AI求职助手</a>
+            <div className="hidden md:flex items-center gap-5">
+              <a href="/resume" className="text-sm text-gray-600 hover:text-blue-600">简历诊断</a>
+              <a href="/resume-builder" className="text-sm text-gray-600 hover:text-blue-600">AI生成简历</a>
+              <a href="/interview" className="text-sm text-gray-600 hover:text-blue-600">模拟面试</a>
+              <a href="/interview-bank" className="text-sm text-gray-600 hover:text-blue-600">面试真题</a>
+              <a href="/career" className="text-sm text-gray-600 hover:text-blue-600">职业规划</a>
+              <a href="/jd-match" className="text-sm text-gray-600 hover:text-blue-600">JD匹配</a>
+              <a href="/pricing" className="text-sm text-gray-600 hover:text-blue-600">定价</a>
+              <a href="/dashboard" className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">登录</a>
+            </div>
+            <div className="md:hidden">
+              <details className="relative">
+                <summary className="cursor-pointer text-gray-600 text-xl list-none p-2">☰</summary>
+                <div className="absolute right-0 top-10 bg-white border rounded-lg shadow-lg py-2 w-48 z-50">
+                  <a href="/resume" className="block px-4 py-2.5 text-sm hover:bg-gray-50">📄 简历诊断</a>
+                  <a href="/resume-builder" className="block px-4 py-2.5 text-sm hover:bg-gray-50">📝 AI生成简历</a>
+                  <a href="/interview" className="block px-4 py-2.5 text-sm hover:bg-gray-50">🎤 模拟面试</a>
+                  <a href="/interview-bank" className="block px-4 py-2.5 text-sm hover:bg-gray-50">📚 面试真题</a>
+                  <a href="/career" className="block px-4 py-2.5 text-sm hover:bg-gray-50">🧭 职业规划</a>
+                  <a href="/jd-match" className="block px-4 py-2.5 text-sm hover:bg-gray-50">🎯 JD匹配</a>
+                  <a href="/cover-letter" className="block px-4 py-2.5 text-sm hover:bg-gray-50">✉️ 求职信</a>
+                  <a href="/pricing" className="block px-4 py-2.5 text-sm hover:bg-gray-50">💎 定价</a>
+                  <a href="/dashboard" className="block px-4 py-2.5 text-sm text-blue-600 font-medium">🔐 登录</a>
+                </div>
+              </details>
             </div>
           </div>
         </nav>

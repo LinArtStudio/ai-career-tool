@@ -1,6 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { searchJobs, searchCompanies } from "@/lib/data/jobs";
+import { searchQuestions, getRandomQuestions } from "@/lib/data/interview-questions";
+import { addRecord, getProgress, getRecentRecords } from "@/lib/progress";
 
 interface Question { id: string; question: string; category: string; difficulty: string; tips: string; }
 interface Evaluation { score: number; strengths: string[]; weaknesses: string[]; improved_answer: string; key_points: string[]; interviewer_notes?: string; }
@@ -29,13 +31,13 @@ function AutoComplete({ value, onChange, placeholder, suggestions, icon }: {
     <div ref={ref} className="relative">
       <input type="text" value={value} onChange={(e) => handleChange(e.target.value)}
         onFocus={handleFocus} placeholder={placeholder}
-        className="w-full border rounded-lg px-4 py-2.5 pr-10" />
+        className="w-full border rounded-lg px-4 py-2.5 pr-10 text-base" />
       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</span>
       {show && items.length > 0 && (
         <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-48 overflow-y-auto">
           {items.map((item, i) => (
             <div key={i} onClick={() => handleSelect(item)}
-              className="px-4 py-2 text-sm cursor-pointer hover:bg-blue-50 hover:text-blue-700">
+              className="px-4 py-2.5 text-sm cursor-pointer hover:bg-blue-50 hover:text-blue-700 active:bg-blue-100">
               {item}
             </div>
           ))}
@@ -54,21 +56,40 @@ export default function InterviewPage() {
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sessionId, setSessionId] = useState("");
   const [scores, setScores] = useState<number[]>([]);
+  const [showProgress, setShowProgress] = useState(false);
+  const [mode, setMode] = useState<"ai" | "bank">("ai");
+
+  const progress = typeof window !== "undefined" ? getProgress() : null;
+  const recentRecords = typeof window !== "undefined" ? getRecentRecords(10) : [];
 
   const generateQuestions = async () => {
     if (!jobTitle) return;
     setLoading(true); setError("");
+
+    if (mode === "bank") {
+      // Use question bank
+      const bankQuestions = getRandomQuestions(5, company || undefined, jobTitle);
+      if (bankQuestions.length > 0) {
+        setQuestions(bankQuestions.map(q => ({ id: q.id, question: q.question, category: q.category, difficulty: q.difficulty, tips: q.tips })));
+        setCurrentIdx(0); setScores([]); setEvaluation(null); setAnswer("");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // AI generate (with bank supplement)
     try {
+      const bankQ = searchQuestions(company || undefined, jobTitle);
+      const bankHint = bankQ.length > 0 ? `\n\n参考以下真实面试题风格：\n${bankQ.slice(0, 3).map(q => `- [${q.company}] ${q.question}`).join("\n")}` : "";
+
       const res = await fetch("/api/demo/interview", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "generate", jobTitle, company, count: 5 }),
+        body: JSON.stringify({ action: "generate", jobTitle, company, count: 5, bankHint }),
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || "生成失败"); return; }
       setQuestions(data.questions || []);
-      setSessionId("demo-" + Date.now());
       setCurrentIdx(0); setScores([]); setEvaluation(null); setAnswer("");
     } catch { setError("网络错误"); }
     finally { setLoading(false); }
@@ -86,7 +107,17 @@ export default function InterviewPage() {
       const data = await res.json();
       if (!res.ok) { setError(data.error || "评估失败"); return; }
       setEvaluation(data);
-      setScores([...scores, data.score]);
+      const newScores = [...scores, data.score];
+      setScores(newScores);
+
+      // Save to progress
+      addRecord({
+        type: "interview",
+        company: company || undefined,
+        position: jobTitle,
+        score: data.score,
+        details: { category: q.category, difficulty: q.difficulty, question: q.question },
+      });
     } catch { setError("网络错误"); }
     finally { setLoading(false); }
   };
@@ -95,79 +126,150 @@ export default function InterviewPage() {
   const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-2">🎤 AI模拟面试</h1>
-      <p className="text-gray-600 mb-8">输入目标岗位和公司，AI生成真实面试题并评估你的回答</p>
+    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold mb-1">🎤 AI模拟面试</h1>
+          <p className="text-gray-600 text-sm md:text-base">输入目标岗位，AI生成真实面试题并评估</p>
+        </div>
+        <button onClick={() => setShowProgress(!showProgress)}
+          className="text-sm text-blue-600 border border-blue-200 px-4 py-2 rounded-lg hover:bg-blue-50 self-start">
+          📊 {showProgress ? "返回面试" : "练习进度"}
+        </button>
+      </div>
 
-      {questions.length === 0 ? (
-        <div className="bg-white border rounded-xl p-8 max-w-lg mx-auto">
+      {/* Progress Dashboard */}
+      {showProgress && progress && (
+        <div className="space-y-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-white border rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-blue-600">{progress.totalSessions}</div>
+              <div className="text-xs text-gray-500">总练习次数</div>
+            </div>
+            <div className="bg-white border rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-green-600">{progress.averageScore}</div>
+              <div className="text-xs text-gray-500">平均分</div>
+            </div>
+            <div className="bg-white border rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-orange-600">{progress.streak}</div>
+              <div className="text-xs text-gray-500">连续练习天数</div>
+            </div>
+            <div className="bg-white border rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-purple-600">{Object.keys(progress.companyBreakdown).length}</div>
+              <div className="text-xs text-gray-500">练习公司数</div>
+            </div>
+          </div>
+
+          {/* Score Trend */}
+          {progress.recentScores.length > 1 && (
+            <div className="bg-white border rounded-xl p-4">
+              <h3 className="font-medium mb-3 text-sm">📈 近期分数趋势</h3>
+              <div className="flex items-end gap-1 h-20">
+                {progress.recentScores.map((s, i) => (
+                  <div key={i} className="flex-1 bg-blue-500 rounded-t" style={{ height: `${s}%`, opacity: 0.5 + (i / progress.recentScores.length) * 0.5 }} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Company Breakdown */}
+          {Object.keys(progress.companyBreakdown).length > 0 && (
+            <div className="bg-white border rounded-xl p-4">
+              <h3 className="font-medium mb-3 text-sm">🏢 按公司统计</h3>
+              <div className="space-y-2">
+                {Object.entries(progress.companyBreakdown).sort((a, b) => b[1].avgScore - a[1].avgScore).map(([c, d]) => (
+                  <div key={c} className="flex items-center justify-between text-sm">
+                    <span>{c}</span>
+                    <span className="text-gray-500">{d.count}次 · 平均{d.avgScore}分</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Main Content */}
+      {!showProgress && questions.length === 0 ? (
+        <div className="bg-white border rounded-xl p-6 md:p-8 max-w-lg mx-auto">
+          {/* Mode Toggle */}
+          <div className="flex border rounded-lg overflow-hidden mb-6">
+            <button onClick={() => setMode("ai")} className={`flex-1 py-2 text-sm font-medium ${mode === "ai" ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-600"}`}>🤖 AI生成</button>
+            <button onClick={() => setMode("bank")} className={`flex-1 py-2 text-sm font-medium ${mode === "bank" ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-600"}`}>📚 真题库</button>
+          </div>
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">目标岗位 *</label>
             <AutoComplete value={jobTitle} onChange={setJobTitle}
-              placeholder="输入岗位名称，如：产品经理" suggestions={searchJobs} icon="💼" />
+              placeholder="输入岗位名称" suggestions={searchJobs} icon="💼" />
           </div>
           <div className="mb-6">
             <label className="block text-sm font-medium mb-1">目标公司</label>
             <AutoComplete value={company} onChange={setCompany}
-              placeholder="输入公司名称，如：字节跳动" suggestions={searchCompanies} icon="🏢" />
+              placeholder="输入公司名称" suggestions={searchCompanies} icon="🏢" />
           </div>
           <button onClick={generateQuestions} disabled={!jobTitle || loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition">
-            {loading ? "⏳ 生成中..." : "🎯 生成面试题"}
+            {loading ? "⏳ 生成中..." : mode === "bank" ? "📚 从真题库出题" : "🎯 AI生成面试题"}
           </button>
-          {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
+          {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
         </div>
-      ) : currentIdx >= questions.length ? (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold mb-2">面试完成！</h2>
+      ) : !showProgress && currentIdx >= questions.length ? (
+        <div className="text-center py-8 md:py-12">
+          <div className="text-5xl md:text-6xl mb-4">🎉</div>
+          <h2 className="text-xl md:text-2xl font-bold mb-2">面试完成！</h2>
           <p className="text-gray-600 mb-4">你的平均得分</p>
-          <div className="text-5xl font-bold text-blue-600 mb-6">{avgScore}分</div>
-          <div className="flex gap-4 justify-center">
+          <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-6">{avgScore}分</div>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button onClick={() => { setQuestions([]); setScores([]); }}
               className="border border-blue-600 text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-50">再来一轮</button>
-            <a href="/pricing" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">解锁更多功能</a>
+            <button onClick={() => setShowProgress(true)}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">📊 查看进度</button>
           </div>
         </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="flex items-center gap-4 text-sm text-gray-500">
+      ) : !showProgress ? (
+        <div className="space-y-4 md:space-y-6">
+          {/* Progress bar */}
+          <div className="flex items-center gap-3 text-sm text-gray-500">
             <span>问题 {currentIdx + 1}/{questions.length}</span>
             <div className="flex-1 bg-gray-100 rounded-full h-2">
-              <div className="bg-blue-600 h-2 rounded-full" style={{ width: (currentIdx / questions.length * 100) + "%" }} />
+              <div className="bg-blue-600 h-2 rounded-full transition-all" style={{ width: `${(currentIdx / questions.length) * 100}%` }} />
             </div>
             {scores.length > 0 && <span>平均: {avgScore}分</span>}
           </div>
 
-          <div className="bg-white border rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
+          {/* Question card */}
+          <div className="bg-white border rounded-xl p-5 md:p-6">
+            <div className="flex flex-wrap items-center gap-2 mb-3">
               <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">{questions[currentIdx].category}</span>
-              <span className={"text-xs px-2 py-0.5 rounded " + (questions[currentIdx].difficulty === "hard" ? "bg-red-100 text-red-700" : questions[currentIdx].difficulty === "medium" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700")}>
+              <span className={`text-xs px-2 py-0.5 rounded ${questions[currentIdx].difficulty === "hard" ? "bg-red-100 text-red-700" : questions[currentIdx].difficulty === "medium" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700"}`}>
                 {questions[currentIdx].difficulty === "hard" ? "困难" : questions[currentIdx].difficulty === "medium" ? "中等" : "简单"}
               </span>
               {company && <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{company}</span>}
             </div>
-            <h3 className="text-xl font-bold mb-2">{questions[currentIdx].question}</h3>
+            <h3 className="text-lg md:text-xl font-bold mb-2">{questions[currentIdx].question}</h3>
             <p className="text-sm text-gray-500">💡 {questions[currentIdx].tips}</p>
           </div>
 
+          {/* Answer input */}
           <div>
             <textarea value={answer} onChange={(e) => setAnswer(e.target.value)}
-              placeholder="输入你的回答...（建议使用STAR法则：情境-任务-行动-结果）" rows={6}
-              className="w-full border rounded-lg px-4 py-3 resize-none" />
+              placeholder="输入你的回答...（建议使用STAR法则：情境-任务-行动-结果）" rows={5}
+              className="w-full border rounded-lg px-4 py-3 resize-none text-base" />
             <button onClick={submitAnswer} disabled={!answer.trim() || loading}
-              className="mt-3 bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition">
+              className="mt-3 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition w-full sm:w-auto">
               {loading ? "⏳ 评估中..." : "📤 提交回答"}
             </button>
           </div>
 
+          {/* Evaluation result */}
           {evaluation && (
-            <div className="bg-white border rounded-xl p-6 space-y-4">
+            <div className="bg-white border rounded-xl p-5 md:p-6 space-y-4">
               <div className="text-center">
                 <div className="text-4xl font-bold text-blue-600">{evaluation.score}</div>
                 <div className="text-sm text-gray-500">本次得分</div>
               </div>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="bg-green-50 rounded-lg p-4">
                   <h4 className="font-medium text-green-800 mb-2">✅ 优点</h4>
                   <ul className="text-sm text-green-700 space-y-1">{evaluation.strengths?.map((s, i) => <li key={i}>• {s}</li>)}</ul>
@@ -188,13 +290,13 @@ export default function InterviewPage() {
                 </div>
               )}
               <button onClick={nextQuestion}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition">
                 下一题 →
               </button>
             </div>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
