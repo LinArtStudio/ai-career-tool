@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "AI求职工具 - 简历诊断 · 模拟面试 · 职业规划",
   description: "用AI帮你搞定求职全流程：简历优化、模拟面试、职业规划",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
+  themeColor: "#2563eb",
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
