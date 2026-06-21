@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ToastProvider } from "@/components/Toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,7 +53,11 @@ export default function RootLayout({
             </div>
           </div>
         </nav>
-        <main>{children}</main>
+        <ErrorBoundary>
+          <ToastProvider>
+            <main>{children}</main>
+          </ToastProvider>
+        </ErrorBoundary>
         <footer className="border-t bg-gray-50 mt-20">
           <div className="max-w-6xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
             <p>© 2026 AI求职助手 · 用AI让每个人都能找到好工作</p>
