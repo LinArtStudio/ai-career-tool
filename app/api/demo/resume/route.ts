@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkUsageLimit } from "@/lib/api-usage";
 import { chatWithRetry, parseJSON } from "@/lib/llm/deepseek";
 
 const DIAGNOSE = `简历专家。分析简历，输出JSON：{score:0-100,summary:"20字评价",dimensions:{structure:{score,comment},content:{score,comment},keywords:{score,comment},impact:{score,comment},format:{score,comment}},top_issues:[{severity:"high/medium/low",issue:"",fix:""}],optimized_lines:[{original:"",improved:"",reason":""}],comparison:"排名前X%"}`;
@@ -6,6 +7,9 @@ const DIAGNOSE = `简历专家。分析简历，输出JSON：{score:0-100,summar
 const REWRITE = `简历优化专家。根据简历和诊断，输出优化后的完整简历JSON：{optimized_resume:"完整简历文本",key_improvements:["改进1","改进2","改进3"]}`;
 
 export async function POST(req: NextRequest) {
+  // Check free usage limit
+  const usageError = checkUsageLimit(req, "/api/demo/resume");
+  if (usageError) return usageError;
   try {
     const contentType = req.headers.get("content-type") || "";
     let text = "";

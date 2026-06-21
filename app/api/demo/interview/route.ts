@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkUsageLimit } from "@/lib/api-usage";
 import { chatWithRetry, parseJSON } from "@/lib/llm/deepseek";
 
 const GEN = `资深面试官。为指定公司岗位生成5道面试题，基于真实业务场景。
@@ -13,6 +14,8 @@ export async function POST(req: NextRequest) {
     const { action, jobTitle, company, question, answer } = body;
 
     if (action === "generate") {
+      const usageError = checkUsageLimit(req, "/api/demo/interview-preview");
+      if (usageError) return usageError;
       if (!jobTitle) return NextResponse.json({ error: "请填写岗位" }, { status: 400 });
       const hint = company ? `公司：${company}，结合其真实业务出题。` : "";
       const result = await chatWithRetry([
