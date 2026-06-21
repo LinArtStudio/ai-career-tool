@@ -8,8 +8,6 @@ const REWRITE = `简历优化专家。根据简历和诊断，输出优化后的
 
 export async function POST(req: NextRequest) {
   // Check free usage limit
-  const usageError = checkUsageLimit(req, "/api/demo/resume");
-  if (usageError) return usageError;
   try {
     const contentType = req.headers.get("content-type") || "";
     let text = "";
@@ -33,6 +31,9 @@ export async function POST(req: NextRequest) {
       const body = await req.json();
       text = body.text || "";
       if (body.action === "rewrite" && body.original && body.diagnosis) {
+    const usageError = checkUsageLimit(req, "/api/demo/resume");
+    if (usageError) return usageError;
+
         const result = await chatWithRetry([
           { role: "system", content: REWRITE },
           { role: "user", content: `简历：${body.original.slice(0, 1500)}\n诊断：${JSON.stringify(body.diagnosis).slice(0, 500)}` },
@@ -44,6 +45,9 @@ export async function POST(req: NextRequest) {
     if (!text || text.trim().length < 20) {
       return NextResponse.json({ error: "简历内容太少" }, { status: 400 });
     }
+
+    const usageError = checkUsageLimit(req, "/api/demo/resume");
+    if (usageError) return usageError;
 
     const result = await chatWithRetry([
       { role: "system", content: DIAGNOSE },
