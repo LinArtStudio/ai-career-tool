@@ -4,10 +4,28 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ToastProvider } from "@/components/Toast";
 
 export const metadata: Metadata = {
-  title: "AI求职助手 - 简历诊断 · 模拟面试 · 职业规划",
-  description: "用AI帮你搞定求职全流程：简历优化、模拟面试、职业规划",
+  title: "AI求职助手 - 简历诊断·模拟面试·职业规划·JD匹配",
+  description: "用AI帮你搞定求职全流程：免费简历诊断、AI改简历、模拟面试、JD匹配度分析、职业规划、AI求职信生成。覆盖字节跳动、腾讯、阿里巴巴等大厂面试题。",
+  keywords: "AI求职,简历优化,模拟面试,职业规划,JD匹配,AI改简历,面试真题,字节跳动面试,腾讯面试,大厂面试",
   viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
   themeColor: "#2563eb",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  openGraph: {
+    title: "AI求职助手 - 用AI搞定求职全流程",
+    description: "免费简历诊断、AI模拟面试、职业规划、JD匹配分析",
+    url: "https://ai-career-tool.vercel.app",
+    siteName: "AI求职助手",
+    locale: "zh_CN",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
