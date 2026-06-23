@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JD智能匹配诊断 - 诊断结果</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #1a1a2e; line-height: 1.6; }
+  .container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .header h1 { font-size: 24px; font-weight: 700; }
+  .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .card-title { font-size: 15px; font-weight: 600; color: #374151; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  
+  /* 总分 */
+  .score-hero { text-align: center; padding: 20px 0; }
+  .score-number { font-size: 64px; font-weight: 800; color: #f59e0b; }
+  .score-total { font-size: 20px; color: #9ca3af; }
+  .score-label { display: inline-block; padding: 4px 16px; background: #fef3c7; color: #d97706; border-radius: 20px; font-size: 14px; font-weight: 600; margin-top: 8px; }
+  
+  /* 雷达图用CSS模拟 */
+  .radar-wrapper { display: flex; justify-content: center; margin: 16px 0; }
+  .radar-bars { width: 100%; }
+  .bar-row { display: flex; align-items: center; margin-bottom: 10px; }
+  .bar-label { width: 90px; font-size: 13px; color: #6b7280; text-align: right; padding-right: 12px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 24px; background: #f3f4f6; border-radius: 12px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 12px; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 12px; font-weight: 700; color: #fff; }
+  .bar-fill.green { background: linear-gradient(90deg, #34d399, #10b981); }
+  .bar-fill.yellow { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+  .bar-fill.red { background: linear-gradient(90deg, #f87171, #ef4444); }
+
+  /* 缺失项 */
+  .gap-item { padding: 14px 16px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .gap-item.critical { background: #fef2f2; border-left-color: #ef4444; }
+  .gap-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .gap-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+  .gap-tag.must { background: #fef2f2; color: #dc2626; }
+  .gap-tag.prefer { background: #fef3c7; color: #d97706; }
+  .gap-title { font-size: 14px; font-weight: 600; color: #374151; }
+  .gap-source { font-size: 12px; color: #9ca3af; margin-top: 4px; font-style: italic; }
+  .gap-suggestion { font-size: 13px; color: #6b7280; margin-top: 6px; }
+
+  /* 修改建议 */
+  .suggestion-block { margin-bottom: 16px; }
+  .suggestion-location { font-size: 12px; color: #3b82f6; font-weight: 600; margin-bottom: 6px; }
+  .suggestion-before { background: #fef2f2; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #991b1b; margin-bottom: 6px; position: relative; }
+  .suggestion-before::before { content: "修改前"; position: absolute; top: -8px; left: 10px; font-size: 10px; background: #ef4444; color: #fff; padding: 1px 6px; border-radius: 4px; }
+  .suggestion-after { background: #f0fdf4; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #166534; position: relative; }
+  .suggestion-after::before { content: "修改后"; position: absolute; top: -8px; left: 10px; font-size: 10px; background: #22c55e; color: #fff; padding: 1px 6px; border-radius: 4px; }
+
+  /* 面试问题 */
+  .interview-q { margin-bottom: 16px; }
+  .interview-q-text { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 6px; display: flex; gap: 8px; }
+  .interview-q-text .num { background: #3b82f6; color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .interview-reason { font-size: 12px; color: #9ca3af; margin-bottom: 4px; }
+  .interview-hint { font-size: 13px; color: #6b7280; background: #f0f7ff; padding: 10px 14px; border-radius: 8px; }
+
+  /* 行动按钮 */
+  .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .btn { flex: 1; min-width: 140px; padding: 14px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+  .btn-primary { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; }
+  .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+  .btn-ghost { background: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
+  .btn:hover { transform: translateY(-1px); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📊 诊断结果</h1>
+  </div>
+
+  <!-- 匹配度总览 -->
+  <div class="card">
+    <div class="card-title">🎯 匹配度总览</div>
+    <div class="score-hero">
+      <div class="score-number">72<span class="score-total">/100</span></div>
+      <div class="score-label">🟡 部分匹配</div>
+    </div>
+    <div class="radar-wrapper">
+      <div class="radar-bars">
+        <div class="bar-row">
+          <div class="bar-label">技能匹配</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:80%">80</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">教育匹配</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:85%">85</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">综合素质</div>
+          <div class="bar-track"><div class="bar-fill yellow" style="width:70%">70</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">经验匹配</div>
+          <div class="bar-track"><div class="bar-fill yellow" style="width:65%">65</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">行业匹配</div>
+          <div class="bar-track"><div class="bar-fill yellow" style="width:60%">60</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 缺失项 -->
+  <div class="card">
+    <div class="card-title">⚠️ 缺失项（按重要性排序）</div>
+    <div class="gap-item critical">
+      <div class="gap-header">
+        <span class="gap-tag must">必须</span>
+        <span class="gap-title">缺少"数据分析经验"</span>
+      </div>
+      <div class="gap-source">JD原文："具备基本的数据分析能力，能够使用数据分析工具"</div>
+      <div class="gap-suggestion">💡 建议：在项目经历中补充一个数据分析案例，即使是课程作业也可以</div>
+    </div>
+    <div class="gap-item">
+      <div class="gap-header">
+        <span class="gap-tag prefer">优先</span>
+        <span class="gap-title">缺少"Python/SQL技能"</span>
+      </div>
+      <div class="gap-source">JD原文："熟练使用Python或SQL进行数据处理"</div>
+      <div class="gap-suggestion">💡 建议：在技能清单中添加，如果有课程项目经验一并列出</div>
+    </div>
+    <div class="gap-item">
+      <div class="gap-header">
+        <span class="gap-tag prefer">优先</span>
+        <span class="gap-title">缺少"跨团队协作经验"</span>
+      </div>
+      <div class="gap-source">JD原文："协调技术、算法和设计团队，推动AI模型的落地应用"</div>
+      <div class="gap-suggestion">💡 建议：补充一个与他人合作的项目经历，突出沟通协调能力</div>
+    </div>
+  </div>
+
+  <!-- 修改建议 -->
+  <div class="card">
+    <div class="card-title">📝 针对性修改建议</div>
+    <div class="suggestion-block">
+      <div class="suggestion-location">📍 建议修改"项目经历"第2条</div>
+      <div class="suggestion-before">负责产品功能设计和迭代</div>
+      <div class="suggestion-after">负责产品功能设计和迭代，通过SQL分析用户行为数据，识别3个关键流失节点，驱动功能优化后用户留存率提升15%</div>
+    </div>
+    <div class="suggestion-block">
+      <div class="suggestion-location">📍 建议在"技能清单"中补充</div>
+      <div class="suggestion-before">技能：JavaScript, React, Next.js, Figma</div>
+      <div class="suggestion-after">产品能力：需求分析、竞品分析、PRD撰写、原型设计（Figma）<br>AI技术：LLM应用、Prompt工程、RAG原理、Agent工作流<br>技术能力：Next.js、Python、SQL、Git</div>
+    </div>
+  </div>
+
+  <!-- 面试问题预测 -->
+  <div class="card">
+    <div class="card-title">🎯 面试高频问题预测</div>
+    <div class="interview-q">
+      <div class="interview-q-text"><span class="num">1</span>你有数据分析的经验吗？能举个例子吗？</div>
+      <div class="interview-reason">→ 你的简历缺少数据分析相关经历，面试官大概率会追问</div>
+      <div class="interview-hint">💡 回答思路：用STAR法则，描述一个你用数据做决策的场景。即使是课程作业、社团活动中的数据整理也算。</div>
+    </div>
+    <div class="interview-q">
+      <div class="interview-q-text"><span class="num">2</span>你如何理解AI产品和传统互联网产品的区别？</div>
+      <div class="interview-reason">→ JD要求"了解AI技术原理"，这是AI PM面试的标配题</div>
+      <div class="interview-hint">💡 回答思路：从输出不确定性、评估方式、迭代方式、用户信任四个维度对比。结合你的AI求职工具项目来说更有说服力。</div>
+    </div>
+    <div class="interview-q">
+      <div class="interview-q-text"><span class="num">3</span>你做过最成功的一个产品功能是什么？怎么衡量"成功"？</div>
+      <div class="interview-reason">→ 考察你的产品思维和数据意识</div>
+      <div class="interview-hint">💡 回答思路：选你的AI求职工具中最核心的功能（如简历诊断），用具体数据说明效果（使用率、用户反馈等）。</div>
+    </div>
+  </div>
+
+  <!-- 行动按钮 -->
+  <div class="actions">
+    <button class="btn btn-primary">✨ 一键优化简历</button>
+    <button class="btn btn-secondary">📥 保存报告</button>
+    <button class="btn btn-ghost">🔄 再诊断一个岗位</button>
+  </div>
+</div>
+</body>
+</html>
