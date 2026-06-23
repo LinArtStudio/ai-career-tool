@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JD智能匹配诊断 - 加载中</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .loading-card { background: #fff; border-radius: 16px; padding: 48px 40px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .loading-icon { font-size: 48px; animation: pulse 2s infinite; margin-bottom: 20px; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  .loading-title { font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 24px; }
+  .progress-track { width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+  .progress-fill { height: 100%; width: 65%; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 4px; animation: progress 3s ease-in-out infinite; }
+  @keyframes progress { 0% { width: 30%; } 50% { width: 70%; } 100% { width: 90%; } }
+  .progress-text { font-size: 13px; color: #9ca3af; margin-bottom: 24px; }
+  .steps { text-align: left; }
+  .step { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #6b7280; }
+  .step.done { color: #10b981; }
+  .step.active { color: #3b82f6; font-weight: 600; }
+  .step-icon { width: 20px; text-align: center; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #e5e7eb; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .eta { font-size: 13px; color: #9ca3af; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="loading-card">
+  <div class="loading-icon">🔍</div>
+  <div class="loading-title">正在分析你的简历与岗位匹配度...</div>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="progress-text">65%</div>
+  <div class="steps">
+    <div class="step done"><span class="step-icon">✅</span> 提取JD关键信息</div>
+    <div class="step done"><span class="step-icon">✅</span> 解析简历内容</div>
+    <div class="step active"><span class="step-icon"><span class="spinner"></span></span> 语义匹配分析中...</div>
+    <div class="step"><span class="step-icon">⏳</span> 生成诊断报告</div>
+  </div>
+  <div class="eta">预计还需 5 秒</div>
+</div>
+</body>
+</html>

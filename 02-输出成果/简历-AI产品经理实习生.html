@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>简历 - [你的名字]</title>
+<style>
+  @media print { body { margin: 0; } .no-print { display: none; } }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif; background: #f0f0f0; color: #1a1a2e; line-height: 1.6; }
+  .page { max-width: 780px; margin: 20px auto; background: #fff; padding: 40px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+  .header { text-align: center; padding-bottom: 20px; border-bottom: 2px solid #1a1a2e; margin-bottom: 24px; }
+  .name { font-size: 28px; font-weight: 800; letter-spacing: 4px; color: #1a1a2e; }
+  .subtitle { font-size: 14px; color: #6b7280; margin-top: 8px; }
+  .contact { display: flex; justify-content: center; gap: 20px; margin-top: 10px; font-size: 13px; color: #374151; flex-wrap: wrap; }
+  .contact span { display: flex; align-items: center; gap: 4px; }
+  .section { margin-bottom: 22px; }
+  .section-title { font-size: 15px; font-weight: 700; color: #1a1a2e; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; margin-bottom: 12px; }
+  .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .edu-school { font-weight: 700; font-size: 15px; }
+  .edu-major { font-size: 14px; color: #374151; }
+  .edu-date { font-size: 13px; color: #9ca3af; flex-shrink: 0; }
+  .project { margin-bottom: 16px; }
+  .project-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .project-name { font-size: 15px; font-weight: 700; }
+  .project-role { font-size: 13px; color: #3b82f6; font-weight: 600; }
+  .project-date { font-size: 13px; color: #9ca3af; }
+  .project-tech { font-size: 12px; color: #6b7280; margin-bottom: 6px; font-style: italic; }
+  .project ul { padding-left: 18px; }
+  .project li { font-size: 13.5px; color: #374151; margin-bottom: 4px; line-height: 1.7; }
+  .project li strong { color: #1a1a2e; }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+  .skill-category { font-size: 13.5px; }
+  .skill-label { font-weight: 700; color: #1a1a2e; }
+  .skill-value { color: #374151; }
+  .awards li { font-size: 13.5px; color: #374151; margin-bottom: 4px; }
+  .highlight { background: #fef3c7; padding: 1px 4px; border-radius: 3px; }
+  .print-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 24px; background: #3b82f6; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(59,130,246,0.3); z-index: 100; }
+  .print-btn:hover { background: #2563eb; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- 头部 -->
+  <div class="header">
+    <div class="name">[你的名字]</div>
+    <div class="subtitle">AI产品经理实习生</div>
+    <div class="contact">
+      <span>📧 [你的邮箱]</span>
+      <span>📱 [你的手机]</span>
+      <span>💻 github.com/LinArtStudio</span>
+      <span>📍 杭州</span>
+    </div>
+  </div>
+
+  <!-- 教育背景 -->
+  <div class="section">
+    <div class="section-title">教育背景</div>
+    <div class="edu-row">
+      <div>
+        <span class="edu-school">[你的学校]</span>
+        <span class="edu-major"> · [你的专业] · [本科/硕士]</span>
+      </div>
+      <span class="edu-date">20XX.09 - 20XX.06</span>
+    </div>
+    <ul style="padding-left:18px; margin-top:6px;">
+      <li style="font-size:13.5px; color:#374151;">[GPA/排名/相关课程/奖学金等]</li>
+    </ul>
+  </div>
+
+  <!-- 项目经历 -->
+  <div class="section">
+    <div class="section-title">项目经历</div>
+    
+    <div class="project">
+      <div class="project-header">
+        <div>
+          <span class="project-name">AI求职工具</span>
+          <span class="project-role"> — 产品设计 & 独立开发</span>
+        </div>
+        <span class="project-date">2026.XX - 至今</span>
+      </div>
+      <div class="project-tech">Next.js 14 + Tailwind CSS + 小米MiMo API | 4175行代码 | 已部署上线</div>
+      <ul>
+        <li><strong>【需求分析】</strong>通过用户调研识别大学生求职核心痛点：简历"一投多用"导致匹配度低（占比68%）、面试缺乏练习对象（占比52%）</li>
+        <li><strong>【竞品分析】</strong>深度调研5款AI求职工具（找北求职/求职精灵/FacePrep等），识别3个差异化机会点，确定"AI+求职"产品定位</li>
+        <li><strong>【产品设计】</strong>设计6大功能模块（简历诊断/模拟面试/JD匹配/职业规划/求职信生成/题库），完成完整PRD和交互原型</li>
+        <li><strong>【AI技术应用】</strong>基于MiMo API实现Prompt工程，设计简历诊断的5维度评分体系（技能/经验/教育/行业/综合素质）</li>
+        <li><strong>【商业化】</strong>设计免费+单次付费(¥9.9-19.9)+冲刺卡+终身会员(¥128)的定价体系，月运营成本仅¥5-10</li>
+      </ul>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <div>
+          <span class="project-name">JD智能匹配诊断功能设计</span>
+          <span class="project-role"> — 产品方案设计</span>
+        </div>
+        <span class="project-date">2026.06</span>
+      </div>
+      <ul>
+        <li><strong>【竞品研究】</strong>调研5款AI求职工具，发现市面上缺乏"针对具体JD的精准匹配诊断"产品</li>
+        <li><strong>【需求设计】</strong>设计完整的PRD文档：用户粘贴JD→AI提取关键词→语义匹配简历→5维度评分→缺失项识别→修改建议</li>
+        <li><strong>【技术方案】</strong>设计基于LLM的分析引擎，包含关键词提取、语义匹配、评分计算3个模块，编写2个完整Prompt模板</li>
+        <li><strong>【原型设计】</strong>设计3个可交互页面（输入页/结果页/加载页），包含雷达图可视化、缺失项清单、面试问题预测</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 技能 -->
+  <div class="section">
+    <div class="section-title">技能</div>
+    <div class="skills-grid">
+      <div class="skill-category"><span class="skill-label">产品能力：</span><span class="skill-value">需求分析、竞品分析、用户调研、PRD撰写、原型设计（Figma）</span></div>
+      <div class="skill-category"><span class="skill-label">AI技术理解：</span><span class="skill-value">LLM应用、Prompt工程、RAG原理、Agent工作流、向量检索</span></div>
+      <div class="skill-category"><span class="skill-label">技术能力：</span><span class="skill-value">Next.js、TypeScript、Python、SQL、Git、Tailwind CSS</span></div>
+      <div class="skill-category"><span class="skill-label">工具：</span><span class="skill-value">Figma、Notion、飞书、ChatGPT、Claude、Coze、Cursor</span></div>
+    </div>
+  </div>
+
+  <!-- AI产品认知 -->
+  <div class="section">
+    <div class="section-title">AI产品认知</div>
+    <ul style="padding-left:18px;">
+      <li style="font-size:13.5px; color:#374151; margin-bottom:4px;">深度体验10+款AI产品（GPT、Claude、Coze、Kimi、通义千问等），定期输出产品拆解分析</li>
+      <li style="font-size:13.5px; color:#374151; margin-bottom:4px;">理解LLM/RAG/Agent/Fine-tuning的技术原理和适用场景，能与技术团队高效对话</li>
+      <li style="font-size:13.5px; color:#374151; margin-bottom:4px;">独立设计过AI产品的Prompt工程方案，简历诊断准确率达85%</li>
+      <li style="font-size:13.5px; color:#374151; margin-bottom:4px;">关注AI行业动态，阅读北森《AI原生求职时代》等行业报告</li>
+    </ul>
+  </div>
+
+  <!-- 荣誉/其他 -->
+  <div class="section">
+    <div class="section-title">荣誉 & 其他</div>
+    <ul class="awards" style="padding-left:18px;">
+      <li>[奖学金/竞赛/证书等]</li>
+      <li>[社团/志愿者/其他经历]</li>
+      <li>GitHub: github.com/LinArtStudio（开源项目）</li>
+    </ul>
+  </div>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ 打印/导出PDF</button>
+
+</body>
+</html>
