@@ -5,7 +5,7 @@
 import * as Sentry from '@sentry/nextjs'
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN,
   
   // 采样率
   tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
@@ -34,17 +34,6 @@ Sentry.init({
     }
     return event
   },
-  
-  // 集成配置
-  integrations: [
-    // 性能监控
-    new Sentry.BrowserTracing({
-      tracePropagationTargets: ['localhost', 'ai-career-tool.vercel.app'],
-    }),
-  ],
-  
-  // 发布版本
-  release: process.env.VERCEL_GIT_COMMIT_SHA || 'development',
 })
 
 // 自定义错误上报
@@ -72,11 +61,6 @@ export function setUser(user: { id: string; email?: string; username?: string })
 // 清除用户信息
 export function clearUser() {
   Sentry.setUser(null)
-}
-
-// 性能监控
-export function startTransaction(name: string, op: string) {
-  return Sentry.startTransaction({ name, op })
 }
 
 // 面包屑记录

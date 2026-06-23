@@ -4,7 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createCreemClient, CreemPayment } from '@/lib/payment/creem'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
 // Webhook事件类型
 interface WebhookEvent {
@@ -33,6 +33,12 @@ async function handlePaymentSuccess(event: WebhookEvent) {
     amount,
     currency,
   })
+
+  // 检查Supabase是否已配置
+  if (!isSupabaseConfigured() || !supabase) {
+    console.log('Supabase未配置，跳过数据库操作')
+    return
+  }
 
   // 查找或创建用户
   let userId: string | null = null

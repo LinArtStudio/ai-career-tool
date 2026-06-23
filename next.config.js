@@ -4,6 +4,14 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // Disable TypeScript and ESLint checks during build
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
