@@ -1,88 +1,153 @@
 #!/bin/bash
-# AI求职工具 · 一键部署脚本
-# 在腾讯云服务器上执行
+# ============================================
+# AI求职工具 · 阿里云一键部署脚本
+# 服务器：Ubuntu 22.04, 2核2G
+# ============================================
 
-set -e
+set -e  # 遇到错误立即停止
 
-echo "🚀 AI求职工具部署开始..."
+echo "=========================================="
+echo "  AI求职工具 · 服务器部署脚本"
+echo "=========================================="
+
+# 颜色定义
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# 检查是否为root用户
+if [ "$EUID" -ne 0 ]; then
+  echo -e "${RED}请使用root用户运行此脚本${NC}"
+  echo "运行: sudo bash deploy.sh"
+  exit 1
+fi
+
 echo ""
+echo -e "${YELLOW}[1/8] 更新系统...${NC}"
+apt-get update -y > /dev/null 2>&1
+apt-get upgrade -y > /dev/null 2>&1
+echo -e "${GREEN}✅ 系统更新完成${NC}"
 
-# 1. 安装 Node.js 20
-echo "📦 安装 Node.js..."
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-echo "✅ Node.js $(node -v) installed"
+echo ""
+echo -e "${YELLOW}[2/8] 安装Node.js 20...${NC}"
+if command -v node &> /dev/null; then
+  echo "  Node.js已安装: $(node -v)"
+else
+  curl -fsSL https://deb.nodesource.com/setup_20.x | bash - > /dev/null 2>&1
+  apt-get install -y nodejs > /dev/null 2>&1
+  echo -e "${GREEN}✅ Node.js $(node -v) 安装完成${NC}"
+fi
 
-# 2. 安装 PM2
-echo "📦 安装 PM2..."
-sudo npm install -g pm2
-echo "✅ PM2 installed"
+echo ""
+echo -e "${YELLOW}[3/8] 安装PM2和Nginx...${NC}"
+npm install -g pm2 > /dev/null 2>&1
+apt-get install -y nginx > /dev/null 2>&1
+echo -e "${GREEN}✅ PM2 + Nginx 安装完成${NC}"
 
-# 3. 克隆项目（替换为你的GitHub仓库地址）
-echo "📥 克隆项目..."
-cd /home/ubuntu
-# git clone https://github.com/YOUR_USERNAME/ai-career-tool.git
-# cd ai-career-tool
+echo ""
+echo -e "${YELLOW}[4/8] 创建项目目录...${NC}"
+mkdir -p /opt/ai-career-tool
+cd /opt/ai-career-tool
+echo -e "${GREEN}✅ 项目目录: /opt/ai-career-tool${NC}"
 
-# 或者直接上传项目文件到 /home/ubuntu/ai-career-tool/
-
-# 4. 安装依赖
-echo "📦 安装依赖..."
-npm install
-
-# 5. 配置环境变量
-echo "⚙️ 配置环境变量..."
-cat > .env.local << 'ENVEOF'
+echo ""
+echo -e "${YELLOW}[5/8] 配置环境变量...${NC}"
+cat > /opt/ai-career-tool/.env.local << 'ENVEOF'
 LLM_API_URL=https://token-plan-cn.xiaomimimo.com/v1/chat/completions
-LLM_API_KEY=YOUR_API_KEY_HERE
-LLM_MODEL=mimo-v2.5-pro
-NEXT_PUBLIC_APP_URL=http://YOUR_SERVER_IP
+LLM_API_KEY=your-api-key-here
+NODE_ENV=production
+PORT=3000
 ENVEOF
+echo -e "${GREEN}✅ 环境变量配置完成${NC}"
+echo -e "${YELLOW}⚠️  请编辑 /opt/ai-career-tool/.env.local 填入正确的API Key${NC}"
 
-# 6. 构建
-echo "🔨 构建项目..."
-npm run build
-
-# 7. 启动
-echo "🚀 启动服务..."
-pm2 delete ai-career 2>/dev/null || true
-pm2 start npm --name "ai-career" -- start
-pm2 save
-pm2 startup
-
-# 8. 安装 Nginx
-echo "🌐 配置 Nginx..."
-sudo apt install -y nginx
-
-sudo tee /etc/nginx/sites-available/ai-career > /dev/null << 'NGINX'
+echo ""
+echo -e "${YELLOW}[6/8] 配置Nginx...${NC}"
+cat > /etc/nginx/sites-available/ai-career << 'NGINX'
 server {
     listen 80;
     server_name _;
-
-    location / {
-        proxy_pass http://localhost:3000;
+    
+    client_max_body_size 10M;
+    
+    # Gzip压缩
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_min_length 1000;
+    
+    # 安全头
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    
+    # 静态资源缓存
+    location /_next/static/ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_cache_valid 200 365d;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+    
+    # API路由
+    location /api/ {
+        proxy_pass http://127.0.0.1:3000;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 120s;
+        proxy_send_timeout 120s;
+    }
+    
+    # 其他路由
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
 }
 NGINX
 
-sudo ln -sf /etc/nginx/sites-available/ai-career /etc/nginx/sites-enabled/
-sudo rm -f /etc/nginx/sites-enabled/default
-sudo nginx -t
-sudo systemctl restart nginx
+ln -sf /etc/nginx/sites-available/ai-career /etc/nginx/sites-enabled/
+rm -f /etc/nginx/sites-enabled/default
+nginx -t > /dev/null 2>&1
+systemctl restart nginx
+systemctl enable nginx > /dev/null 2>&1
+echo -e "${GREEN}✅ Nginx配置完成${NC}"
 
 echo ""
-echo "============================================"
-echo "✅ 部署完成！"
+echo -e "${YELLOW}[7/8] 配置防火墙...${NC}"
+ufw allow 22/tcp > /dev/null 2>&1
+ufw allow 80/tcp > /dev/null 2>&1
+ufw allow 443/tcp > /dev/null 2>&1
+ufw --force enable > /dev/null 2>&1
+echo -e "${GREEN}✅ 防火墙配置完成${NC}"
+
 echo ""
-echo "访问地址: http://YOUR_SERVER_IP"
+echo -e "${YELLOW}[8/8] 配置PM2开机自启...${NC}"
+pm2 startup > /dev/null 2>&1
+echo -e "${GREEN}✅ PM2开机自启配置完成${NC}"
+
 echo ""
-echo "查看日志: pm2 logs ai-career"
-echo "重启服务: pm2 restart ai-career"
-echo "============================================"
+echo "=========================================="
+echo -e "${GREEN}✅ 服务器环境配置完成！${NC}"
+echo ""
+echo "下一步："
+echo "1. 上传代码到 /opt/ai-career-tool/"
+echo "2. 运行 npm install"
+echo "3. 运行 npm run build"
+echo "4. 运行 pm2 start npm --name 'ai-career' -- start"
+echo "5. 运行 pm2 save"
+echo ""
+echo "服务器IP: $(curl -s ifconfig.me 2>/dev/null || echo '请手动查看')"
+echo "=========================================="

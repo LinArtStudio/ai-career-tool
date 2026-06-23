@@ -1,0 +1,7 @@
+name = "ai-career-tool"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+LLM_API_URL = "https://token-plan-cn.xiaomimimo.com/v1/chat/completions"
