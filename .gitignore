@@ -10,3 +10,11 @@ npm-debug.log*
 next-env.d.ts
 
 .vercel
+.wrangler/
+
+# 工具配置
+.cursorrules
+
+# 一次性文件
+deploy-to-server.sh
+阿里云学生机购买指南.md
