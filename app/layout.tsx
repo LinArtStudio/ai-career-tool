@@ -46,10 +46,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {/* 桌面端导航 */}
                 <div className="hidden md:flex items-center gap-1">
                   {[
+                    { href: "/quiz", label: "免费测评", icon: "🎯" },
                     { href: "/jd-match-v2", label: "JD智能诊断", icon: "🎯" },
                     { href: "/interview", label: "模拟面试", icon: "🎤" },
                     { href: "/resume", label: "简历诊断", icon: "📄" },
-                    { href: "/career", label: "职业规划", icon: "🧭" },
                     { href: "/pricing", label: "定价", icon: "💎" },
                   ].map((item) => (
                     <a key={item.href} href={item.href}
@@ -70,12 +70,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <summary className="cursor-pointer text-gray-600 text-xl list-none p-2">☰</summary>
                     <div className="absolute right-0 top-12 bg-white border rounded-xl shadow-xl py-2 w-48 z-50">
                       {[
+                        { href: "/quiz", label: "免费测评", icon: "🎯" },
                         { href: "/jd-match-v2", label: "JD智能诊断", icon: "🎯" },
                         { href: "/interview", label: "模拟面试", icon: "🎤" },
                         { href: "/resume", label: "简历诊断", icon: "📄" },
                         { href: "/resume-builder", label: "AI生成简历", icon: "📝" },
                         { href: "/interview-bank", label: "面试真题", icon: "📚" },
-                        { href: "/career", label: "职业规划", icon: "🧭" },
                         { href: "/cover-letter", label: "求职信", icon: "✉️" },
                         { href: "/pricing", label: "定价", icon: "💎" },
                         { href: "/dashboard", label: "登录", icon: "🔐" },

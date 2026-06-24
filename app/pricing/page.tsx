@@ -4,27 +4,62 @@ import { useState } from "react";
 // 产品配置
 const PRODUCTS = [
   {
+    key: "quiz",
+    name: "AI职业竞争力测评",
+    priceCNY: 0,
+    description: "5分钟了解你的AI能力水平",
+    icon: "🎯",
+    category: "free",
+    features: ["能力图谱", "个性化路径", "短板分析"],
+  },
+  {
+    key: "resume_diagnosis",
+    name: "简历诊断",
+    priceCNY: 0,
+    description: "5维度评分 + 优化建议",
+    icon: "📄",
+    category: "free",
+    features: ["每天3次", "5维度评分", "优化建议"],
+  },
+  {
+    key: "jd_match",
+    name: "JD匹配分析",
+    priceCNY: 0,
+    description: "匹配度百分比 + 关键词差距",
+    icon: "🎯",
+    category: "free",
+    features: ["每天3次", "关键词匹配", "差距分析"],
+  },
+  {
+    key: "interview_preview",
+    name: "模拟面试预览",
+    priceCNY: 0,
+    description: "每天1道面试题",
+    icon: "🎤",
+    category: "free",
+    features: ["每天1题", "AI评估", "回答思路"],
+  },
+  {
     key: "resume_rewrite",
     name: "AI改简历",
-    priceUSD: 9.9,
     priceCNY: 71.3,
     description: "一键优化简历，AI专业改写",
     icon: "✨",
     category: "single",
+    hot: false,
   },
   {
     key: "resume_generate",
     name: "AI生成简历",
-    priceUSD: 19.9,
     priceCNY: 143.3,
     description: "从零生成完整专业简历",
     icon: "📝",
     category: "single",
+    hot: false,
   },
   {
     key: "interview_full",
     name: "AI模拟面试",
-    priceUSD: 19.9,
     priceCNY: 143.3,
     description: "5道定制题+评分+面试官视角",
     icon: "🎤",
@@ -34,16 +69,15 @@ const PRODUCTS = [
   {
     key: "cover_letter",
     name: "AI求职信",
-    priceUSD: 9.9,
     priceCNY: 71.3,
     description: "基于简历+JD定制求职信",
     icon: "✉️",
     category: "single",
+    hot: false,
   },
   {
     key: "sprint_weekly",
     name: "冲刺卡-周卡",
-    priceUSD: 19.9,
     priceCNY: 143.3,
     description: "全功能无限使用7天",
     icon: "🔥",
@@ -52,7 +86,6 @@ const PRODUCTS = [
   {
     key: "sprint_monthly",
     name: "冲刺卡-月卡",
-    priceUSD: 39.9,
     priceCNY: 287.3,
     description: "全功能无限使用30天",
     icon: "⚡",
@@ -62,7 +95,6 @@ const PRODUCTS = [
   {
     key: "sprint_quarterly",
     name: "冲刺卡-季卡",
-    priceUSD: 79.9,
     priceCNY: 575.3,
     description: "全功能无限使用90天",
     icon: "💎",
@@ -71,7 +103,6 @@ const PRODUCTS = [
   {
     key: "lifetime",
     name: "终身会员",
-    priceUSD: 128,
     priceCNY: 921.6,
     description: "一次付费，永久使用所有功能",
     icon: "👑",
@@ -81,13 +112,11 @@ const PRODUCTS = [
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<"USD" | "CNY">("CNY");
 
   const handleBuy = async (productKey: string) => {
     setLoading(productKey);
 
     try {
-      // 调用API创建结账会话
       const response = await fetch("/api/payment/checkout", {
         method: "POST",
         headers: {
@@ -103,7 +132,6 @@ export default function PricingPage() {
       const data = await response.json();
 
       if (data.success && data.checkoutUrl) {
-        // 跳转到Creem支付页面
         window.location.href = data.checkoutUrl;
       } else {
         alert(data.error || "创建支付会话失败");
@@ -116,6 +144,7 @@ export default function PricingPage() {
     }
   };
 
+  const freeProducts = PRODUCTS.filter((p) => p.category === "free");
   const singleProducts = PRODUCTS.filter((p) => p.category === "single");
   const sprintProducts = PRODUCTS.filter((p) => p.category === "sprint");
   const lifetimeProduct = PRODUCTS.find((p) => p.category === "lifetime");
@@ -129,29 +158,42 @@ export default function PricingPage() {
         基础功能永久免费，按需付费，无订阅压力
       </p>
 
-      {/* 货币切换 */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-gray-100 rounded-lg p-1 flex">
-          <button
-            onClick={() => setCurrency("CNY")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              currency === "CNY"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            🇨🇳 人民币
-          </button>
-          <button
-            onClick={() => setCurrency("USD")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              currency === "USD"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            🇺🇸 美元
-          </button>
+      {/* 免费试用引导 */}
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 mb-8">
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-1">
+            <h2 className="text-lg font-bold text-green-800 mb-2">
+              🎁 免费试用付费功能
+            </h2>
+            <p className="text-green-700 mb-4">
+              新用户注册即可免费体验：
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center gap-2 text-sm text-green-700">
+                <span className="text-green-500">✓</span> AI模拟面试 1次（价值¥19.9）
+              </li>
+              <li className="flex items-center gap-2 text-sm text-green-700">
+                <span className="text-green-500">✓</span> AI改简历 1次（价值¥9.9）
+              </li>
+              <li className="flex items-center gap-2 text-sm text-green-700">
+                <span className="text-green-500">✓</span> JD智能诊断 3次（价值¥29.7）
+              </li>
+              <li className="flex items-center gap-2 text-sm text-green-700">
+                <span className="text-green-500">✓</span> AI职业竞争力测评（免费）
+              </li>
+            </ul>
+          </div>
+          <div className="text-center">
+            <a
+              href="/quiz"
+              className="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            >
+              🎯 免费测评，领取试用额度
+            </a>
+            <p className="text-xs text-green-600 mt-2">
+              总价值 ¥59.5 · 限时免费
+            </p>
+          </div>
         </div>
       </div>
 
@@ -161,21 +203,14 @@ export default function PricingPage() {
           ✅ 免费功能（永久免费）
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { name: "AI简历诊断", desc: "每天3次", icon: "📄" },
-            { name: "JD匹配分析", desc: "每天3次", icon: "🎯" },
-            { name: "面试真题库", desc: "100+真题", icon: "📚" },
-            { name: "简历模板", desc: "10套模板", icon: "📋" },
-            { name: "AI职业规划", desc: "每天1次", icon: "🧭" },
-            { name: "模拟面试预览", desc: "每天1题", icon: "🎤" },
-          ].map((f, i) => (
+          {freeProducts.map((f, i) => (
             <div
               key={i}
               className="bg-green-50 border border-green-200 rounded-xl p-4 text-center"
             >
               <div className="text-2xl mb-1">{f.icon}</div>
               <div className="font-medium text-sm">{f.name}</div>
-              <div className="text-xs text-green-600">{f.desc}</div>
+              <div className="text-xs text-green-600">{f.description}</div>
             </div>
           ))}
         </div>
@@ -202,9 +237,7 @@ export default function PricingPage() {
               <div className="text-2xl mb-1">{product.icon}</div>
               <div className="font-medium text-sm">{product.name}</div>
               <div className="text-2xl font-bold text-blue-600 my-2">
-                {currency === "USD"
-                  ? `$${product.priceUSD}`
-                  : `¥${product.priceCNY}`}
+                ¥{product.priceCNY}
               </div>
               <div className="text-xs text-gray-500 mb-3">
                 {product.description}
@@ -241,9 +274,7 @@ export default function PricingPage() {
               )}
               <div className="font-bold text-lg mb-1">{product.name}</div>
               <div className="text-3xl font-bold text-purple-600">
-                {currency === "USD"
-                  ? `$${product.priceUSD}`
-                  : `¥${product.priceCNY}`}
+                ¥{product.priceCNY}
               </div>
               <div className="text-xs text-gray-400 mt-2 mb-3">
                 {product.description}
@@ -267,16 +298,13 @@ export default function PricingPage() {
             <div className="text-2xl mb-2">{lifetimeProduct.icon}</div>
             <h2 className="text-xl font-bold mb-2">{lifetimeProduct.name}</h2>
             <div className="text-4xl font-bold text-orange-600 mb-2">
-              {currency === "USD"
-                ? `$${lifetimeProduct.priceUSD}`
-                : `¥${lifetimeProduct.priceCNY}`}
+              ¥{lifetimeProduct.priceCNY}
             </div>
             <div className="text-sm text-gray-500 mb-1">
               一次付费 · 永久使用 · 所有功能
             </div>
             <div className="text-xs text-red-500 mb-4">
-              限前500名 · 原价
-              {currency === "USD" ? "$298" : "¥2145.6"}
+              限前500名 · 原价¥2145.6
             </div>
             <div className="flex flex-wrap justify-center gap-2 text-xs mb-4">
               {[
@@ -308,6 +336,35 @@ export default function PricingPage() {
           </div>
         </div>
       )}
+
+      {/* 价值对比 */}
+      <div className="bg-gray-50 rounded-xl p-6 md:p-8 mb-6">
+        <h2 className="text-lg font-bold mb-4">💡 为什么选择我们？</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 className="font-medium mb-2 text-green-700">✅ 我们的优势</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>• 免费测评，了解你的AI能力水平</li>
+              <li>• 个性化学习路径，针对性提升</li>
+              <li>• 项目制学习，产出可展示的作品集</li>
+              <li>• 面试问题预测（独家功能）</li>
+              <li>• 150+大厂真题，覆盖字节、腾讯、阿里</li>
+              <li>• 价格远低于培训机构（¥1-3万）</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-medium mb-2 text-red-700">❌ 其他平台的问题</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>• 培训机构价格高（¥1-3万）</li>
+              <li>• 在线课程与求职脱节</li>
+              <li>• 求职平台缺乏学习功能</li>
+              <li>• 知识碎片化，不成体系</li>
+              <li>• 缺乏实战项目和作品集</li>
+              <li>• 无个性化路径推荐</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       {/* 支付说明 */}
       <div className="bg-blue-50 rounded-xl p-6 md:p-8 mb-6">
@@ -354,17 +411,9 @@ export default function PricingPage() {
             </p>
           </div>
           <div>
-            <h3 className="font-medium mb-1">支持哪些支付方式？</h3>
+            <h3 className="font-medium mb-1">如何免费试用付费功能？</h3>
             <p className="text-gray-600">
-              支持 Visa、Mastercard、PayPal、Apple Pay、Google
-              Pay 等国际支付方式，支付宝和微信支付即将支持。支付由 Creem
-              安全处理，符合 PCI DSS 标准。
-            </p>
-          </div>
-          <div>
-            <h3 className="font-medium mb-1">可以退款吗？</h3>
-            <p className="text-gray-600">
-              如有质量问题，请联系客服微信：ai-career-tool，我们会妥善处理。
+              注册账号后，即可免费体验AI模拟面试1次、AI改简历1次、JD智能诊断3次。总价值¥59.5，限时免费。
             </p>
           </div>
         </div>

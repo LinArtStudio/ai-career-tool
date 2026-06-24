@@ -27,21 +27,21 @@ export default function HomePage() {
 
           {/* CTA按钮 */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
-            <a href="/jd-match-v2" className="btn-gradient text-center text-base px-8 py-3.5">
-              🚀 免费体验JD智能诊断
+            <a href="/quiz" className="btn-gradient text-center text-base px-8 py-3.5">
+              🎯 免费测评AI职业竞争力
             </a>
-            <a href="/interview" className="btn-ghost text-center text-base px-8 py-3.5">
-              🎤 开始模拟面试
+            <a href="/jd-match-v2" className="btn-ghost text-center text-base px-8 py-3.5">
+              🚀 体验JD智能诊断
             </a>
           </div>
 
           {/* 核心价值 */}
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
             {[
+              "✅ 免费测评（5分钟）",
+              "✅ 个性化转型路径",
               "✅ 面试问题预测（独家）",
-              "✅ 多维度匹配评分（独家）",
-              "✅ 150+大厂真题",
-              "✅ 针对中国市场优化"
+              "✅ 150+大厂真题"
             ].map((t, i) => (
               <span key={i} className="flex items-center gap-1">{t}</span>
             ))}
@@ -123,6 +123,73 @@ export default function HomePage() {
               <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
             </a>
           ))}
+        </div>
+      </section>
+
+      {/* AI职业加速器 - 全流程工具 */}
+      <section className="bg-gradient-to-r from-purple-600 to-blue-600 py-16 md:py-24">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="bg-white/20 text-white px-4 py-1.5 rounded-full text-sm font-medium mb-4 inline-block">
+              核心功能
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">AI职业加速器</h2>
+            <p className="text-purple-100 text-lg max-w-2xl mx-auto">
+              从"我不知道该怎么办"到"我拿到offer了"的一站式解决方案
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                step: "1",
+                icon: "🎯",
+                title: "诊断规划",
+                desc: "AI职业竞争力测评，5分钟了解你的AI能力水平",
+                features: ["能力图谱", "个性化路径", "短板分析"],
+                href: "/quiz",
+                cta: "免费测评"
+              },
+              {
+                step: "2",
+                icon: "📚",
+                title: "能力培养",
+                desc: "项目制学习，边学边做，产出可展示的作品集",
+                features: ["AI工具实战", "项目制学习", "作品集生成"],
+                href: "/jd-match-v2",
+                cta: "开始学习"
+              },
+              {
+                step: "3",
+                icon: "🎯",
+                title: "求职面试",
+                desc: "AI模拟面试、面试问题预测、岗位内推",
+                features: ["简历生成", "模拟面试", "岗位内推"],
+                href: "/interview",
+                cta: "准备面试"
+              }
+            ].map((item, i) => (
+              <div key={i} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                <div className="text-5xl mb-4">{item.icon}</div>
+                <div className="text-white/60 text-sm mb-2">步骤 {item.step}</div>
+                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-purple-100 text-sm mb-4">{item.desc}</p>
+                <ul className="space-y-2 mb-6">
+                  {item.features.map((f, j) => (
+                    <li key={j} className="text-purple-100 text-sm flex items-center justify-center gap-2">
+                      <span className="text-green-300">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={item.href}
+                  className="inline-block bg-white text-purple-600 px-6 py-2 rounded-lg font-medium hover:bg-purple-50 transition"
+                >
+                  {item.cta}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
