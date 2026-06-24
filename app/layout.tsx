@@ -4,9 +4,9 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ToastProvider } from "@/components/Toast";
 
 export const metadata: Metadata = {
-  title: "AI产品经理求职训练平台 - 面试问题预测·JD智能诊断·简历优化",
-  description: "专为AI产品经理求职者打造：面试问题预测、JD智能匹配诊断、150+大厂真题、技术深度指导。帮助应届生和转型者系统准备AI产品经理面试。",
-  keywords: "AI产品经理,AI PM,产品经理面试,面试问题预测,JD匹配,简历优化,字节跳动,腾讯,阿里巴巴,百度,大厂面试",
+  title: "AI时代求职训练平台 - 面试问题预测·JD智能诊断·简历优化",
+  description: "帮助所有求职者掌握AI时代必备技能：面试问题预测、JD智能匹配诊断、150+大厂真题、AI工具使用指导。覆盖AI相关岗位、AI+传统岗位、所有传统岗位。",
+  keywords: "AI求职,AI面试,AI工具,ChatGPT,AI转型,产品经理,运营,设计师,AI产品经理,AI工程师,面试题,简历优化,2026年",
   viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
   themeColor: "#2563eb",
   icons: {
@@ -15,10 +15,10 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   openGraph: {
-    title: "AI产品经理求职训练平台 - 面试问题预测·JD智能诊断",
-    description: "专为AI产品经理求职者打造：面试问题预测、JD智能匹配诊断、150+大厂真题",
+    title: "AI时代求职训练平台 - 掌握AI时代必备技能",
+    description: "帮助所有求职者掌握AI时代必备技能，覆盖AI相关岗位、AI+传统岗位、所有传统岗位",
     url: "https://ai-career-tool.vercel.app",
-    siteName: "AI产品经理求职训练平台",
+    siteName: "AI时代求职训练平台",
     locale: "zh_CN",
     type: "website",
   },
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
                 <a href="/" className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center text-white font-bold text-sm">AI</div>
-                  <span className="text-lg font-bold text-gray-900">AI产品经理求职</span>
+                  <span className="text-lg font-bold text-gray-900">AI时代求职</span>
                 </a>
 
                 {/* 桌面端导航 */}

@@ -3,141 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>简历 - 林思锦</title>
+<title>林思锦 - AI产品经理实习生</title>
 <style>
-  @media print { body { margin: 0; } .no-print { display: none; } @page { size: A4; margin: 12mm; } }
+  @page { size: A4; margin: 10mm 12mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif; background: #f0f0f0; color: #1a1a2e; line-height: 1.6; }
-  .page { max-width: 780px; margin: 20px auto; background: #fff; padding: 40px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
-  .header { text-align: center; padding-bottom: 18px; border-bottom: 2px solid #1a1a2e; margin-bottom: 22px; }
-  .name { font-size: 28px; font-weight: 800; letter-spacing: 4px; color: #1a1a2e; }
-  .subtitle { font-size: 14px; color: #6b7280; margin-top: 6px; }
-  .contact { display: flex; justify-content: center; gap: 20px; margin-top: 10px; font-size: 13px; color: #374151; flex-wrap: wrap; }
-  .contact span { display: flex; align-items: center; gap: 4px; }
-  .section { margin-bottom: 20px; }
-  .section-title { font-size: 14px; font-weight: 700; color: #1a1a2e; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 10px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: #1a1a2e; line-height: 1.55; font-size: 12px;
+  }
+  .page { max-width: 800px; margin: 0 auto; background: #fff; }
+
+  /* 头部 */
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .header-left { flex: 1; }
+  .header-left .name { font-size: 26px; font-weight: 700; letter-spacing: 2px; margin-bottom: 2px; }
+  .header-left .tagline { font-size: 13px; color: #a8b2d1; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .header-left .tagline span { background: rgba(255,255,255,0.1); padding: 2px 10px; border-radius: 12px; }
+  .header-left .contact { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: #ccd6f6; }
+  .header-left .contact b { color: #fff; }
+  .header-right { flex-shrink: 0; margin-left: 20px; }
+  .header-right img { width: 80px; height: 105px; object-fit: cover; border-radius: 5px; border: 2px solid rgba(255,255,255,0.25); }
+
+  .content { padding: 18px 32px 20px; }
+  .section { margin-bottom: 14px; }
+  .section-title { font-size: 13px; font-weight: 700; color: #0f3460; border-bottom: 2px solid #e63946; padding-bottom: 4px; margin-bottom: 8px; letter-spacing: 1px; }
+
+  /* 个人简介 */
+  .summary { background: #f0f7ff; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #333; line-height: 1.6; margin-bottom: 14px; }
+  .summary strong { color: #0f3460; }
+
+  /* 教育 */
   .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
-  .edu-school { font-weight: 700; font-size: 15px; }
-  .edu-major { font-size: 14px; color: #374151; }
-  .edu-date { font-size: 13px; color: #9ca3af; flex-shrink: 0; }
-  .project { margin-bottom: 16px; }
-  .project-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
-  .project-name { font-size: 15px; font-weight: 700; }
-  .project-role { font-size: 13px; color: #3b82f6; font-weight: 600; }
-  .project-date { font-size: 13px; color: #9ca3af; }
-  .project-tech { font-size: 12px; color: #6b7280; margin-bottom: 5px; font-style: italic; }
-  .project ul { padding-left: 18px; }
-  .project li { font-size: 13px; color: #374151; margin-bottom: 3px; line-height: 1.65; }
-  .project li strong { color: #1a1a2e; }
-  .skills-grid { display: grid; grid-template-columns: 1fr; gap: 5px; }
-  .skill-category { font-size: 13px; line-height: 1.7; }
-  .skill-label { font-weight: 700; color: #1a1a2e; }
-  .skill-value { color: #374151; }
-  .self-note { background: #f0f7ff; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #1e40af; margin-top: 8px; border-left: 3px solid #3b82f6; }
-  .print-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 24px; background: #3b82f6; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(59,130,246,0.3); z-index: 100; }
-  .print-btn:hover { background: #2563eb; }
+  .edu-main { font-size: 13px; font-weight: 600; }
+  .edu-date { font-size: 11.5px; color: #888; }
+  .edu-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .edu-tags span { background: #f0f7ff; color: #0f3460; font-size: 11px; padding: 2px 8px; border-radius: 10px; border: 1px solid #c7d2fe; }
+
+  /* 项目 */
+  .project { margin-bottom: 14px; }
+  .proj-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+  .proj-name { font-size: 13.5px; font-weight: 700; color: #1a1a2e; }
+  .proj-time { font-size: 11.5px; color: #888; white-space: nowrap; }
+  .proj-meta { font-size: 11.5px; color: #0f3460; font-weight: 500; margin-bottom: 4px; }
+
+  /* 项目摘要 */
+  .proj-summary { background: #f8fdf5; border-left: 3px solid #22c55e; padding: 8px 14px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 11.5px; color: #333; line-height: 1.6; }
+  .proj-summary strong { color: #166534; }
+
+  /* 数据条 */
+  .data-strip { display: flex; flex-wrap: wrap; gap: 12px; background: #f8fdf5; border-left: 3px solid #22c55e; padding: 8px 14px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 11.5px; }
+  .data-strip .d-item strong { color: #166534; font-size: 13px; }
+  .data-strip .d-item span { color: #6b7280; font-size: 11px; }
+
+  .proj-block { margin-bottom: 6px; }
+  .proj-block-title { font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 2px; }
+  .proj ul { padding-left: 15px; }
+  .proj li { font-size: 11.5px; color: #333; margin-bottom: 2px; line-height: 1.6; }
+  .proj li::marker { color: #e63946; }
+  .proj li strong { color: #1a1a2e; }
+  .decision-tag { display: inline-block; background: #fef3c7; color: #92400e; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-right: 4px; font-weight: 600; }
+  .result-tag { display: inline-block; background: #d1fae5; color: #065f46; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-right: 4px; font-weight: 600; }
+  .status-tag { display: inline-block; background: #e0e7ff; color: #3730a3; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-right: 4px; font-weight: 600; }
+
+  /* 技能 */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .skill-card { background: #f8f9fa; border-radius: 6px; padding: 8px 12px; border: 1px solid #eee; }
+  .skill-card .cat { font-size: 11.5px; font-weight: 700; color: #0f3460; margin-bottom: 2px; }
+  .skill-card .items { font-size: 11px; color: #444; line-height: 1.7; }
+
+  /* 自我评价 */
+  .eval-item { margin-bottom: 4px; font-size: 11.5px; color: #333; line-height: 1.6; }
+  .eval-item strong { color: #0f3460; }
+
+  /* 求职意向 */
+  .intent-box { background: #f0f7ff; border-radius: 6px; padding: 8px 14px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11.5px; color: #333; }
+  .intent-box .item { display: flex; align-items: center; gap: 4px; }
+  .intent-box .label { color: #888; font-size: 11px; }
+  .intent-box .value { font-weight: 600; color: #0f3460; }
+
+  /* 作品集 */
+  .links-box { background: #fafafa; border-radius: 6px; padding: 8px 14px; font-size: 11.5px; color: #333; border: 1px solid #eee; line-height: 1.7; }
+  .links-box a { color: #0f3460; text-decoration: none; }
+  .links-box a:hover { text-decoration: underline; }
+
+  .print-btn { position: fixed; top: 16px; right: 16px; background: #e63946; color: #fff; border: none; padding: 8px 18px; border-radius: 5px; font-size: 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(230,57,70,0.3); z-index: 1000; }
+  .print-btn:hover { background: #c5303c; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; max-width: 100%; }
+    .print-btn { display: none !important; }
+    .header, .data-strip, .skill-card, .intent-box, .links-box, .edu-tags span, .summary, .decision-tag, .result-tag, .status-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { margin: 10mm 12mm; }
+  }
 </style>
 </head>
 <body>
 
+<button class="print-btn" onclick="window.print()">🖨️ 导出PDF</button>
+
 <div class="page">
-  <div class="header">
-    <div class="name">林 思 锦</div>
-    <div class="subtitle">AI产品经理实习生</div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="name">林思锦</div>
+    <div class="tagline">
+      <span>AI产品设计</span><span>LLM应用</span><span>Agent工作流</span><span>数据驱动增长</span>
+    </div>
     <div class="contact">
-      <span>📧 15902234202@163.com</span>
-      <span>📱 17867414907</span>
-      <span>💻 github.com/LinArtStudio</span>
-      <span>📍 杭州 / 天津</span>
+      <span>📧 <b>15902234202@163.com</b></span>
+      <span>📱 <b>17867414907</b></span>
+      <span>💻 <b>github.com/LinArtStudio</b></span>
+      <span>📍 <b>杭州</b></span>
     </div>
   </div>
-
-  <div class="section">
-    <div class="section-title">教育背景</div>
-    <div class="edu-row">
-      <div>
-        <span class="edu-school">天津传媒学院</span>
-        <span class="edu-major"> · 音乐表演 · 本科</span>
-      </div>
-      <span class="edu-date">2023.09 - 2027.06</span>
-    </div>
-    <div class="self-note">
-      💡 <strong>跨专业背景：</strong>自学编程，独立开发了完整的AI产品经理求职训练平台（109个文件/12+功能模块/已上线部署），具备从需求分析到技术落地的全栈产品能力。
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">项目经历</div>
-
-    <div class="project">
-      <div class="project-header">
-        <div>
-          <span class="project-name">AI产品经理求职训练平台</span>
-          <span class="project-role"> — 产品设计 & 独立开发</span>
-        </div>
-        <span class="project-date">2026.03 - 至今</span>
-      </div>
-      <div class="project-tech">Next.js 14 + TypeScript + Tailwind CSS + Supabase + Sentry + 小米MiMo API | 109个文件 | 已部署上线</div>
-      <ul>
-        <li><strong>【产品定位】</strong>从"通用AI求职工具"迭代为"AI产品经理求职训练平台"，聚焦AI PM细分赛道，基于150+大厂真题构建系统化训练体系</li>
-        <li><strong>【核心功能·已上线】</strong>JD智能匹配诊断v2（多维度匹配评分+差距分析+面试问题预测）、AI职业竞争力测评（多维度AI能力评估）、简历诊断（5维度评分+ATS优化）、AI模拟面试、职业规划、求职信生成</li>
-        <li><strong>【增长系统】</strong>设计推荐裂变机制（邀请码+双向奖励：积分/免费次数/折扣），搭建转化漏斗分析，内置A/B测试框架验证增长假设</li>
-        <li><strong>【商业化】</strong>集成Creem支付系统，设计免费→单次付费(¥9.9-19.9)→冲刺卡→终身会员(¥128)的分层定价体系，实现付费转化闭环</li>
-        <li><strong>【AI工程化】</strong>实现智能模型路由（lite/standard/pro按任务复杂度自动选型控制成本）、Prompt优化器（Few-shot+思维链CoT）、结果缓存系统</li>
-        <li><strong>【用户留存】</strong>设计积分体系+每日签到+练习打卡+成就系统+连续签到奖励，构建完整的用户成长路径</li>
-        <li><strong>【技术基建】</strong>Supabase（数据库+认证）、Sentry（错误监控）、数据埋点（19种事件类型）、邮件验证登录、使用量限制、输入安全防护、MathCaptcha防刷、Jest单元测试</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">AI产品研究</div>
-    <ul style="padding-left:18px;">
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;">深度拆解Coze（Agent工作流）、BOSS直聘（人岗匹配算法）、找北求职（AI+导师模式）3款产品的技术架构和产品设计</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;">撰写5款AI求职工具竞品分析报告，覆盖功能/技术/商业三维度对比，识别3个差异化机会点</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;">深度体验10+款AI产品（GPT、Claude、Coze、Kimi等），理解LLM/RAG/Agent技术原理和适用场景</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <div class="section-title">技能</div>
-    <div class="skills-grid">
-      <div class="skill-category"><span class="skill-label">产品能力：</span><span class="skill-value">需求分析、竞品分析、用户调研、PRD撰写、原型设计（Figma/HTML）、数据分析、A/B测试、增长策略</span></div>
-      <div class="skill-category"><span class="skill-label">AI技术理解：</span><span class="skill-value">LLM应用、Prompt工程（Few-shot/CoT）、RAG原理、Agent工作流、模型选型与成本优化</span></div>
-      <div class="skill-category"><span class="skill-label">技术能力：</span><span class="skill-value">Next.js、TypeScript、Python、SQL、Git、Supabase、Sentry、REST API</span></div>
-      <div class="skill-category"><span class="skill-label">工具：</span><span class="skill-value">Figma、Notion、飞书、ChatGPT、Claude、Coze、Cursor、Vercel、阿里云</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">自我评价</div>
-    <ul style="padding-left:18px;">
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>跨界思维：</strong>音乐训练赋予的用户感知力和审美能力，有助于AI产品的用户体验设计</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>强自驱力：</strong>非科班出身，自学编程独立开发完整AI产品平台（109个文件），证明快速学习和落地能力</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>全链路产品思维：</strong>不只做功能设计，还做增长（推荐裂变/A/B测试）、商业化（支付/定价）、留存（积分/签到/成就）</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <div class="section-title">求职意向</div>
-    <ul style="padding-left:18px;">
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;"><strong>目标岗位：</strong>AI产品经理实习生</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;"><strong>可实习时间：</strong>2026年7月起，每周5天，可实习3个月以上</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;"><strong>目标城市：</strong>杭州（优先）/ 北京 / 上海</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <div class="section-title">作品集 & 项目演示</div>
-    <ul style="padding-left:18px;">
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔗 项目演示：<a href="http://114.55.110.19" style="color:#3b82f6;">http://114.55.110.19</a>（阿里云ECS）| <a href="https://07bc462b.ai-career-tool.pages.dev" style="color:#3b82f6;">Cloudflare Pages</a></li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">📄 竞品分析报告：5款AI求职工具深度横评</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">📋 PRD文档：JD智能匹配诊断功能（已实现上线）</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔍 AI功能拆解：Coze/BOSS直聘/找北求职</li>
-    </ul>
+  <div class="header-right">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gIoSUNDX1BST0ZJTEUAAQEAAAIYAAAAAAIQAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAAHRyWFlaAAABZAAAABRnWFlaAAABeAAAABRiWFlaAAABjAAAABRyVFJDAAABoAAAAChnVFJDAAABoAAAAChiVFJDAAABoAAAACh3dHB0AAAByAAAABRjcHJ0AAAB3AAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAFgAAAAcAHMAUgBHAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAAAAAAAAGKZAAC3hQAAGNpYWVogAAAAAAAAJKAAAA+EAAC2z3BhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABYWVogAAAAAAAA9tYAAQAAAADTLW1sdWMAAAAAAAAAAQAAAAxlblVTAAAAIAAAABwARwBvAG8AZwBsAGUAIABJAG4AYwAuACAAMgAwADEANv/bAEMABgQFBgUEBgYFBgcHBggKEAoKCQkKFA4PDBAXFBgYFxQWFhodJR8aGyMcFhYgLCAjJicpKikZHy0wLSgwJSgpKP/bAEMBBwcHCggKEwoKEygaFhooKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKP/AABEIANYAoAMBIgACEQEDEQH/xAAcAAABBAMBAAAAAAAAAAAAAAADAgQFBgABBwj/xABCEAABAwMCAwUEBwUFCQAAAAABAAIDBAURITEGEkEHEyJRYTJxk9IUFSM0QoGRFzNSYqEkNVNUgyVDRGNyc6Kxwf/EABsBAAEFAQEAAAAAAAAAAAAAAAIAAQMEBQYH/8QAKhEAAgEDBAIBAwQDAAAAAAAAAAECAwQRBRIhMTJBIlFhcRMUI0IzUlP/2gAMAwEAAhEDEQA/AOhySP53Ycc5PVIMhOhe7PvWS+07G+ShbY0XVJcHGybCGR4PtH9UnvZBnLnfqkuz12QycZ6pYBbYR0r9PE7PvSTK8u1c79UJ7jjXbokvdy5OfzTYG3MIZ3j8bv1Wu9k0yXHO2qpF849t9srXUxJleNy3YKr1vafO97xTQnlGjSVHOcYcPBZpWtWoso7AZnA+J5B9XLRqQGDMoxnfmXnS4cT3iukJlrXx65DWlbpOJbnTsdDNUOkieNcnUKurmDlh9Fp6dLbnPJ6M7882kpx58yKyVxacucfzXnao4puLY42xVLwGHI1WM4zvralkrasgD8HQo6laEHtTyBCwqSWW8HoYSuycyEeWqX37yPaIA9Vx608WTTv+lXOr7to2jV0s3F9puEjYYqsd5/McKZ7eCu6FWOeC4CR5xlx/VbErsaud+qbseHtBaQ4HYhKBzkp44ZDyuGHEjur3fqs71x2c7HvQdRvsVmSCcHLUWENkL3jzoXOI96PSSOFXCMnHMOqZjICcUOTWQ/8AUEM4rDCh2gUhw49dUMHB1WSHxkdMladgjOylQLNF++miQ92emix/ohVE8VNBJNUPDI2DJJ0QyeFkZJyeEIqKiOnp3SzODWt1yVzPi3tBA56e26kaEqvcdcZTXmofT0LyyjYcEg+0qUXanGqzqt3teEbNvp6STmGqJjPO+SXV7zlxSM6+iQdT/wDUoas31WdObm8s1IxUVhCma5DtknXmydlgcdBlJB2b6ochYFucXY10C092votPJa4aaJLznGmEsjYDB5e3xnIGyQ3LXZa4sd0c04SAcHCUQXMB6t6I1UkvYzSLpwxx9X2fu4qgmop84JO4C7PY7tS3iiZNSPBDhkjOoXmRp0U5wtxBVWC4RyxSOMJPjZnTCuULnnEilc2kaqylyekGPAGM7LbnbncHqmVqroLlQxVdO5rmubk4OydB5II3C04PdyjAknF4YRuOXHQI9DrWQEH8abN0b7k4t/36n9XBFPxYodobSZDnZ0AJSObmAwEuU+N2R1Q+uugUnoBvk3zcxwuRdrvE/fy/UtG8jkOZXA7+i6ndZn01tq5o/wB4yMlq8x1k0lRWVE0zi6Z7yXH1VC7qOEco0tPpRnJyfoETgAN0W8Y1CRjwgnfySyRoBusZm8jQ0xpotgjPh3WnEZ2OEpuMaHGEw6MGNP8A2sJHNgJWPDkhaazB5uiQ5rUZzutOGMDdKHiJ5tUktOc42TCMxkYxulM3afa9Ft0nMSeXBOmi3zCNvLGMk7lEIERhxS2jIwdyk46j9VsOwNTt/VJMFo6b2O3l0dTLbJn5jdq0HoussaWvPqvNfDNaaC+U1Q0kAPAIC9IwvEsEUuf3jQVtWk90VkwdRpqM1JexxnTCcW/Wvp/RwTR2dB0TuhJbW0+NuYK3LxZQh5IbS5Bd7yhuOMYwSiyEF7vUoTm6KRdASIfjKsFFw3XTE/gIC836uJe7PiPMu+dqUUsnB84jOA05d7lwTQMAGqyL99I29MjiDZp49nGgKwjbyWPdkNb/AFTmGlklx3bS71WYzYhFyeENuuRsiQsD34xonrrXUc8beQ88mzcK1Wfhlz4QWMJk2JPmgc1FZZao2dSo8YwVDuJXNLi3lYOpW6WkkqnHuGEjqVPXyCQXGOzUrD3mnOcdV0vhHgkQUcbCzJIy4kdUFStGnHLJ6dnCUnl/Fdv7nJRYat7AS3RN57TVREtMTtNivTVLwfTNjAcwZ9yyq4Kppc4YM9NFV/fLPRI7e1fCbR5ZfE6M4c0h3qkOBxnOnku58R8AtBcWRg/kuaXnhaWke90YI5ehVmncQn0Q1LCWN1NqSKoMkYatEa4OhRHNMYcCCHg6pAPi5jqVOZ8k12GtzOaup2t35wvS9u/u2mGdmgLzTa2OluFO0HGZBqvTFvj7q3UzSdeQLVsnxgx9T8UxwM5Tmh+/U4O3MMpuPfkpxbxmvps6+PZaU/FmPDyQ3f8AvHe8rQAyMrbyA93vKGcjUDRH6GZCcfRul4RuDRsG5XnKEEtAC9PXqm+mWKupv44yvMhZ3UkkTsgxuLSsi+XKNrTGtrQ8ttGKurjiGx3XZuF+EqcUjDI0ahc14FpH1FzYQMjOui77aWNjaxvUBc/eTfimddafxUdy7YxpuE4PpbXujbgDAOFZqTh2jihADQMa7JxS40PVSbNdwqii32xTqzl2zntLwQJOLqi6zMHKRysGF0S3W9kbA3GgRYhk4wchPYQcDoVNt3vLAlNtYNdy0AABbMWBtlELtdBohyPIGPJFtX0I8EbcIA5uXAEKkcRWFk9PI8MGT6K91Lu8BGNFGVwDoS0bYVecFF5iTUpODyjy/wAYWl1PUPeGcuDr6qrHB6Y9F2XtMoA2mkkDclcgcGga6LToT3wTKt9GKnuXsdWGA1N4o44zykyDVek2N5aeBh/A0BefOAYPpHFVG0aAHJC9DyAZx1Gy2rFHM6o/FCRoc7hObacXOmP86aAnU9U6tjh9YU+mfENFpy8WZEPJAZyC9/vQzoM6pT/3rveUkkE4RoZ9ioS3m5SdHaHK88doNtNr4srI8AMlPO1ehsAdMnK5L250gbXUFS1pwRyuKz72KcTR02TVTC6JTsvt0bLcJ3AczlY7nxNT2afE5LidGtCiuy53fWAY/DorXHwnRVs/fVTOd5/i6Llp4dRuR3bfS9YIC29o7G1p+kwObTD8WNldLb2i8N1DmsfV9249HJhV8I2qCH+0PgiiPV5AUA3g3g+qquWnuMD5+jQ7qm3UvuA0pM7JR1dLWQskpZWyMdqC0p60ZPTAVF4Ytf1HGIoZHOjGwJV2ppe8jBxr1RU5pvBG1h8BvCAmFbW0VMCamojjxuSVlxqOVhjbo7zVAv3DD73I4TVLgD/NgBNOaTwxKOfZZ6riKztjJFdEfcVBv4ht1S9zIqlmfUqpwdmDY5S+GvbMBu3nyi1XZy6SM91I6N48ih/il/YkUUu2SV7t0V2pXR5DgRoVw/iywPtFS4Yy0nZdt4at9XbgaWrcZOXZxVF7Y+SAxAaFyO3bhU2J8DXG1waforXZJSGfioyDJ7tq7bJ7ZGdSuedjFrkipaisfGW8/suIXQsAZ6rp7HG3g4vVMqqotdIzTBGdQnFu1uNMP5wmpxp6pxbifrOmA6PGqvyXxZmQ8kCl9p+nVJOwK3Lnndr1KS3PloiXQzCw4LwD1O6HxFw9TX+31FHUsGXN8D8ag9ERn8Qx4VMU0wkMb2+1jVY2r05SpqUfRv6DVhCpKD7aOUdk8ElC+4WyYEPppS056jzXW2xyGnxCPFhQAtMdLfKiujx9ufGB5q6WpmWDTIwudnmcs/U6mfxSX0OdycGVFzutXPfaiWWJ8ZbTxsPhYfNUbhrsvvNDxTHNX8ooonl3O12rh0wvS0VMwgeFLkpWZwRspIqcVgBtSe5oqluglbTPErXNa04jLtyFYLS3LCTsAh3AtBDegTi1NHdOPmoYR+WB3yhjVML6gtxplULtKtd3uFkqYLRJJBURnmAYcd6PLK6HUfeSBjRPmQRyRtLm6hJRe7I3rB507OeFOIS2tmu01VSMDPssvJJeuh8Fy39lPJTX2MyFhwyb+ILpIooyclo0WpIGtGwx7kc4yl2glPbHbgrFVD4eblwT1XG+MrS/iPtAo6BuTHGOZ/ku23YhodjQKoMtkVLd2XAn7eQ4A64QQex5QdJKT+Q8paCG2ujo4mBjQzGBsmEnhme3GisN0c1jTJ+Nw0Pkq+53M4nTPVdJosJRpOUvZyOv1ozrJLtLkGT/AETq1/3pTerwmh1wnFsP+06Xr4xotmfizDh5IG/23Y3yVrmxutSaPd7yktOemifHALC509CntFM1swB0bsmDSCBkaIhBwOXTCiqU1OLi/ZNRqSpTU49omqulbJE97HEPGvvUpZZssaHbqMoa6M0zmSDLuXAKNaXYjBzqCuUuLaVvLno7a1vIXMMrst8LgAOix8hwT/VMqecuaAiTv5WnHuUDfBZRE3GQ9/yt1PVTNpY5lNkjOVBXKsFBTumFOaiYnSMdU9td0kkpGPmhMLj+DyUMJLOSXa8ZE3DnZUlw2UhbZuaPXfyULX3kR1scTqR72PODJ0CkaUgTF0ee76JnJbhOLSyTJdpsm8zwQlB2QUyqpcAgbqw3wRtkHeHczw1upJwm5pGQOjkf45Brk7BbuEhZO0nUtOUO4XON8HLG3LyEdC0qV2mlwVri+p2yab5I+71IqH4acAKLIBOeqK52RkjXyQSRrkbrrqNNUoKEfRw9erKrNzl2xJOvRObTrdaTA/3iaZ5dPNOLXpdaQg/jCln4sjh5IFI/L3g9CdVjTgAJD3Yc7O2Upp2RY4E+wrTpglEDiAAdkAEHUpecN1QtCXI4ZjOn5lTducDoTphV9riRp+ilLVM3PK7cLN1Ki6lF49GrpVZUq6T6fBYYJOR2f6J42Tnb4gokP0yDp5o0lUYoC/lLsDYdVybbXZ2MVnocSMa92eXJHVOGuY2IHHMfJc6uPG9ZG+WNtE9gboD5phTcbVjmlxppA7yTYfeDSp6bXqLODqU7I5Gg4B9EeDADRy4AXI5OLLi4d7FE4HPslTdh4pvdVURtfStdD+I9UuuWhq2mVqUdzxj8nQ55QzOOvkmEsgcDrt1W5JeePmPhyNQmMkgaxzicABPvz0Z23BF3WXQnqCoiQlxGuidVMpdg7gnRNCemPeuwsaahRicTqNX9S4kxEh1wEJxwEuQjognXUHTyV9GexLvbHknVrObrSbfvAmrij2og3Sk8+8CU18WNT80Be4h7gfMrfMRoMYQ5CO8dnzKwH7QA7I8C9hWH9QijppqhxgEnJwPNLb5nVBIQbP5+5Hp3ENODhybMOCCU4hw7mx5alQVV8GWKL+cfySlFVd5A1rx4gf1Um1wc3B2woOlYXwtLdC1SFLMS0tduuHnhyZ6DFY5A11jp6p3MNCUL6giAaAzP5Kfp9sKSgY0gcwCGK9FhXdWCwpFUhsELmlhYGt9ylKShioow2NuPVTz4WY0wo6duXEJThjkCdzOpxJjKofytKi6t5cDH5jJTqqkPOYwcoBiIYc6nqgTwBgiJDiMAjXO6bO31/VOqshpATGR2uQPyXcWfNGP4OBvf80/yJkOu2iGSCUpziTsh5wVdSKTEOd4gj2pwF1o8/wCIE2cM+5Ftn950gP8AiBPPxYqfkvyIfnnd7ysatvA7x3vK2Gg7aIvQmuRbSPLIRmA7nRDiHQhOA3Lm50Cjb5CS4MB5hsrBQUkVvs9Tcri3ETG4aCs4atJrJu8ePsmHT1U3x5Qum4FuMUTed7AHco8gsq/udsXCJtaZZ7pqpPordtPeQskb7D/EPcnssfLh7NCo7h94mtlE9ug7sAhTPLnAXIPs7BrDwKpZWjAJwVKwSsxodVFsiG5CcRwh4OpaeiKM8ASWSQdUMDfE4YUdV1TScR7nqtOpgzdxd70CSLDwANE8p7hRjjkG1nMSSNTuVosBOxGU6bHotSNGNdMDOVF9wslesTRd7heKJ4xJSDnYfNRkzOVxB3BwQrp2cUUUkl3uYbl0z+7B6EBM+L7KKVxqYR4HnUeS6rS7l7VCTOY1q0Sm6sF+SoPGNDpnZBcdSAjvaRugPGR6hb0Tm2Idp6ItrIN2o+o7waoLh5otrx9bUYGn2gwnn4sUF8kbcD3jseZSmt/i3VmpeEKypfzO8DSd1YaDgyngaHVDzIR5qnO9pQ9l+nYVpvo5/A0vOjSVL2+y1dVMzLC2PqSr9TWeiifmOBoA64UhFAA7DWgD0VSpqH+qL1LS/wDoxra6BtFTBjOg/VPYoWzwzQuGkjS0orWYbtoi0jPC7G+d1lVJ7stmzCKjhI5XZqSS3V1Za58GaB5ezHVpUyweMaDKdceUTqO40l4p2EkHu5sfw+aRCI5TzsOQRnKyKkNs/wAmopboqSCCMA5/oishLiiMi0BTyKEAZB1SUVkBt+hk+n8OoKA+Ec22MqWkB5fEgPYCddknAW5jMQ4BwoTiOYxUX0eIfbTkRtxvqp+plEbDjZR9gtzrnfWVc7c09Pq3PVyZR3SSCjLHyfos/D9sZarJTUkbcFrcv9SUq70La2gkgx7Q39VJ45i4rO7OMZWpTl+njHozqq/UT3eziNxt1TSTOZLE8NacB2N1Gua7OoXdKiljqIyyaJrx6hQNZwfQ1TstBj9y2qWpR/ujAr6VJPMHk5M7GD5pVuGLrR+ZeFe6/gCQOJpZs+hUTDwlcqe5U0j4wWMfklW/3lKcXhlL9nWhJZidYI5R4QMlCfHz6E4ATotyclJLBklcypHWtAjGMYBwOi3AwcxzuEQgNGOiynbgu9U7fA2DcrQQB0RIm8rSsx0KBPISO7j36lAsvgJIBcGw18M1FJq2RpGfJUaigltlQ+iqM5afC49QrtHTua8E9Nco1Zb6esb9qwc2NHdQgr0lLomp1NnHogaZwLdDkp43UBNvob6CfkkOYney9Ke7lcQDkqntceGTprtC5CdU2lfkHBxhJkc4uCRKByHBSf2GS+ozm5qiRsUernHGFcLZTxUdIynYAHAZI9VF2W3GnLqqowZCPCPJOmTltTnrlWqFF4bZHUafCJVrcBKx4dUlpBGRsUs7KRlcaM1cUdrcFJjjwcouE8mMZ+STI0Fviwlei0/2UIjn7e1Sxka0ty+Gz51v9qlj/wArcvhs+dYsTjiX9qdkP/C3L4bPnWM7VLGB91uXw2fOsWJehjf7U7GT91uXw2fOt/tRsQ2pLl8NnzrFiWRGHtTsZH3W5fDZ862O1Sxgfdbl8NnzrFiYcRUdp9hniLJKO4kH/ls+dQE/aRZ2yua2nuBaNsxs+dYsUdRZRLSb5QhvaVaOY5pq/wCGz5keh7RbIakSPprgWt/D3bNf/NYsUdNLIcmyak7U7I5gH0S4j/TZ86bP7SrETzCluQP/AG2fOsWK3FtdEKHMHanZGswaW5H/AE2fOiHtVsmPuty+Gz51ixC+wX2YO1Wx4+63L4bPnW/2q2P/ACly+Gz51ixMMZ+1Wx/5W5fDZ860e1Sx4+63L4bPnWLEhH//2Q==" alt="林思锦" />
   </div>
 </div>
 
-<button class="print-btn no-print" onclick="window.print()">🖨️ 打印/导出PDF</button>
+<div class="content">
+
+<!-- 个人简介 -->
+<div class="summary">
+  <strong>个人简介：</strong>音乐表演背景 × AI全栈独立开发 | 2周从0构建并部署AI求职产品（5000+行代码），覆盖JD语义匹配、AI模拟面试、简历诊断等13个模块。具备用户共情视角与产品执行力，主导输出3版PRD，设计19种用户行为事件埋点，构建完整数据驱动产品迭代体系。产品刚上线，正在冷启动验证阶段。
+</div>
+
+<!-- 求职意向 -->
+<div class="section">
+  <div class="section-title">🎯 求职意向</div>
+  <div class="intent-box">
+    <div class="item"><span class="label">岗位：</span><span class="value">AI产品经理实习生</span></div>
+    <div class="item"><span class="label">方向：</span><span class="value">LLM应用 / AI Agent / AI Native产品</span></div>
+    <div class="item"><span class="label">城市：</span><span class="value">杭州</span></div>
+    <div class="item"><span class="label">到岗：</span><span class="value">2026.07 · 每周5天 · ≥3个月</span></div>
+  </div>
+</div>
+
+<!-- 教育背景 -->
+<div class="section">
+  <div class="section-title">🎓 教育背景</div>
+  <div class="edu-row">
+    <div class="edu-main">天津传媒学院 · 音乐表演 · 本科</div>
+    <div class="edu-date">2023.09 — 2027.06（2027届，大三在读）</div>
+  </div>
+  <div class="edu-tags">
+    <span>🎵 用户情绪感知与体验共情（User Empathy for UX）</span>
+    <span>🧩 非结构化需求理解与场景化设计</span>
+    <span>📊 SQL/Python基础数据处理能力</span>
+  </div>
+</div>
+
+<!-- 项目经历 -->
+<div class="section">
+  <div class="section-title">🚀 项目经历</div>
+
+  <!-- 核心项目：AI求职工具 -->
+  <div class="project">
+    <div class="proj-header">
+      <span class="proj-name">AI求职工具 — AI Native产品设计 & 独立落地</span>
+      <span class="proj-time">2026.06.17 — 至今</span>
+    </div>
+    <div class="proj-meta">产品经理（独立决策 + 全栈MVP实现） | Next.js 14 + TypeScript + MiMo API + Supabase</div>
+
+    <!-- 项目结果总览 -->
+    <div class="proj-summary">
+      <strong>项目结果：</strong>独立完成AI求职产品从0到1设计与开发，2周内上线13个核心功能模块（5000+行代码），实现JD语义匹配、AI模拟面试与个性化学习路径生成。主导输出3版PRD，设计19种用户行为事件埋点，构建从"岗位匹配→简历优化→面试准备→转化闭环"的完整产品链路。<span class="status-tag">冷启动验证中</span>
+    </div>
+
+    <!-- 核心数据 -->
+    <div class="data-strip">
+      <div class="d-item"><strong>13</strong><br><span>功能模块</span></div>
+      <div class="d-item"><strong>3版</strong><br><span>PRD输出</span></div>
+      <div class="d-item"><strong>19种</strong><br><span>事件埋点</span></div>
+      <div class="d-item"><strong>150+</strong><br><span>面试题库</span></div>
+      <div class="d-item"><strong>¥5-10/月</strong><br><span>API成本</span></div>
+    </div>
+
+    <!-- 产品洞察与决策 -->
+    <div class="proj-block">
+      <div class="proj-block-title">📌 用户洞察与产品决策</div>
+      <ul>
+        <li><strong>发现核心痛点：</strong>通过20+应届生用户访谈识别"岗位匹配依赖关键词而非语义理解"与"简历/面试准备缺乏个性化反馈"两大信息不对称问题，确定产品方向从"提供信息"转向"提供AI决策支持"</li>
+        <li><strong>竞品驱动定位：</strong>拆解Coze、BOSS直聘、找北求职等5款AI产品，输出竞品矩阵（产品定位×AI能力×用户体验×商业模式），确立差异化战略</li>
+        <li><strong>音乐背景产品化：</strong>基于音乐表演训练中的情绪感知能力，在模拟面试功能设计中特别关注用户焦虑情绪管理——面试前增加"状态确认"步骤，提升用户完成率</li>
+      </ul>
+    </div>
+
+    <!-- 核心产品设计 -->
+    <div class="proj-block">
+      <div class="proj-block-title">📌 核心产品设计与结果</div>
+      <ul>
+        <li><strong>JD语义匹配系统：</strong>主导从V1关键词匹配→V2深度语义分析的升级。<span class="decision-tag">权衡</span>传统关键词匹配无法识别隐性需求，引入LLM语义理解+结构化5维评分。<span class="result-tag">结果</span>通过人工盲评对比测试，V2评分准确率比V1关键词方案显著提升</li>
+        <li><strong>AI模拟面试系统：</strong>设计150+题库×18家公司面试模型，基于JD+用户简历动态出题。<span class="decision-tag">权衡</span>不做"面试作弊工具"，专注"帮助用户展示真实能力"。<span class="result-tag">结果</span>建立评测框架：人工抽样评估+用户反馈双重验证</li>
+        <li><strong>Agent Workflow设计：</strong>设计基于任务复杂度的Agent工作流，实现模型选择、任务分解与结果聚合，支持多步骤推理和工具调用</li>
+        <li><strong>模型路由（成本优化）：</strong>设计3层模型分配策略（lite/standard/pro）。<span class="decision-tag">权衡</span>全用大模型→成本不可控；单一模型→质量不稳定。<span class="result-tag">结果</span>月API成本控制在¥5-10</li>
+        <li><strong>Prompt工程体系：</strong>主导输出核心功能PRD（简历诊断/模拟面试/JD匹配3个模块），设计10+套Few-shot+CoT结构化Prompt模板，定义评分规则与交互逻辑</li>
+      </ul>
+    </div>
+
+    <!-- 增长与商业化 -->
+    <div class="proj-block">
+      <div class="proj-block-title">📌 增长与商业化设计</div>
+      <ul>
+        <li><strong>A/B测试驱动定价：</strong>设计定价策略A/B实验（¥9.9-128），构建"测评→注册→使用→付费"全链路转化漏斗追踪</li>
+        <li><strong>邀请增长机制：</strong>设计双向奖励裂变系统（推荐人获100积分+1次免费面试+1次简历改写；被邀请人获50积分+免费面试+10%折扣）</li>
+        <li><strong>留存体系：</strong>设计签到/练习打卡/成就系统/积分体系，构建用户长期价值闭环</li>
+        <li><strong>数据埋点体系：</strong>定义19种用户行为事件埋点，覆盖从注册→试用→付费→流失的全链路，为后续A/B实验提供精准数据支撑</li>
+      </ul>
+    </div>
+
+    <!-- AI Evaluation -->
+    <div class="proj-block">
+      <div class="proj-block-title">📌 AI Evaluation体系</div>
+      <ul>
+        <li><strong>LLM输出评估：</strong>建立模拟面试评测框架，通过人工抽样评估+用户反馈双重验证，确保AI输出质量可衡量</li>
+        <li><strong>评分准确性验证：</strong>对JD匹配评分进行人工盲评对比测试，确保评分结果与用户感知一致</li>
+        <li><strong>持续优化机制：</strong>设计Prompt版本管理+效果追踪体系，支持数据驱动的Prompt迭代优化</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 技能清单 -->
+<div class="section">
+  <div class="section-title">📚 技能清单</div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="cat">🎯 产品能力</div>
+      <div class="items">PRD撰写 · 需求分析 · 用户访谈 · 竞品分析 · 信息架构 · 原型设计 · A/B测试 · 转化漏斗 · 增长策略</div>
+    </div>
+    <div class="skill-card">
+      <div class="cat">🤖 AI产品能力</div>
+      <div class="items">Prompt Engineering（Few-shot/CoT/System Prompt）· RAG原理与优化 · Agent工作流设计 · Context Engineering · LLM-as-Judge评测 · MCP协议理解 · 模型选型与成本路由 · AI输出评估</div>
+    </div>
+    <div class="skill-card">
+      <div class="cat">💻 技术能力</div>
+      <div class="items">Next.js 14 · TypeScript · Tailwind CSS · RESTful API · SQL（数据查询与分析）· Python（基础数据处理）· Supabase · Git</div>
+    </div>
+    <div class="skill-card">
+      <div class="cat">🔧 工具与方法论</div>
+      <div class="items">Figma · Notion · 飞书 · ChatGPT · Claude · Coze · Dify · Cursor · Sentry · Cloudflare · Vercel · 阿里云ECS</div>
+    </div>
+  </div>
+</div>
+
+<!-- 自我评价 -->
+<div class="section">
+  <div class="section-title">✨ 自我评价</div>
+  <div class="eval-item"><strong>跨学科 + 强自驱：</strong>音乐表演训练赋予独特的用户共情和场景感知力；2周从零自学独立构建5000+行AI产品，证明了快速学习与技术落地的能力。这让我既能理解用户情绪，也能与工程师深度对话。</div>
+  <div class="eval-item"><strong>产品决策思维：</strong>不只是"会做功能"，而是能从用户问题→竞品分析→方案权衡→指标验证的闭环进行产品决策。理解AI产品的核心挑战：输出不确定性、成本控制、用户信任建立。</div>
+</div>
+
+<!-- 作品集链接 -->
+<div class="section">
+  <div class="section-title">🔗 作品集 & 链接</div>
+  <div class="links-box">
+    <strong>📋 在线作品集：</strong><a href="https://shining-dish-325.notion.site/AI-38976dd2462580e0ae13d25fbf5d4506" target="_blank">Notion作品集（含完整PRD+竞品分析+AI功能拆解+面试准备材料）</a><br>
+    <strong>🌐 在线Demo：</strong><a href="https://ai-career-tool.pages.dev" target="_blank">ai-career-tool.pages.dev</a>（Cloudflare Pages）<br>
+    <strong>💻 GitHub：</strong><a href="https://github.com/LinArtStudio" target="_blank">github.com/LinArtStudio</a>
+  </div>
+</div>
+
+</div>
+</div>
+
 </body>
 </html>
