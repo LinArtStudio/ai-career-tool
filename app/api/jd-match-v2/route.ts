@@ -1,11 +1,11 @@
 // ============================================================
-// JD智能匹配诊断 API
+// JD智能匹配诊断 API v2.0 - 支持所有岗位
 // ============================================================
 
 import { NextRequest, NextResponse } from "next/server";
 import { chatWithRetry, parseJSON } from "@/lib/llm/deepseek";
 import { checkUsageLimit } from "@/lib/api-usage";
-import { JD_MATCH_PROMPT } from "@/lib/prompts/jd-match";
+import { JD_MATCH_PROMPT } from "@/lib/prompts/jd-match-v2";
 
 export async function POST(req: NextRequest) {
   // 检查使用限制
@@ -118,13 +118,25 @@ export async function GET() {
   return NextResponse.json({
     name: "JD智能匹配诊断",
     version: "2.0",
-    description: "深度分析简历和JD的匹配度，提供多维度评分、差距分析、简历优化建议和面试问题预测",
+    description: "深度分析简历和JD的匹配度，支持所有岗位类型",
     features: [
-      "JD深度解析",
+      "岗位类型自动识别",
       "多维度匹配评分",
       "精准差距分析",
       "针对性简历优化建议",
-      "面试问题预测"
+      "面试问题预测",
+      "AI能力评估"
+    ],
+    supported_jobs: [
+      "AI产品经理",
+      "AI工程师",
+      "AI训练师",
+      "提示词工程师",
+      "产品经理+AI",
+      "运营+AI",
+      "设计师+AI",
+      "市场+AI",
+      "传统岗位"
     ],
     pricing: {
       free: "每天3次基础分析",
