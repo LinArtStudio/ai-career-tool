@@ -3,26 +3,26 @@
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section - 针对AI产品经理求职 */}
+      {/* Hero Section - 针对所有求职者 */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 pt-16 pb-20 md:pt-24 md:pb-28 relative z-10">
           {/* 目标用户标签 */}
           <div className="flex justify-center mb-6">
             <span className="bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-medium">
-              🎯 专为AI产品经理求职者打造
+              🎯 适用于所有岗位求职者
             </span>
           </div>
 
           {/* 标题 */}
           <h1 className="text-4xl md:text-6xl font-bold text-center mb-6 leading-tight">
-            <span className="text-gradient">AI产品经理</span>
+            <span className="text-gradient">AI时代</span>
             <br />
             求职训练平台
           </h1>
           <p className="text-lg md:text-xl text-gray-600 text-center mb-10 max-w-2xl mx-auto leading-relaxed">
-            基于150+大厂真题，系统准备AI产品经理面试
+            掌握AI时代必备技能，提升求职竞争力
             <br />
-            <span className="text-gray-500">面试问题预测 · 技术深度指导 · 项目经验包装</span>
+            <span className="text-gray-500">AI岗位 · AI+传统岗位 · 所有岗位</span>
           </p>
 
           {/* CTA按钮 */}
@@ -39,8 +39,8 @@ export default function HomePage() {
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
             {[
               "✅ 免费测评（5分钟）",
-              "✅ 个性化转型路径",
-              "✅ 面试问题预测（独家）",
+              "✅ 覆盖所有岗位",
+              "✅ 面试问题预测",
               "✅ 150+大厂真题"
             ].map((t, i) => (
               <span key={i} className="flex items-center gap-1">{t}</span>
@@ -54,74 +54,47 @@ export default function HomePage() {
         <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000" />
       </section>
 
-      {/* 核心功能 - 针对AI产品经理 */}
+      {/* 覆盖岗位类型 */}
       <section className="max-w-5xl mx-auto px-4 py-16 md:py-24">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">AI产品经理求职核心功能</h2>
-        <p className="text-gray-500 text-center mb-12">覆盖AI产品经理求职全流程，从简历到面试</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">覆盖所有岗位类型</h2>
+        <p className="text-gray-500 text-center mb-12">无论你是什么岗位，AI时代都需要掌握AI技能</p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {[
-            { 
-              icon: "🎯", 
-              title: "JD智能匹配诊断", 
-              desc: "多维度匹配评分 + 面试问题预测 + 差距分析", 
-              tag: "独家功能", 
-              tagType: "hot", 
-              href: "/jd-match-v2",
-              highlight: true
+            {
+              icon: "🤖",
+              title: "AI相关岗位",
+              desc: "AI产品经理、AI工程师、AI训练师、提示词工程师",
+              features: ["AI技术深度", "项目实战经验", "面试准备"],
+              color: "blue"
             },
-            { 
-              icon: "🎤", 
-              title: "AI模拟面试", 
-              desc: "150+大厂真题 + AI评估 + 面试官视角反馈", 
-              tag: "核心功能", 
-              tagType: "hot", 
-              href: "/interview" 
+            {
+              icon: "⚡",
+              title: "AI+传统岗位",
+              desc: "产品经理+AI、运营+AI、设计师+AI、市场+AI",
+              features: ["AI工具使用", "效率提升10倍", "转型路径"],
+              color: "purple"
             },
-            { 
-              icon: "📄", 
-              title: "简历诊断", 
-              desc: "5维度评分 + 逐行优化建议 + ATS优化", 
-              tag: "免费", 
-              tagType: "free", 
-              href: "/resume" 
-            },
-            { 
-              icon: "🧭", 
-              title: "职业规划", 
-              desc: "3条路径 + 薪资 + 学习路线图", 
-              tag: "免费", 
-              tagType: "free", 
-              href: "/career" 
-            },
-            { 
-              icon: "🎯", 
-              title: "JD匹配分析", 
-              desc: "匹配度百分比 + 关键词差距", 
-              tag: "免费", 
-              tagType: "free", 
-              href: "/jd-match" 
-            },
-            { 
-              icon: "✉️", 
-              title: "AI求职信", 
-              desc: "基于简历+JD定制求职信", 
-              tag: "¥9.9/次", 
-              tagType: "paid", 
-              href: "/cover-letter" 
-            },
-          ].map((f, i) => (
-            <a key={i} href={f.href}
-              className={`glass-card p-6 hover:shadow-xl transition-all duration-300 group cursor-pointer ${
-                f.highlight ? 'ring-2 ring-blue-500 shadow-lg' : ''
-              }`}>
-              <div className="flex items-start justify-between mb-4">
-                <div className="text-3xl">{f.icon}</div>
-                <span className={`feature-tag feature-tag-${f.tagType}`}>{f.tag}</span>
-              </div>
-              <h3 className="text-lg font-bold mb-2 group-hover:text-blue-600 transition-colors">{f.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
-            </a>
+            {
+              icon: "📈",
+              title: "传统岗位",
+              desc: "产品经理、运营、设计师、市场、销售",
+              features: ["AI基础认知", "工具入门", "竞争力提升"],
+              color: "green"
+            }
+          ].map((item, i) => (
+            <div key={i} className="glass-card p-6 hover:shadow-xl transition-all duration-300">
+              <div className="text-4xl mb-4">{item.icon}</div>
+              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+              <p className="text-gray-600 text-sm mb-4">{item.desc}</p>
+              <ul className="space-y-2">
+                {item.features.map((f, j) => (
+                  <li key={j} className="flex items-center gap-2 text-sm text-gray-600">
+                    <span className="text-green-500">✓</span> {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
       </section>
@@ -193,6 +166,78 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 核心功能 */}
+      <section className="max-w-5xl mx-auto px-4 py-16 md:py-24">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">6大核心功能</h2>
+        <p className="text-gray-500 text-center mb-12">覆盖求职全流程，AI帮你从简历到面试</p>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {[
+            { 
+              icon: "🎯", 
+              title: "JD智能匹配诊断", 
+              desc: "多维度匹配评分 + 面试问题预测 + 差距分析", 
+              tag: "独家功能", 
+              tagType: "hot", 
+              href: "/jd-match-v2",
+              highlight: true
+            },
+            { 
+              icon: "🎤", 
+              title: "AI模拟面试", 
+              desc: "150+大厂真题 + AI评估 + 面试官视角反馈", 
+              tag: "核心功能", 
+              tagType: "hot", 
+              href: "/interview" 
+            },
+            { 
+              icon: "📄", 
+              title: "简历诊断", 
+              desc: "5维度评分 + 逐行优化建议 + ATS优化", 
+              tag: "免费", 
+              tagType: "free", 
+              href: "/resume" 
+            },
+            { 
+              icon: "🧭", 
+              title: "职业规划", 
+              desc: "3条路径 + 薪资 + 学习路线图", 
+              tag: "免费", 
+              tagType: "free", 
+              href: "/career" 
+            },
+            { 
+              icon: "🎯", 
+              title: "AI职业测评", 
+              desc: "5分钟了解你的AI能力水平", 
+              tag: "免费", 
+              tagType: "free", 
+              href: "/quiz" 
+            },
+            { 
+              icon: "✉️", 
+              title: "AI求职信", 
+              desc: "基于简历+JD定制求职信", 
+              tag: "¥9.9/次", 
+              tagType: "paid", 
+              href: "/cover-letter" 
+            },
+          ].map((f, i) => (
+            <a key={i} href={f.href}
+              className={`glass-card p-6 hover:shadow-xl transition-all duration-300 group cursor-pointer ${
+                f.highlight ? 'ring-2 ring-blue-500 shadow-lg' : ''
+              }`}>
+              <div className="flex items-start justify-between mb-4">
+                <div className="text-3xl">{f.icon}</div>
+                <span className={`feature-tag feature-tag-${f.tagType}`}>{f.tag}</span>
+              </div>
+              <h3 className="text-lg font-bold mb-2 group-hover:text-blue-600 transition-colors">{f.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
       {/* 独家功能：面试问题预测 */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-4">
@@ -234,25 +279,25 @@ export default function HomePage() {
       <section className="bg-white py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">用户怎么说</h2>
-          <p className="text-gray-500 text-center mb-12">来自真实AI产品经理求职者的反馈</p>
+          <p className="text-gray-500 text-center mb-12">来自不同岗位求职者的真实反馈</p>
 
           <div className="grid md:grid-cols-3 gap-4 md:gap-6">
             {[
               { 
                 name: "张同学", 
-                school: "北京大学 · 拿到字节AI产品经理offer", 
+                school: "AI产品经理 · 拿到字节offer", 
                 text: "面试问题预测太准了！字节面试官问的3个问题，和预测的一模一样。提前准备好了回答，面试表现很自信。",
                 score: "3轮面试全过"
               },
               { 
                 name: "李同学", 
-                school: "浙江大学 · 转型AI产品经理成功", 
-                text: "作为传统产品经理转型，技术认知是最大的短板。JD智能诊断帮我精准定位了需要学习的RAG、Agent等技术点，3个月成功转型。",
+                school: "运营+AI · 转型成功", 
+                text: "作为传统运营转型，AI工具使用是最大的短板。JD智能诊断帮我精准定位了需要学习的ChatGPT、Midjourney等工具，效率提升10倍。",
                 score: "薪资涨幅40%"
               },
               { 
                 name: "王同学", 
-                school: "复旦大学 · 拿到腾讯AI产品经理实习", 
+                school: "设计师 · 拿到腾讯实习", 
                 text: "多维度匹配评分让我知道自己和目标岗位的差距在哪里。针对性优化简历后，投了5家拿到3个面试，最终拿到腾讯offer。",
                 score: "面试通过率60%"
               }
@@ -274,56 +319,6 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* 针对AI产品经理的痛点 */}
-      <section className="max-w-5xl mx-auto px-4 py-16 md:py-24">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">AI产品经理求职的4大痛点</h2>
-        <p className="text-gray-500 text-center mb-12">我们如何帮你解决</p>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {[
-            {
-              pain: "技术认知深度不足",
-              problem: "不懂RAG、Agent、Prompt工程等技术选型逻辑",
-              solution: "JD智能诊断帮你精准定位技术差距，提供学习路径",
-              icon: "🧠"
-            },
-            {
-              pain: "缺乏实战项目经验",
-              problem: "没有真实的AI产品项目经历，简历没有亮点",
-              solution: "项目经验包装指导，帮你量化AI产品项目成果",
-              icon: "💼"
-            },
-            {
-              pain: "面试准备方向错误",
-              problem: "只背题不理解，缺乏'判断力'和'技术深度'",
-              solution: "面试问题预测+回答思路，帮你理解而非死记",
-              icon: "🎯"
-            },
-            {
-              pain: "简历不会写",
-              problem: "不知道如何量化AI产品项目成果，简历没有竞争力",
-              solution: "简历诊断+优化建议，帮你打造AI产品经理专属简历",
-              icon: "📝"
-            }
-          ].map((item, i) => (
-            <div key={i} className="glass-card p-6">
-              <div className="flex items-start gap-4">
-                <div className="text-4xl">{item.icon}</div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2 text-red-600">痛点：{item.pain}</h3>
-                  <p className="text-sm text-gray-600 mb-3">{item.problem}</p>
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <p className="text-sm text-green-700">
-                      <strong>我们的解决方案：</strong>{item.solution}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -409,10 +404,10 @@ export default function HomePage() {
       {/* 底部CTA */}
       <section className="bg-gradient-primary py-16 md:py-20">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">准备好成为AI产品经理了吗？</h2>
-          <p className="text-blue-100 mb-8">免费开始，系统准备AI产品经理面试</p>
-          <a href="/jd-match-v2" className="inline-block bg-white text-blue-600 px-8 py-3.5 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg">
-            🚀 免费体验JD智能诊断
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">准备好成为AI时代的人才了吗？</h2>
+          <p className="text-blue-100 mb-8">免费开始，掌握AI时代必备技能</p>
+          <a href="/quiz" className="inline-block bg-white text-blue-600 px-8 py-3.5 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg">
+            🚀 免费测评AI职业竞争力
           </a>
         </div>
       </section>

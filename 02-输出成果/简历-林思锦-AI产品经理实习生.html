@@ -33,16 +33,14 @@
   .skill-category { font-size: 13px; line-height: 1.7; }
   .skill-label { font-weight: 700; color: #1a1a2e; }
   .skill-value { color: #374151; }
-  .awards li { font-size: 13px; color: #374151; margin-bottom: 3px; }
+  .self-note { background: #f0f7ff; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #1e40af; margin-top: 8px; border-left: 3px solid #3b82f6; }
   .print-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 24px; background: #3b82f6; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(59,130,246,0.3); z-index: 100; }
   .print-btn:hover { background: #2563eb; }
-  .self-note { background: #f0f7ff; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #1e40af; margin-top: 8px; border-left: 3px solid #3b82f6; }
 </style>
 </head>
 <body>
 
 <div class="page">
-  <!-- 头部 -->
   <div class="header">
     <div class="name">林 思 锦</div>
     <div class="subtitle">AI产品经理实习生</div>
@@ -54,7 +52,6 @@
     </div>
   </div>
 
-  <!-- 教育背景 -->
   <div class="section">
     <div class="section-title">教育背景</div>
     <div class="edu-row">
@@ -65,82 +62,62 @@
       <span class="edu-date">2023.09 - 2027.06</span>
     </div>
     <div class="self-note">
-      💡 <strong>跨专业背景说明：</strong>虽为音乐表演专业，但通过自学编程独立开发了完整的AI产品（4175行代码/6个功能模块/已上线部署），具备从需求分析到技术落地的全栈产品能力。
+      💡 <strong>跨专业背景：</strong>自学编程，独立开发了完整的AI产品经理求职训练平台（109个文件/12+功能模块/已上线部署），具备从需求分析到技术落地的全栈产品能力。
     </div>
   </div>
 
-  <!-- 项目经历 -->
   <div class="section">
     <div class="section-title">项目经历</div>
-    
+
     <div class="project">
       <div class="project-header">
         <div>
-          <span class="project-name">AI求职工具</span>
+          <span class="project-name">AI产品经理求职训练平台</span>
           <span class="project-role"> — 产品设计 & 独立开发</span>
         </div>
         <span class="project-date">2026.03 - 至今</span>
       </div>
-      <div class="project-tech">Next.js 14 + Tailwind CSS + TypeScript + 小米MiMo API | 4175行代码/66个文件 | 已部署上线</div>
+      <div class="project-tech">Next.js 14 + TypeScript + Tailwind CSS + Supabase + Sentry + 小米MiMo API | 109个文件 | 已部署上线</div>
       <ul>
-        <li><strong>【需求分析】</strong>通过用户调研识别大学生求职核心痛点：简历"一投多用"导致匹配度低（占比68%）、面试缺乏练习对象（占比52%），确定"AI+求职"产品方向</li>
-        <li><strong>【竞品分析】</strong>深度调研找北求职、求职精灵、FacePrep等5款AI求职工具，从功能/技术/商业三维度对比，识别3个差异化机会点</li>
-        <li><strong>【产品设计】</strong>独立设计6大功能模块：简历诊断（5维度评分体系）、模拟面试（150+题/18家公司）、JD匹配、职业规划、求职信生成、面试题库，完成完整PRD和交互原型</li>
-        <li><strong>【AI技术应用】</strong>基于MiMo API实现Prompt工程，设计简历诊断的5维度评分体系（技能/经验/教育/行业/综合素质），编写10+个Prompt模板</li>
-        <li><strong>【商业化】</strong>设计免费+单次付费(¥9.9-19.9)+冲刺卡+终身会员(¥128)定价体系，月运营成本仅¥5-10</li>
-        <li><strong>【技术实现】</strong>自学Next.js/TypeScript完成全栈开发，部署在阿里云ECS + Cloudflare Pages双平台，使用生产模式（npm run start）保障稳定性</li>
-      </ul>
-    </div>
-
-    <div class="project">
-      <div class="project-header">
-        <div>
-          <span class="project-name">JD智能匹配诊断功能设计</span>
-          <span class="project-role"> — 产品方案设计</span>
-        </div>
-        <span class="project-date">2026.06</span>
-      </div>
-      <ul>
-        <li><strong>【竞品研究】</strong>调研5款AI求职工具，发现市面上缺乏"针对具体JD的精准匹配诊断"产品，识别为核心差异化机会</li>
-        <li><strong>【需求设计】</strong>设计完整PRD：用户粘贴JD→AI提取关键词→语义匹配简历→5维度评分→缺失项识别→修改建议→面试问题预测</li>
-        <li><strong>【技术方案】</strong>设计基于LLM的分析引擎（关键词提取+语义匹配+评分计算），编写2个完整Prompt模板</li>
-        <li><strong>【原型设计】</strong>设计3个可交互HTML原型页面（输入页/结果页/加载页），包含雷达图可视化和缺失项清单</li>
+        <li><strong>【产品定位】</strong>从"通用AI求职工具"迭代为"AI产品经理求职训练平台"，聚焦AI PM细分赛道，基于150+大厂真题构建系统化训练体系</li>
+        <li><strong>【核心功能·已上线】</strong>JD智能匹配诊断v2（多维度匹配评分+差距分析+面试问题预测）、AI职业竞争力测评（多维度AI能力评估）、简历诊断（5维度评分+ATS优化）、AI模拟面试、职业规划、求职信生成</li>
+        <li><strong>【增长系统】</strong>设计推荐裂变机制（邀请码+双向奖励：积分/免费次数/折扣），搭建转化漏斗分析，内置A/B测试框架验证增长假设</li>
+        <li><strong>【商业化】</strong>集成Creem支付系统，设计免费→单次付费(¥9.9-19.9)→冲刺卡→终身会员(¥128)的分层定价体系，实现付费转化闭环</li>
+        <li><strong>【AI工程化】</strong>实现智能模型路由（lite/standard/pro按任务复杂度自动选型控制成本）、Prompt优化器（Few-shot+思维链CoT）、结果缓存系统</li>
+        <li><strong>【用户留存】</strong>设计积分体系+每日签到+练习打卡+成就系统+连续签到奖励，构建完整的用户成长路径</li>
+        <li><strong>【技术基建】</strong>Supabase（数据库+认证）、Sentry（错误监控）、数据埋点（19种事件类型）、邮件验证登录、使用量限制、输入安全防护、MathCaptcha防刷、Jest单元测试</li>
       </ul>
     </div>
   </div>
 
-  <!-- AI功能拆解 -->
   <div class="section">
     <div class="section-title">AI产品研究</div>
     <ul style="padding-left:18px;">
       <li style="font-size:13px; color:#374151; margin-bottom:4px;">深度拆解Coze（Agent工作流）、BOSS直聘（人岗匹配算法）、找北求职（AI+导师模式）3款产品的技术架构和产品设计</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;">撰写5款AI求职工具竞品分析报告，覆盖功能/技术/商业三维度对比，识别差异化机会</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;">深度体验10+款AI产品（GPT、Claude、Coze、Kimi、通义千问等），理解LLM/RAG/Agent的技术原理和适用场景</li>
+      <li style="font-size:13px; color:#374151; margin-bottom:4px;">撰写5款AI求职工具竞品分析报告，覆盖功能/技术/商业三维度对比，识别3个差异化机会点</li>
+      <li style="font-size:13px; color:#374151; margin-bottom:4px;">深度体验10+款AI产品（GPT、Claude、Coze、Kimi等），理解LLM/RAG/Agent技术原理和适用场景</li>
     </ul>
   </div>
 
-  <!-- 技能 -->
   <div class="section">
     <div class="section-title">技能</div>
     <div class="skills-grid">
-      <div class="skill-category"><span class="skill-label">产品能力：</span><span class="skill-value">需求分析、竞品分析、用户调研、PRD撰写、原型设计（Figma/HTML）、数据分析</span></div>
-      <div class="skill-category"><span class="skill-label">AI技术理解：</span><span class="skill-value">LLM应用、Prompt工程、RAG原理、Agent工作流、向量检索、模型评估指标</span></div>
-      <div class="skill-category"><span class="skill-label">技术能力：</span><span class="skill-value">Next.js、TypeScript、Python基础、SQL基础、Git、Tailwind CSS、HTML/CSS</span></div>
+      <div class="skill-category"><span class="skill-label">产品能力：</span><span class="skill-value">需求分析、竞品分析、用户调研、PRD撰写、原型设计（Figma/HTML）、数据分析、A/B测试、增长策略</span></div>
+      <div class="skill-category"><span class="skill-label">AI技术理解：</span><span class="skill-value">LLM应用、Prompt工程（Few-shot/CoT）、RAG原理、Agent工作流、模型选型与成本优化</span></div>
+      <div class="skill-category"><span class="skill-label">技术能力：</span><span class="skill-value">Next.js、TypeScript、Python、SQL、Git、Supabase、Sentry、REST API</span></div>
       <div class="skill-category"><span class="skill-label">工具：</span><span class="skill-value">Figma、Notion、飞书、ChatGPT、Claude、Coze、Cursor、Vercel、阿里云</span></div>
     </div>
   </div>
 
-  <!-- 自我评价 -->
   <div class="section">
     <div class="section-title">自我评价</div>
     <ul style="padding-left:18px;">
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>跨界思维：</strong>音乐表演训练赋予的用户感知力和审美能力，有助于AI产品的用户体验设计</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>强自驱力：</strong>非科班出身，自学编程独立开发完整AI产品，证明了快速学习和落地能力</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>产品思维：</strong>不只是"用AI产品"，而是能从0到1设计AI产品——从需求分析到原型设计到技术方案全链路覆盖</li>
+      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>跨界思维：</strong>音乐训练赋予的用户感知力和审美能力，有助于AI产品的用户体验设计</li>
+      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>强自驱力：</strong>非科班出身，自学编程独立开发完整AI产品平台（109个文件），证明快速学习和落地能力</li>
+      <li style="font-size:13px; color:#374151; margin-bottom:4px;"><strong>全链路产品思维：</strong>不只做功能设计，还做增长（推荐裂变/A/B测试）、商业化（支付/定价）、留存（积分/签到/成就）</li>
     </ul>
   </div>
 
-  <!-- 求职意向 -->
   <div class="section">
     <div class="section-title">求职意向</div>
     <ul style="padding-left:18px;">
@@ -150,21 +127,17 @@
     </ul>
   </div>
 
-  <!-- 作品集链接 -->
   <div class="section">
-    <div class="section-title">作品集</div>
+    <div class="section-title">作品集 & 项目演示</div>
     <ul style="padding-left:18px;">
+      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔗 项目演示：<a href="http://114.55.110.19" style="color:#3b82f6;">http://114.55.110.19</a>（阿里云ECS）| <a href="https://07bc462b.ai-career-tool.pages.dev" style="color:#3b82f6;">Cloudflare Pages</a></li>
       <li style="font-size:13px; color:#374151; margin-bottom:3px;">📄 竞品分析报告：5款AI求职工具深度横评</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">📋 PRD文档：JD智能匹配诊断功能（含完整技术方案和Prompt模板）</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔍 AI功能拆解：Coze/BOSS直聘/找北求职的技术架构和产品设计</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔗 项目演示：<a href="http://114.55.110.19" style="color:#3b82f6;">http://114.55.110.19</a>（阿里云ECS）</li>
-      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔗 备用地址：<a href="https://07bc462b.ai-career-tool.pages.dev" style="color:#3b82f6;">Cloudflare Pages</a></li>
+      <li style="font-size:13px; color:#374151; margin-bottom:3px;">📋 PRD文档：JD智能匹配诊断功能（已实现上线）</li>
+      <li style="font-size:13px; color:#374151; margin-bottom:3px;">🔍 AI功能拆解：Coze/BOSS直聘/找北求职</li>
     </ul>
   </div>
-
 </div>
 
 <button class="print-btn no-print" onclick="window.print()">🖨️ 打印/导出PDF</button>
-
 </body>
 </html>
