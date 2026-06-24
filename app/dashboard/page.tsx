@@ -1,149 +1,309 @@
 "use client";
-import { useState } from "react";
-import MathCaptcha from "@/components/MathCaptcha";
-
-type AuthMode = "login" | "register";
-type LoginMethod = "phone" | "email";
-
-
+import { useState, useEffect } from "react";
+import {
+  dailyCheckIn,
+  hasCheckedInToday,
+  getRecentCheckIns,
+  getStats,
+  getUserProgress,
+  type UserProgress,
+} from "@/lib/retention";
 
 export default function DashboardPage() {
-  const [mode, setMode] = useState<AuthMode>("login");
-  const [method, setMethod] = useState<LoginMethod>("phone");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [code, setCode] = useState("");
-  const [codeSent, setCodeSent] = useState(false);
-  const [codeCountdown, setCodeCountdown] = useState(0);
-  const [devCode, setDevCode] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<{ name: string } | null>(null);
-  const [captchaToken, setCaptchaToken] = useState("");
-  const [agreed, setAgreed] = useState(false);
+  const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [stats, setStats] = useState<ReturnType<typeof getStats> | null>(null);
+  const [checkedIn, setCheckedIn] = useState(false);
+  const [recentCheckIns, setRecentCheckIns] = useState<boolean[]>([]);
+  const [checkInResult, setCheckInResult] = useState<{
+    success: boolean;
+    message: string;
+    points: number;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const sendCode = async () => {
-    if (!agreed) { setError("请先同意服务协议和隐私政策"); return; }
-    if (!captchaToken) { setError("请先完成人机验证"); return; }
-    const target = method === "phone" ? phone : email;
-    if (!target) { setError(method === "phone" ? "请输入手机号" : "请输入邮箱"); return; }
-    if (method === "phone" && !/^1[3-9]\d{9}$/.test(phone)) { setError("请输入正确的手机号"); return; }
-    if (method === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError("请输入正确的邮箱"); return; }
-    setError(""); setLoading(true);
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = () => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/auth/send-code", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ target, method, captchaToken }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || "发送失败"); return; }
-      setCodeSent(true);
-      if (data.dev_code) setDevCode(data.dev_code);
-      setCodeCountdown(60);
-      const timer = setInterval(() => {
-        setCodeCountdown((prev) => { if (prev <= 1) { clearInterval(timer); return 0; } return prev - 1; });
-      }, 1000);
-    } catch { setError("网络错误"); } finally { setLoading(false); }
+      const userProgress = getUserProgress();
+      const userStats = getStats();
+      const isCheckedIn = hasCheckedInToday();
+      const recent = getRecentCheckIns();
+
+      setProgress(userProgress);
+      setStats(userStats);
+      setCheckedIn(isCheckedIn);
+      setRecentCheckIns(recent);
+    } catch (error) {
+      console.error("加载数据失败:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAuth = async () => {
-    if (!agreed) { setError("请先同意服务协议和隐私政策"); return; }
-    if (!captchaToken) { setError("请先完成人机验证"); return; }
-    setError(""); setLoading(true);
-    try {
-      const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
-      const body: Record<string, string> = { method, password, captchaToken };
-      if (method === "phone") body.phone = phone;
-      if (method === "email") body.email = email;
-      if (codeSent) body.code = code;
-      const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || "操作失败"); return; }
-      setUser({ name: data.name || (method === "phone" ? phone : email) });
-    } catch { setError("网络错误"); } finally { setLoading(false); }
+  const handleCheckIn = () => {
+    if (checkedIn) return;
+
+    const result = dailyCheckIn();
+    setCheckInResult(result);
+
+    if (result.success) {
+      setCheckedIn(true);
+      loadData(); // 重新加载数据
+    }
   };
 
-  if (user) {
+  const getDayLabel = (index: number) => {
+    const days = ["日", "一", "二", "三", "四", "五", "六"];
+    const date = new Date();
+    date.setDate(date.getDate() - (6 - index));
+    return days[date.getDay()];
+  };
+
+  if (loading) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-6">👋 你好，{user.name}</h1>
-        <div className="grid gap-4">
-          <a href="/resume" className="border rounded-xl p-6 hover:shadow-lg transition">
-            <div className="text-2xl mb-2">📄 简历诊断</div>
-            <p className="text-gray-600">上传简历，获得专业评分和优化建议</p>
-          </a>
-          <a href="/interview" className="border rounded-xl p-6 hover:shadow-lg transition">
-            <div className="text-2xl mb-2">🎤 模拟面试</div>
-            <p className="text-gray-600">AI生成面试题，评估你的回答</p>
-          </a>
-          <a href="/career" className="border rounded-xl p-6 hover:shadow-lg transition">
-            <div className="text-2xl mb-2">🧭 职业规划</div>
-            <p className="text-gray-600">探索适合你的职业方向</p>
-          </a>
-        </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-500">加载失败，请刷新页面</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-md mx-auto px-4 py-12">
-      <h1 className="text-2xl font-bold text-center mb-8">{mode === "login" ? "登录" : "注册"} AI求职助手</h1>
-      <div className="bg-white border rounded-xl p-6 space-y-5">
-        <div className="flex border rounded-lg overflow-hidden">
-          <button onClick={() => setMethod("phone")} className={`flex-1 py-2 text-sm font-medium transition ${method === "phone" ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-600"}`}>📱 手机号</button>
-          <button onClick={() => setMethod("email")} className={`flex-1 py-2 text-sm font-medium transition ${method === "email" ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-600"}`}>📧 邮箱</button>
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* 页面标题 */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">📊 学习仪表盘</h1>
+          <p className="text-gray-500">追踪你的学习进度和成就</p>
         </div>
 
-        {method === "phone" ? (
-          <div><label className="block text-sm font-medium mb-1">手机号</label>
-          <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="请输入手机号" maxLength={11} className="w-full border rounded-lg px-4 py-2.5 text-base" /></div>
-        ) : (
-          <div><label className="block text-sm font-medium mb-1">邮箱</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="请输入邮箱" className="w-full border rounded-lg px-4 py-2.5 text-base" /></div>
-        )}
-
-        <div>
-          <label className="block text-sm font-medium mb-1">验证码</label>
-          <div className="flex gap-2">
-            <input type="text" value={code} onChange={(e) => setCode(e.target.value)} placeholder="请输入验证码" maxLength={6} className="flex-1 border rounded-lg px-4 py-2.5 text-base" />
-            <button onClick={sendCode} disabled={codeCountdown > 0 || loading || !captchaToken} className="px-4 py-2.5 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap transition">
-              {codeCountdown > 0 ? `${codeCountdown}s` : "获取验证码"}
-            </button>
+        {/* 统计卡片 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+            <div className="text-3xl font-bold text-blue-600">
+              {stats.totalPoints}
+            </div>
+            <div className="text-sm text-gray-500">总积分</div>
           </div>
-          {devCode && (
-            <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-sm">
-              📋 验证码：<span className="font-mono font-bold text-lg">{devCode}</span>
-              <span className="text-gray-500 text-xs ml-2">（开发模式显示）</span>
+          <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+            <div className="text-3xl font-bold text-orange-600">
+              {stats.streak}
+            </div>
+            <div className="text-sm text-gray-500">连续签到</div>
+          </div>
+          <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+            <div className="text-3xl font-bold text-green-600">
+              {stats.totalPractice}
+            </div>
+            <div className="text-sm text-gray-500">练习次数</div>
+          </div>
+          <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+            <div className="text-3xl font-bold text-purple-600">
+              {stats.achievementCount}
+            </div>
+            <div className="text-sm text-gray-500">获得成就</div>
+          </div>
+        </div>
+
+        {/* 每日签到 */}
+        <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
+          <h2 className="text-lg font-bold mb-4">🎯 每日签到</h2>
+
+          {/* 近7天签到情况 */}
+          <div className="flex justify-between mb-4">
+            {recentCheckIns.map((checked, index) => (
+              <div key={index} className="text-center">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
+                    checked
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
+                >
+                  {checked ? "✓" : getDayLabel(index)}
+                </div>
+                <div className="text-xs text-gray-400 mt-1">
+                  {getDayLabel(index)}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 签到按钮 */}
+          <button
+            onClick={handleCheckIn}
+            disabled={checkedIn}
+            className={`w-full py-3 rounded-lg font-medium transition ${
+              checkedIn
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg"
+            }`}
+          >
+            {checkedIn ? "✅ 今日已签到" : "🎯 立即签到"}
+          </button>
+
+          {/* 签到结果 */}
+          {checkInResult && (
+            <div
+              className={`mt-4 p-3 rounded-lg text-sm ${
+                checkInResult.success
+                  ? "bg-green-50 text-green-700"
+                  : "bg-yellow-50 text-yellow-700"
+              }`}
+            >
+              {checkInResult.message}
+            </div>
+          )}
+
+          {/* 积分规则 */}
+          <div className="mt-4 text-xs text-gray-400">
+            <p>积分规则：每日签到+10分，连续签到额外+5分/天（最高+100分）</p>
+          </div>
+        </div>
+
+        {/* 练习统计 */}
+        <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
+          <h2 className="text-lg font-bold mb-4">📚 练习统计</h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-blue-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-blue-600">
+                {stats.interviewCount}
+              </div>
+              <div className="text-sm text-gray-500">模拟面试</div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {stats.resumeCount}
+              </div>
+              <div className="text-sm text-gray-500">简历诊断</div>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {stats.jdMatchCount}
+              </div>
+              <div className="text-sm text-gray-500">JD匹配</div>
+            </div>
+            <div className="bg-orange-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-orange-600">
+                {stats.quizCount}
+              </div>
+              <div className="text-sm text-gray-500">能力测评</div>
+            </div>
+          </div>
+
+          {/* 平均分 */}
+          {stats.avgInterviewScore > 0 && (
+            <div className="mt-4 bg-gray-50 rounded-lg p-4">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">模拟面试平均分</span>
+                <span className="text-2xl font-bold text-blue-600">
+                  {stats.avgInterviewScore}分
+                </span>
+              </div>
+              <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-blue-600 h-2 rounded-full"
+                  style={{ width: `${stats.avgInterviewScore}%` }}
+                />
+              </div>
             </div>
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">密码</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={mode === "register" ? "设置密码（至少6位）" : "请输入密码"} className="w-full border rounded-lg px-4 py-2.5 text-base" />
+        {/* 成就系统 */}
+        <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
+          <h2 className="text-lg font-bold mb-4">🏆 成就系统</h2>
+
+          {progress && progress.achievements.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {progress.achievements.map((achievement) => (
+                <div
+                  key={achievement.id}
+                  className="bg-yellow-50 border border-yellow-200 rounded-lg p-4"
+                >
+                  <div className="text-2xl mb-2">{achievement.icon}</div>
+                  <h3 className="font-bold text-sm">{achievement.name}</h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {achievement.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-400">
+              <div className="text-4xl mb-2">🎯</div>
+              <p>还没有获得成就，继续努力吧！</p>
+            </div>
+          )}
+
+          {/* 可解锁成就 */}
+          <div className="mt-6">
+            <h3 className="font-medium text-sm text-gray-500 mb-3">
+              待解锁成就
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {[
+                { id: "streak_7", name: "一周坚持", icon: "⭐", desc: "连续签到7天" },
+                { id: "practice_50", name: "练习达人", icon: "🏆", desc: "完成50次练习" },
+                { id: "interview_20", name: "面试高手", icon: "💎", desc: "完成20次面试" },
+                { id: "score_80", name: "优秀学员", icon: "🌟", desc: "平均分≥80" },
+              ].map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-gray-50 rounded-lg p-3 opacity-50"
+                >
+                  <div className="text-xl mb-1">{item.icon}</div>
+                  <div className="font-medium text-xs">{item.name}</div>
+                  <div className="text-xs text-gray-400">{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-start gap-2">
-          <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-1 w-4 h-4" />
-          <label htmlFor="agree" className="text-sm text-gray-600">
-            我已阅读并同意 <a href="/terms" className="text-blue-600 hover:underline">《服务协议》</a> 和 <a href="/privacy" className="text-blue-600 hover:underline">《隐私政策》</a>
-          </label>
+        {/* 快速入口 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a
+            href="/quiz"
+            className="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition"
+          >
+            <div className="text-2xl mb-2">🎯</div>
+            <div className="font-medium text-sm">能力测评</div>
+          </a>
+          <a
+            href="/interview"
+            className="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition"
+          >
+            <div className="text-2xl mb-2">🎤</div>
+            <div className="font-medium text-sm">模拟面试</div>
+          </a>
+          <a
+            href="/resume"
+            className="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition"
+          >
+            <div className="text-2xl mb-2">📄</div>
+            <div className="font-medium text-sm">简历诊断</div>
+          </a>
+          <a
+            href="/jd-match-v2"
+            className="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition"
+          >
+            <div className="text-2xl mb-2">🎯</div>
+            <div className="font-medium text-sm">JD诊断</div>
+          </a>
         </div>
-        <MathCaptcha onVerify={setCaptchaToken} />
-
-        {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-lg text-sm">{error}</div>}
-
-        <button onClick={handleAuth} disabled={loading || !captchaToken || !agreed} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition text-base">
-          {loading ? "处理中..." : mode === "login" ? "登录" : "注册"}
-        </button>
-
-        <p className="text-center text-sm text-gray-500">
-          {mode === "login" ? "没有账号？" : "已有账号？"}
-          <button onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }} className="text-blue-600 ml-1 hover:underline font-medium">
-            {mode === "login" ? "立即注册" : "去登录"}
-          </button>
-        </p>
       </div>
     </div>
   );
