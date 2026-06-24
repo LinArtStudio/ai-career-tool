@@ -51,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     { href: "/interview", label: "模拟面试", icon: "🎤" },
                     { href: "/resume", label: "简历诊断", icon: "📄" },
                     { href: "/dashboard", label: "学习仪表盘", icon: "📊" },
+                    { href: "/referral", label: "邀请好友", icon: "🎁" },
                     { href: "/pricing", label: "定价", icon: "💎" },
                   ].map((item) => (
                     <a key={item.href} href={item.href}
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         { href: "/resume-builder", label: "AI生成简历", icon: "📝" },
                         { href: "/interview-bank", label: "面试真题", icon: "📚" },
                         { href: "/dashboard", label: "学习仪表盘", icon: "📊" },
+                        { href: "/referral", label: "邀请好友", icon: "🎁" },
                         { href: "/cover-letter", label: "求职信", icon: "✉️" },
                         { href: "/pricing", label: "定价", icon: "💎" },
                       ].map((item) => (
