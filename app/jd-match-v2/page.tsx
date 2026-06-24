@@ -422,6 +422,29 @@ export default function JDMatchV2Page() {
                   </ul>
                 </div>
               </div>
+
+              {/* AI产品经理专项信息 */}
+              {result.jd_analysis.ai_pm_specific && (
+                <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                  <h3 className="font-bold text-purple-800 mb-3">
+                    🤖 AI产品经理专项要求
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <h4 className="font-medium text-sm mb-2">技术深度要求</h4>
+                      <p className="text-sm text-gray-700">{result.jd_analysis.ai_pm_specific.technical_depth}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm mb-2">产品类型</h4>
+                      <p className="text-sm text-gray-700">{result.jd_analysis.ai_pm_specific.product_type}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm mb-2">核心指标</h4>
+                      <p className="text-sm text-gray-700">{result.jd_analysis.ai_pm_specific.key_metrics}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -892,6 +915,92 @@ export default function JDMatchV2Page() {
                           </div>
                           <div className="bg-yellow-50 rounded p-3">
                             <p className="text-sm text-yellow-800">
+                              💡 {q.answer_tips}
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* AI产品经理技术深度问题（独家） */}
+              {result.interview_predictions.ai_pm_technical_questions && result.interview_predictions.ai_pm_technical_questions.length > 0 && (
+                <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                  <h3 className="font-bold text-purple-800 mb-4">
+                    🤖 AI产品经理技术深度问题（独家）
+                  </h3>
+                  <div className="space-y-4">
+                    {result.interview_predictions.ai_pm_technical_questions.map(
+                      (q, i) => (
+                        <div
+                          key={i}
+                          className="bg-white rounded-lg p-4 border border-purple-100"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <h4 className="font-medium text-gray-800">
+                              Q{i + 1}: {q.question}
+                            </h4>
+                            {getDifficultyBadge(q.difficulty)}
+                          </div>
+                          <p className="text-sm text-gray-500 mb-2">
+                            关联：{q.related_jd_item}
+                          </p>
+                          {q.knowledge_points && (
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {q.knowledge_points.map((point, j) => (
+                                <span key={j} className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-xs">
+                                  {point}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <div className="bg-purple-50 rounded p-3">
+                            <p className="text-sm text-purple-800">
+                              💡 {q.answer_tips}
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* AI产品设计问题（独家） */}
+              {result.interview_predictions.ai_pm_product_questions && result.interview_predictions.ai_pm_product_questions.length > 0 && (
+                <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
+                  <h3 className="font-bold text-indigo-800 mb-4">
+                    🎨 AI产品设计问题（独家）
+                  </h3>
+                  <div className="space-y-4">
+                    {result.interview_predictions.ai_pm_product_questions.map(
+                      (q, i) => (
+                        <div
+                          key={i}
+                          className="bg-white rounded-lg p-4 border border-indigo-100"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <h4 className="font-medium text-gray-800">
+                              Q{i + 1}: {q.question}
+                            </h4>
+                            {getDifficultyBadge(q.difficulty)}
+                          </div>
+                          <p className="text-sm text-gray-500 mb-2">
+                            关联：{q.related_jd_item}
+                          </p>
+                          {q.knowledge_points && (
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {q.knowledge_points.map((point, j) => (
+                                <span key={j} className="px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded text-xs">
+                                  {point}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <div className="bg-indigo-50 rounded p-3">
+                            <p className="text-sm text-indigo-800">
                               💡 {q.answer_tips}
                             </p>
                           </div>
