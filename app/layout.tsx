@@ -4,9 +4,9 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ToastProvider } from "@/components/Toast";
 
 export const metadata: Metadata = {
-  title: "AI求职助手 - 简历诊断·模拟面试·职业规划·JD匹配",
-  description: "用AI帮你搞定求职全流程：免费简历诊断、AI改简历、模拟面试、JD匹配度分析、职业规划、AI求职信生成。覆盖字节跳动、腾讯、阿里巴巴等大厂面试题。",
-  keywords: "AI求职,简历优化,模拟面试,职业规划,JD匹配,AI改简历,面试真题,字节跳动面试,腾讯面试,大厂面试",
+  title: "AI产品经理求职训练平台 - 面试问题预测·JD智能诊断·简历优化",
+  description: "专为AI产品经理求职者打造：面试问题预测、JD智能匹配诊断、150+大厂真题、技术深度指导。帮助应届生和转型者系统准备AI产品经理面试。",
+  keywords: "AI产品经理,AI PM,产品经理面试,面试问题预测,JD匹配,简历优化,字节跳动,腾讯,阿里巴巴,百度,大厂面试",
   viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
   themeColor: "#2563eb",
   icons: {
@@ -15,10 +15,10 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   openGraph: {
-    title: "AI求职助手 - 用AI搞定求职全流程",
-    description: "免费简历诊断、AI模拟面试、职业规划、JD匹配分析",
+    title: "AI产品经理求职训练平台 - 面试问题预测·JD智能诊断",
+    description: "专为AI产品经理求职者打造：面试问题预测、JD智能匹配诊断、150+大厂真题",
     url: "https://ai-career-tool.vercel.app",
-    siteName: "AI求职助手",
+    siteName: "AI产品经理求职训练平台",
     locale: "zh_CN",
     type: "website",
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <html lang="zh-CN">
       <body>
@@ -39,16 +39,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
                 <a href="/" className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center text-white font-bold text-sm">AI</div>
-                  <span className="text-lg font-bold text-gray-900">求职助手</span>
+                  <span className="text-lg font-bold text-gray-900">AI产品经理求职</span>
                 </a>
 
                 {/* 桌面端导航 */}
                 <div className="hidden md:flex items-center gap-1">
                   {[
-                    { href: "/resume", label: "简历诊断", icon: "📄" },
-                    { href: "/interview", label: "模拟面试", icon: "🎤" },
-                    { href: "/career", label: "职业规划", icon: "🧭" },
                     { href: "/jd-match-v2", label: "JD智能诊断", icon: "🎯" },
+                    { href: "/interview", label: "模拟面试", icon: "🎤" },
+                    { href: "/resume", label: "简历诊断", icon: "📄" },
+                    { href: "/career", label: "职业规划", icon: "🧭" },
                     { href: "/pricing", label: "定价", icon: "💎" },
                   ].map((item) => (
                     <a key={item.href} href={item.href}
@@ -69,12 +69,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <summary className="cursor-pointer text-gray-600 text-xl list-none p-2">☰</summary>
                     <div className="absolute right-0 top-12 bg-white border rounded-xl shadow-xl py-2 w-48 z-50">
                       {[
+                        { href: "/jd-match-v2", label: "JD智能诊断", icon: "🎯" },
+                        { href: "/interview", label: "模拟面试", icon: "🎤" },
                         { href: "/resume", label: "简历诊断", icon: "📄" },
                         { href: "/resume-builder", label: "AI生成简历", icon: "📝" },
-                        { href: "/interview", label: "模拟面试", icon: "🎤" },
                         { href: "/interview-bank", label: "面试真题", icon: "📚" },
                         { href: "/career", label: "职业规划", icon: "🧭" },
-                        { href: "/jd-match-v2", label: "JD智能诊断", icon: "🎯" },
                         { href: "/cover-letter", label: "求职信", icon: "✉️" },
                         { href: "/pricing", label: "定价", icon: "💎" },
                         { href: "/dashboard", label: "登录", icon: "🔐" },
