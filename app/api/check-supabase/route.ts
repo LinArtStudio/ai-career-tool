@@ -17,7 +17,7 @@ export async function checkSupabaseConfig(): Promise<{
     urlConfigured: !!supabaseUrl,
     keyConfigured: !!supabaseAnonKey,
     urlFormat: supabaseUrl?.startsWith('https://') && supabaseUrl?.endsWith('.supabase.co'),
-    keyFormat: supabaseAnonKey?.startsWith('eyJ'),
+    keyFormat: supabaseAnonKey?.startsWith('eyJ') || supabaseAnonKey?.startsWith('sb_publishable_'),
   }
 
   // 检查环境变量
