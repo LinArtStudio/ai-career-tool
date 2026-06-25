@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ToastProvider } from "@/components/Toast";
+import { LoadingProvider } from "@/components/Loading";
 
 export const metadata: Metadata = {
   title: "AI时代求职训练平台 - 面试问题预测·JD智能诊断·简历优化",
@@ -34,7 +35,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-CN">
       <body>
         <ErrorBoundary>
-          <ToastProvider>
+          <LoadingProvider>
+            <ToastProvider>
             {/* 顶部导航 */}
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
               <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
@@ -116,6 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </div>
           </ToastProvider>
+          </LoadingProvider>
         </ErrorBoundary>
       </body>
     </html>

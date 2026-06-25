@@ -134,11 +134,12 @@ export default function PricingPage() {
       if (data.success && data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
       } else {
-        alert(data.error || "创建支付会话失败");
+        // 显示友好的提示
+        alert(data.error || "支付功能正在配置中，敬请期待！");
       }
     } catch (error) {
       console.error("支付失败:", error);
-      alert("网络错误，请重试");
+      alert("支付功能正在配置中，敬请期待！");
     } finally {
       setLoading(null);
     }
