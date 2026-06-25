@@ -112,37 +112,18 @@ const PRODUCTS = [
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
+  const [showQRCode, setShowQRCode] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<string>("");
 
   const handleBuy = async (productKey: string) => {
-    setLoading(productKey);
+    // 暂时显示赞赏码
+    setSelectedProduct(productKey);
+    setShowQRCode(true);
+  };
 
-    try {
-      const response = await fetch("/api/payment/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: productKey,
-          successUrl: `${window.location.origin}/payment/success`,
-          cancelUrl: `${window.location.origin}/payment/cancel`,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success && data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-      } else {
-        // 显示友好的提示
-        alert(data.error || "支付功能正在配置中，敬请期待！");
-      }
-    } catch (error) {
-      console.error("支付失败:", error);
-      alert("支付功能正在配置中，敬请期待！");
-    } finally {
-      setLoading(null);
-    }
+  const closeQRCode = () => {
+    setShowQRCode(false);
+    setSelectedProduct("");
   };
 
   const freeProducts = PRODUCTS.filter((p) => p.category === "free");
@@ -419,6 +400,57 @@ export default function PricingPage() {
           </div>
         </div>
       </div>
+
+      {/* 赞赏码弹窗 */}
+      {showQRCode && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closeQRCode}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-center mb-4">💳 扫码支付</h3>
+            
+            <div className="text-center mb-4">
+              <p className="text-sm text-gray-600 mb-2">您选择了：<strong>{selectedProduct}</strong></p>
+              <p className="text-xs text-gray-500">请使用微信或支付宝扫描下方二维码支付</p>
+            </div>
+
+            {/* 赞赏码占位 */}
+            <div className="bg-gray-100 rounded-xl p-8 text-center mb-4">
+              <div className="text-4xl mb-2">📱</div>
+              <p className="text-sm text-gray-500">赞赏码位置</p>
+              <p className="text-xs text-gray-400 mt-1">（请替换为您的赞赏码图片）</p>
+            </div>
+
+            {/* 支付说明 */}
+            <div className="bg-blue-50 rounded-lg p-4 mb-4">
+              <h4 className="text-sm font-bold text-blue-800 mb-2">📌 支付说明</h4>
+              <ol className="text-xs text-blue-700 space-y-1">
+                <li>1. 扫码支付对应金额</li>
+                <li>2. 截图支付凭证</li>
+                <li>3. 发送到客服微信：ai-career-tool</li>
+                <li>4. 5分钟内开通权限</li>
+              </ol>
+            </div>
+
+            {/* 按钮 */}
+            <div className="flex gap-2">
+              <button
+                onClick={closeQRCode}
+                className="flex-1 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50"
+              >
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText("客服微信：ai-career-tool");
+                  alert("已复制客服微信");
+                }}
+                className="flex-1 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
+              >
+                复制客服微信
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <p className="text-center text-sm text-gray-500 mt-8">
         有问题？联系我们：support@ai-career-tool.com
