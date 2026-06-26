@@ -1,102 +1,195 @@
-# 🚀 AI求职工具
+# 🚀 AI时代求职训练平台
 
-用AI帮你搞定求职全流程：简历诊断 · 模拟面试 · 职业规划
+帮助所有求职者掌握AI时代必备技能，提升求职竞争力
 
-**技术栈**: Next.js 14 + Tailwind CSS + 小米MiMo API
-**月成本**: ¥5~10（LLM API调用费）
-**部署**: Vercel免费层
+**产品定位**：AI时代求职训练平台  
+**目标用户**：AI相关岗位、AI+传统岗位、所有传统岗位求职者  
+**技术栈**: Next.js 14 + Tailwind CSS + LLM API  
+**月成本**: ¥5~10（LLM API调用费）  
+**部署**: 阿里云ECS + Vercel
 
 ---
 
-## 一键启动
+## 核心功能
+
+### 🎯 AI职业竞争力测评（免费）
+- 5分钟了解你的AI能力水平
+- 5个维度：AI工具使用、AI思维认知、AI产品设计、AI技术理解、AI项目经验
+- 个性化学习路径推荐
+
+### 📝 AI简历生成器
+- 针对JD定制简历
+- ATS优化
+- STAR法则描述
+- 关键词优化
+
+### 🎯 JD智能匹配诊断
+- 多维度匹配评分（技能、经验、教育、软技能）
+- 精准差距分析
+- 面试问题预测（独家功能）
+- 针对性简历优化建议
+
+### 🎤 AI模拟面试
+- 150+大厂真题
+- AI评估 + 面试官视角反馈
+- 面试问题预测
+- 进度追踪
+
+### 📊 学习仪表盘
+- 每日签到 + 练习打卡
+- 积分系统 + 成就系统
+- 学习进度追踪
+
+### 💎 定价方案
+- 免费版：每天3次基础功能
+- 单次付费：¥9.9-19.9/次
+- 冲刺卡：¥19.9-99.9
+- 终身会员：¥199
+
+---
+
+## 技术架构
+
+```
+前端：Next.js 14 + TypeScript + Tailwind CSS
+后端：Next.js API Routes
+数据库：Supabase (PostgreSQL)
+AI模型：GLM-4-Flash (智谱AI)
+部署：阿里云ECS + Vercel
+```
+
+---
+
+## 快速开始
 
 ```bash
 # 1. 安装依赖
 npm install
 
-# 2. 配置环境变量（已配置小米API）
-cp .env.local.example .env.local
-# 编辑 .env.local 填入你的 API Key
+# 2. 配置环境变量
+cp .env.example .env.local
+# 编辑 .env.local 填入你的配置
 
-# 3. 启动
+# 3. 启动开发服务器
 npm run dev
 # 访问 http://localhost:3000
 ```
 
-## 部署到 Vercel（3步）
+---
+
+## 部署指南
+
+### 阿里云ECS部署
+
+```bash
+# 1. SSH登录服务器
+ssh root@your-server-ip
+
+# 2. 克隆代码
+cd /opt
+git clone https://github.com/LinArtStudio/ai-career-tool.git
+cd ai-career-tool
+
+# 3. 安装依赖
+npm install
+
+# 4. 配置环境变量
+nano .env.local
+# 填入你的配置
+
+# 5. 构建项目
+npm run build
+
+# 6. 启动服务
+pm2 start npm --name "ai-career" -- start
+pm2 save
+pm2 startup
+```
+
+### Vercel部署
 
 ```bash
 # 1. 安装Vercel CLI
 npm i -g vercel
 
-# 2. 登录（会打开浏览器）
+# 2. 登录Vercel
 vercel login
 
 # 3. 部署
-cd ai-career-tool
-vercel --prod
-
-# 4. 设置环境变量
-vercel env add LLM_API_URL
-# 输入: https://token-plan-cn.xiaomimimo.com/v1/chat/completions
-
-vercel env add LLM_API_KEY
-# 输入: 你的小米API Key
-
-vercel env add LLM_MODEL
-# 输入: mimo-v2.5-pro
-
-# 5. 重新部署（使环境变量生效）
 vercel --prod
 ```
 
-部署完成后会得到一个 `https://xxx.vercel.app` 的公网地址。
-
-## 功能模块
-
-| 功能 | 页面 | API | 说明 |
-|------|------|-----|------|
-| 落地页 | `/` | — | 产品介绍+CTA |
-| 简历诊断 | `/resume` | `/api/demo/resume` | 上传PDF→5维度评分+优化建议 |
-| 模拟面试 | `/interview` | `/api/demo/interview` | 输入岗位→生成题→AI评估回答 |
-| 职业规划 | `/career` | `/api/demo/career` | 输入专业→3条职业路径+学习计划 |
-| 定价 | `/pricing` | — | 免费版/月卡/季卡 |
-| 用户中心 | `/dashboard` | `/api/auth/*` | 登录/注册 |
+---
 
 ## 环境变量
 
-| 变量 | 必填 | 说明 |
-|------|------|------|
-| `LLM_API_URL` | ✅ | 小米API地址 |
-| `LLM_API_KEY` | ✅ | 小米API Key |
-| `LLM_MODEL` | ✅ | 模型名 mimo-v2.5-pro |
-| `NEXT_PUBLIC_SUPABASE_URL` | ❌ | Supabase（可选） |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ❌ | Supabase（可选） |
+```bash
+# LLM API配置
+LLM_API_URL=https://open.bigmodel.cn/api/paas/v4/chat/completions
+LLM_API_KEY=your-api-key
+LLM_MODEL=glm-4-flash
+
+# Supabase配置
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# 应用配置
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+NODE_ENV=production
+PORT=3000
+```
+
+---
 
 ## 项目结构
 
 ```
-├── app/
-│   ├── api/demo/          # Demo API（无需认证）
-│   │   ├── resume/        # 简历分析
-│   │   ├── interview/     # 面试生成+评估
-│   │   └── career/        # 职业规划
-│   ├── resume/            # 简历诊断页面
-│   ├── interview/         # 模拟面试页面
-│   ├── career/            # 职业规划页面
-│   ├── pricing/           # 定价页面
-│   └── dashboard/         # 用户中心
-├── lib/
-│   ├── llm/deepseek.ts    # LLM API封装（小米/DeepSeek）
-│   ├── llm/prompts.ts     # Prompt模板
-│   ├── resume/            # 简历解析+分析
-│   ├── interview/         # 面试生成+评估
-│   └── career/            # 职业规划
-├── supabase/schema.sql    # 数据库Schema（可选）
-├── vercel.json            # Vercel部署配置
-└── .env.local             # 环境变量
+ai-career-tool/
+├── app/                    # Next.js App Router
+│   ├── api/                # API路由
+│   ├── quiz/               # 免费测评
+│   ├── resume-generator/   # AI简历生成器
+│   ├── jd-match-v2/        # JD智能诊断
+│   ├── interview/          # 模拟面试
+│   ├── dashboard/          # 学习仪表盘
+│   ├── pricing/            # 定价页面
+│   └── ...
+├── lib/                    # 核心库
+│   ├── llm/                # LLM调用
+│   ├── supabase.ts         # Supabase配置
+│   ├── auth.ts             # 用户认证
+│   └── ...
+├── components/             # React组件
+├── public/                 # 静态资源
+└── docs/                   # 文档
 ```
 
-## License
+---
 
-MIT
+## 贡献指南
+
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
+
+---
+
+## 许可证
+
+MIT License
+
+---
+
+## 联系我们
+
+- **客服微信**：ai-career-tool
+- **客服邮箱**：support@ai-career-tool.com
+- **官网**：https://ai-career-tool.vercel.app
+
+---
+
+## 致谢
+
+感谢所有为这个项目做出贡献的人！

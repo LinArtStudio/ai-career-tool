@@ -229,7 +229,7 @@ export function getReferralShareText(userId: string): string {
   const link = getReferralLink(userId);
   return `🎯 AI产品经理求职神器！
 
-我最近发现了一个超棒的AI求职工具，包含：
+我最近发现了一个超棒的AI时代求职训练平台，包含：
 ✅ AI职业竞争力测评（免费）
 ✅ 面试问题预测（独家）
 ✅ 150+大厂真题

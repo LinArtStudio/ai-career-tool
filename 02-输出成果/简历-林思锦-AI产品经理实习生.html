@@ -13,7 +13,6 @@
   }
   .page { max-width: 800px; margin: 0 auto; background: #fff; }
 
-  /* 头部 */
   .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
   .header-left { flex: 1; }
   .header-left .name { font-size: 26px; font-weight: 700; letter-spacing: 2px; margin-bottom: 2px; }
@@ -28,27 +27,22 @@
   .section { margin-bottom: 14px; }
   .section-title { font-size: 13px; font-weight: 700; color: #0f3460; border-bottom: 2px solid #e63946; padding-bottom: 4px; margin-bottom: 8px; letter-spacing: 1px; }
 
-  /* 个人简介 */
   .summary { background: #f0f7ff; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #333; line-height: 1.6; margin-bottom: 14px; }
   .summary strong { color: #0f3460; }
 
-  /* 教育 */
   .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
   .edu-main { font-size: 13px; font-weight: 600; }
   .edu-date { font-size: 11.5px; color: #888; }
 
-  /* 项目 */
   .project { margin-bottom: 14px; }
   .proj-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
   .proj-name { font-size: 13.5px; font-weight: 700; color: #1a1a2e; }
   .proj-time { font-size: 11.5px; color: #888; white-space: nowrap; }
   .proj-meta { font-size: 11.5px; color: #0f3460; font-weight: 500; margin-bottom: 4px; }
 
-  /* 项目摘要 */
   .proj-summary { background: #f8fdf5; border-left: 3px solid #22c55e; padding: 8px 14px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 11.5px; color: #333; line-height: 1.6; }
   .proj-summary strong { color: #166534; }
 
-  /* 数据条 */
   .data-strip { display: flex; flex-wrap: wrap; gap: 12px; background: #f8fdf5; border-left: 3px solid #22c55e; padding: 8px 14px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 11.5px; }
   .data-strip .d-item strong { color: #166534; font-size: 13px; }
   .data-strip .d-item span { color: #6b7280; font-size: 11px; }
@@ -63,23 +57,19 @@
   .result-tag { display: inline-block; background: #d1fae5; color: #065f46; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-right: 4px; font-weight: 600; }
   .status-tag { display: inline-block; background: #e0e7ff; color: #3730a3; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-right: 4px; font-weight: 600; }
 
-  /* 技能 */
   .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .skill-card { background: #f8f9fa; border-radius: 6px; padding: 8px 12px; border: 1px solid #eee; }
   .skill-card .cat { font-size: 11.5px; font-weight: 700; color: #0f3460; margin-bottom: 2px; }
   .skill-card .items { font-size: 11px; color: #444; line-height: 1.7; }
 
-  /* 自我评价 */
   .eval-item { margin-bottom: 4px; font-size: 11.5px; color: #333; line-height: 1.6; }
   .eval-item strong { color: #0f3460; }
 
-  /* 求职意向 */
   .intent-box { background: #f0f7ff; border-radius: 6px; padding: 8px 14px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11.5px; color: #333; }
   .intent-box .item { display: flex; align-items: center; gap: 4px; }
   .intent-box .label { color: #888; font-size: 11px; }
   .intent-box .value { font-weight: 600; color: #0f3460; }
 
-  /* 作品集 */
   .links-box { background: #fafafa; border-radius: 6px; padding: 8px 14px; font-size: 11.5px; color: #333; border: 1px solid #eee; line-height: 1.7; }
   .links-box a { color: #0f3460; text-decoration: none; }
   .links-box a:hover { text-decoration: underline; }
@@ -91,7 +81,7 @@
     body { background: #fff; }
     .page { box-shadow: none; margin: 0; max-width: 100%; }
     .print-btn { display: none !important; }
-    .header, .data-strip, .skill-card, .intent-box, .links-box, .edu-tags span, .summary, .decision-tag, .result-tag, .status-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .header, .data-strip, .skill-card, .intent-box, .links-box, .summary, .decision-tag, .result-tag, .status-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     @page { margin: 10mm 12mm; }
   }
 </style>
@@ -124,7 +114,7 @@
 
 <!-- 个人简介 -->
 <div class="summary">
-  <strong>个人简介：</strong>音乐表演背景 × AI全栈独立开发 | 独立从0设计并部署2个AI产品，累计15名内测用户验证需求。AI求职工具v2.0（13,760行代码/24页面/18模块）覆盖全岗位求职场景；AI周报助手（38次迭代）实现3分钟自动生成专业周报。主导输出4版PRD，设计19种用户行为事件埋点，实现A/B测试框架、用户邀请裂变、错误监控等企业级功能。
+  <strong>个人简介：</strong>音乐表演背景 × AI全栈独立开发 | 独立从0设计并部署2个AI产品，累计15名内测用户验证需求。AI求职工具v2.0内测验证：JD诊断使用率100%（5/5人）、简历诊断80%、模拟面试60%，2名用户表达付费意愿。主导输出4版PRD，设计19种用户行为事件埋点，实现A/B测试框架、用户邀请裂变、错误监控等企业级功能。
 </div>
 
 <!-- 求职意向 -->
@@ -159,21 +149,18 @@
     </div>
     <div class="proj-meta">产品经理 + 全栈开发 | Next.js 14 + TypeScript + Supabase + Sentry + MiMo API</div>
 
-    <!-- 项目结果总览 -->
     <div class="proj-summary">
-      <strong>项目结果：</strong>独立完成AI求职产品从0到1设计与开发，上线24个页面/18个核心功能模块（13,760行代码），覆盖全岗位求职场景。<span class="result-tag">5名内测用户验证需求</span><span class="status-tag">v2.0已上线</span>
+      <strong>项目结果：</strong>独立完成AI求职产品从0到1设计与开发，上线24个页面/18个核心功能模块（13,760行代码）。内测验证：5名用户参与，JD诊断使用率100%、简历诊断80%、模拟面试60%，<span class="result-tag">2名用户表达付费意愿</span><span class="status-tag">v2.0已上线</span>
     </div>
 
-    <!-- 核心数据 -->
     <div class="data-strip">
-      <div class="d-item"><strong>5</strong><br><span>内测用户</span></div>
-      <div class="d-item"><strong>24</strong><br><span>页面</span></div>
-      <div class="d-item"><strong>18</strong><br><span>核心模块</span></div>
-      <div class="d-item"><strong>13,760</strong><br><span>行代码</span></div>
-      <div class="d-item"><strong>19种</strong><br><span>事件埋点</span></div>
+      <div class="d-item"><strong>100%</strong><br><span>JD诊断使用率</span></div>
+      <div class="d-item"><strong>80%</strong><br><span>简历诊断使用率</span></div>
+      <div class="d-item"><strong>60%</strong><br><span>模拟面试使用率</span></div>
+      <div class="d-item"><strong>2人</strong><br><span>付费意愿</span></div>
+      <div class="d-item"><strong>8次</strong><br><span>单人最高使用</span></div>
     </div>
 
-    <!-- 产品洞察与决策 -->
     <div class="proj-block">
       <div class="proj-block-title">📌 用户洞察与产品决策</div>
       <ul>
@@ -183,34 +170,40 @@
       </ul>
     </div>
 
-    <!-- 核心产品设计 -->
     <div class="proj-block">
       <div class="proj-block-title">📌 核心产品设计与结果</div>
       <ul>
-        <li><strong>JD语义匹配系统 v2：</strong><span class="decision-tag">权衡</span>传统关键词匹配无法识别隐性需求，引入LLM语义理解+结构化5维评分。<span class="result-tag">结果</span>支持所有岗位的JD匹配，5名内测用户反馈匹配准确性良好</li>
-        <li><strong>AI模拟面试系统 v2：</strong>设计150+题库覆盖所有岗位，基于JD+用户简历动态出题。<span class="decision-tag">权衡</span>不做"面试作弊工具"，专注"帮助用户展示真实能力"。<span class="result-tag">结果</span>内测用户反馈面试准备效率显著提升</li>
-        <li><strong>Agent Workflow设计：</strong><span class="decision-tag">权衡</span>单一大模型调用无法处理多步骤复合任务，设计3层任务复杂度分级（简单→标准→复杂），实现动态模型选择与工具调用链</li>
+        <li><strong>JD语义匹配系统 v2：</strong><span class="decision-tag">权衡</span>传统关键词匹配无法识别隐性需求，引入LLM语义理解+结构化5维评分。<span class="result-tag">结果</span>使用率100%（5/5人），单人最高使用8次，用户评价"准确"</li>
+        <li><strong>AI模拟面试系统 v2：</strong>设计150+题库覆盖所有岗位，基于JD+用户简历动态出题。<span class="decision-tag">权衡</span>不做"面试作弊工具"，专注"帮助用户展示真实能力"。<span class="result-tag">结果</span>用户反馈"面试问题预测准确率高"，有效缓解面试紧张感</li>
+        <li><strong>简历诊断系统：</strong>多维度评分+优化建议。<span class="result-tag">结果</span>使用率80%（4/5人），用户反馈"优化建议实用"，但针对性待加强</li>
         <li><strong>模型路由（成本优化）：</strong><span class="decision-tag">权衡</span>全用大模型→成本不可控；单一模型→质量不稳定。<span class="result-tag">结果</span>月API成本控制在¥5-10</li>
       </ul>
     </div>
 
-    <!-- 工程化能力 -->
+    <div class="proj-block">
+      <div class="proj-block-title">📌 用户反馈与产品迭代</div>
+      <ul>
+        <li><strong>张同学（应届生，产品）：</strong>"JD诊断帮助我精准补齐RAG和Agent知识，面试问题预测准确率高"</li>
+        <li><strong>王同学（转型者，产品）：</strong>"帮我明确了从传统电商转型AI PM的知识短板，模拟面试有效缓解紧张感"</li>
+        <li><strong>关键洞察：</strong>用户愿意为"精准补短板"和"提升面试成功率"付费；<span class="result-tag">2名用户已表达明确付费意愿</span></li>
+      </ul>
+    </div>
+
+    <div class="proj-block">
+      <div class="proj-block-title">📌 增长与商业化设计</div>
+      <ul>
+        <li><strong>A/B测试驱动定价：</strong>设计定价策略A/B实验（¥9.9-128），构建"测评→注册→使用→付费"全链路转化漏斗追踪</li>
+        <li><strong>邀请增长机制：</strong>设计双向奖励裂变系统（推荐人获100积分+1次免费面试+1次简历改写；被邀请人获50积分+免费面试+10%折扣）</li>
+        <li><strong>数据埋点体系：</strong>定义19种用户行为事件埋点，覆盖从注册→试用→付费→流失的全链路</li>
+      </ul>
+    </div>
+
     <div class="proj-block">
       <div class="proj-block-title">📌 工程化与质量保障</div>
       <ul>
         <li><strong>错误处理体系：</strong>设计统一错误处理机制（ErrorBoundary组件+错误码映射+用户友好提示）</li>
         <li><strong>监控与可观测性：</strong>集成Sentry错误监控，实现生产环境错误追踪和性能监控</li>
         <li><strong>测试框架：</strong>搭建Jest测试框架，为核心功能编写单元测试，确保代码质量</li>
-      </ul>
-    </div>
-
-    <!-- 增长与商业化 -->
-    <div class="proj-block">
-      <div class="proj-block-title">📌 增长与商业化设计</div>
-      <ul>
-        <li><strong>A/B测试驱动定价：</strong>设计定价策略A/B实验（¥9.9-128），构建"测评→注册→使用→付费"全链路转化漏斗追踪</li>
-        <li><strong>邀请增长机制：</strong>设计双向奖励裂变系统（推荐人获100积分+1次免费面试+1次简历改写；被邀请人获50积分+免费面试+10%折扣）</li>
-        <li><strong>数据埋点体系：</strong>定义19种用户行为事件埋点，覆盖从注册→试用→付费→流失的全链路，为后续A/B实验提供精准数据支撑</li>
       </ul>
     </div>
   </div>
@@ -223,12 +216,10 @@
     </div>
     <div class="proj-meta">产品经理 + 全栈开发 | Next.js + TypeScript + Tailwind CSS + OpenAI API</div>
 
-    <!-- 项目结果总览 -->
     <div class="proj-summary">
       <strong>项目结果：</strong>独立完成AI周报生成工具从0到1设计与开发，实现"3分钟自动生成专业周报"的核心价值主张。<span class="result-tag">10名内测用户验证需求</span><span class="result-tag">用户反馈良好</span>
     </div>
 
-    <!-- 核心数据 -->
     <div class="data-strip">
       <div class="d-item"><strong>10</strong><br><span>内测用户</span></div>
       <div class="d-item"><strong>38</strong><br><span>次迭代</span></div>
@@ -236,7 +227,6 @@
       <div class="d-item"><strong>2周</strong><br><span>开发周期</span></div>
     </div>
 
-    <!-- 产品设计 -->
     <div class="proj-block">
       <div class="proj-block-title">📌 产品设计与用户验证</div>
       <ul>
@@ -246,7 +236,6 @@
       </ul>
     </div>
 
-    <!-- 增长与运营 -->
     <div class="proj-block">
       <div class="proj-block-title">📌 增长与运营策略</div>
       <ul>
@@ -286,7 +275,7 @@
   <div class="section-title">✨ 自我评价</div>
   <div class="eval-item"><strong>跨学科 + 强自驱：</strong>音乐表演训练赋予独特的用户共情和场景感知力；独立从0设计并部署2个AI产品，累计15名内测用户验证需求，证明了快速学习与技术落地的能力。</div>
   <div class="eval-item"><strong>产品决策思维：</strong>不只是"会做功能"，而是能从用户问题→竞品分析→方案权衡→指标验证的闭环进行产品决策。理解AI产品的核心挑战：输出不确定性、成本控制、用户信任建立。</div>
-  <div class="eval-item"><strong>工程化意识：</strong>具备将产品需求转化为可落地技术方案的能力，注重代码质量（测试覆盖）、系统稳定性（错误处理+监控）、可观测性（埋点+健康检查）。</div>
+  <div class="eval-item"><strong>数据驱动：</strong>注重用数据验证产品假设，设计19种用户行为事件埋点，用真实用户反馈驱动产品迭代。</div>
 </div>
 
 <!-- 作品集链接 -->
