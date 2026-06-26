@@ -4,33 +4,6 @@ import { useState } from "react";
 // 产品配置
 const PRODUCTS = [
   {
-    key: "resume_diagnosis",
-    name: "简历诊断",
-    priceCNY: 0,
-    description: "5维度评分 + 优化建议",
-    icon: "📄",
-    category: "free",
-    features: ["每天3次", "5维度评分", "优化建议"],
-  },
-  {
-    key: "jd_match",
-    name: "JD匹配分析",
-    priceCNY: 0,
-    description: "匹配度百分比 + 关键词差距",
-    icon: "🎯",
-    category: "free",
-    features: ["每天3次", "关键词匹配", "差距分析"],
-  },
-  {
-    key: "interview_preview",
-    name: "模拟面试预览",
-    priceCNY: 0,
-    description: "每天1道面试题",
-    icon: "🎤",
-    category: "free",
-    features: ["每天1题", "AI评估", "回答思路"],
-  },
-  {
     key: "resume_rewrite",
     name: "AI改简历",
     priceCNY: 9.9,
@@ -101,13 +74,13 @@ const PRODUCTS = [
 export default function PricingPage() {
   const [showPayModal, setShowPayModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"wechat" | "alipay">("wechat");
 
   const handleBuy = (product: any) => {
     setSelectedProduct(product);
     setShowPayModal(true);
   };
 
-  const freeProducts = PRODUCTS.filter((p) => p.category === "free");
   const singleProducts = PRODUCTS.filter((p) => p.category === "single");
   const sprintProducts = PRODUCTS.filter((p) => p.category === "sprint");
   const lifetimeProduct = PRODUCTS.find((p) => p.category === "lifetime");
@@ -124,15 +97,17 @@ export default function PricingPage() {
       {/* 免费功能 */}
       <div className="mb-10">
         <h2 className="text-lg font-bold mb-4 text-green-700">✅ 免费功能（永久免费）</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {freeProducts.map((f, i) => (
-            <div
-              key={i}
-              className="bg-green-50 border border-green-200 rounded-xl p-4 text-center"
-            >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { name: "AI职业测评", desc: "每天3次", icon: "🎯" },
+            { name: "简历诊断", desc: "每天3次", icon: "📄" },
+            { name: "JD匹配分析", desc: "每天3次", icon: "🎯" },
+            { name: "模拟面试预览", desc: "每天1题", icon: "🎤" },
+          ].map((f, i) => (
+            <div key={i} className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
               <div className="text-2xl mb-1">{f.icon}</div>
               <div className="font-medium text-sm">{f.name}</div>
-              <div className="text-xs text-green-600">{f.description}</div>
+              <div className="text-xs text-green-600">{f.desc}</div>
             </div>
           ))}
         </div>
@@ -218,13 +193,6 @@ export default function PricingPage() {
             <div className="text-xs text-red-500 mb-4">
               限前500名 · 原价¥399
             </div>
-            <div className="flex flex-wrap justify-center gap-2 text-xs mb-4">
-              {["无限简历诊断", "无限AI改简历", "无限AI生成简历", "无限模拟面试", "无限JD匹配", "无限求职信", "无限职业规划", "面试真题库", "简历模板库"].map((f, i) => (
-                <span key={i} className="bg-white px-2 py-1 rounded-full border">
-                  ✓ {f}
-                </span>
-              ))}
-            </div>
             <button
               onClick={() => handleBuy(lifetimeProduct)}
               className="px-8 py-3 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 transition-colors"
@@ -243,6 +211,7 @@ export default function PricingPage() {
           <p><strong>支付流程</strong>：</p>
           <ol className="list-decimal list-inside space-y-1 ml-4">
             <li>点击"立即购买"按钮</li>
+            <li>选择支付方式（微信/支付宝）</li>
             <li>保存支付二维码图片</li>
             <li>打开微信/支付宝扫码支付</li>
             <li>截图支付凭证发送给客服</li>
@@ -250,29 +219,6 @@ export default function PricingPage() {
           </ol>
           <p><strong>客服微信</strong>：ai-career-tool</p>
           <p><strong>客服邮箱</strong>：support@ai-career-tool.com</p>
-        </div>
-      </div>
-
-      {/* FAQ */}
-      <div className="bg-gray-50 rounded-xl p-6 md:p-8">
-        <h2 className="text-lg font-bold mb-4">常见问题</h2>
-        <div className="space-y-4 text-sm">
-          <div>
-            <h3 className="font-medium mb-1">免费版够用吗？</h3>
-            <p className="text-gray-600">免费版每天可以做3次简历诊断+3次JD匹配+1道模拟面试题，足够日常使用。如果需要AI直接帮你改简历或完整模拟面试，可以单次付费。</p>
-          </div>
-          <div>
-            <h3 className="font-medium mb-1">单次付费后能用多久？</h3>
-            <p className="text-gray-600">单次付费的功能永久有效，不限时间。比如购买一次AI改简历，生成的简历你可以永久使用。</p>
-          </div>
-          <div>
-            <h3 className="font-medium mb-1">冲刺卡和终身会员有什么区别？</h3>
-            <p className="text-gray-600">冲刺卡是短期无限使用（周/月/季），适合正在找工作的用户。终身会员是一次付费永久使用所有功能，适合长期需要的用户。</p>
-          </div>
-          <div>
-            <h3 className="font-medium mb-1">支付后多久开通？</h3>
-            <p className="text-gray-600">发送支付凭证后，客服会在5分钟内开通权限。如遇高峰期，可能需要等待15分钟。</p>
-          </div>
         </div>
       </div>
 
@@ -287,19 +233,45 @@ export default function PricingPage() {
               <p className="text-2xl font-bold text-blue-600">¥{selectedProduct.priceCNY}</p>
             </div>
 
-            {/* 支付二维码占位 */}
-            <div className="bg-gray-100 rounded-xl p-8 text-center mb-4">
-              <div className="text-4xl mb-2">📱</div>
-              <p className="text-sm text-gray-500">请截图此页面</p>
-              <p className="text-xs text-gray-400 mt-1">使用微信或支付宝扫码支付</p>
+            {/* 支付方式切换 */}
+            <div className="flex border rounded-lg overflow-hidden mb-4">
+              <button
+                onClick={() => setPaymentMethod("wechat")}
+                className={`flex-1 py-2 text-sm font-medium ${paymentMethod === "wechat" ? "bg-green-600 text-white" : "bg-gray-50 text-gray-600"}`}
+              >
+                💬 微信支付
+              </button>
+              <button
+                onClick={() => setPaymentMethod("alipay")}
+                className={`flex-1 py-2 text-sm font-medium ${paymentMethod === "alipay" ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-600"}`}
+              >
+                💳 支付宝
+              </button>
             </div>
 
-            {/* 支付说明 */}
+            {/* 支付二维码 */}
+            <div className="bg-gray-100 rounded-xl p-4 text-center mb-4">
+              {paymentMethod === "wechat" ? (
+                <div>
+                  <div className="text-4xl mb-2">📱</div>
+                  <p className="text-sm text-gray-600 mb-2">微信扫码支付</p>
+                  <p className="text-xs text-gray-400">请使用微信扫一扫</p>
+                </div>
+              ) : (
+                <div>
+                  <div className="text-4xl mb-2">💳</div>
+                  <p className="text-sm text-gray-600 mb-2">支付宝扫码支付</p>
+                  <p className="text-xs text-gray-400">请使用支付宝扫一扫</p>
+                </div>
+              )}
+            </div>
+
+            {/* 支付步骤 */}
             <div className="bg-blue-50 rounded-lg p-4 mb-4">
               <h4 className="text-sm font-bold text-blue-800 mb-2">📌 支付步骤</h4>
               <ol className="text-xs text-blue-700 space-y-1">
                 <li>1. 截图此页面（包含产品信息和二维码）</li>
-                <li>2. 打开微信或支付宝，扫描二维码支付</li>
+                <li>2. 打开{paymentMethod === "wechat" ? "微信" : "支付宝"}，扫描二维码支付</li>
                 <li>3. 支付完成后，截图支付凭证</li>
                 <li>4. 发送给客服微信：ai-career-tool</li>
                 <li>5. 5分钟内开通权限</li>
