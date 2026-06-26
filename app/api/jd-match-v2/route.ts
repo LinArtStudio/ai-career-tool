@@ -62,11 +62,11 @@ export async function POST(req: NextRequest) {
         { role: "system", content: JD_MATCH_PROMPT },
         { 
           role: "user", 
-          content: `请分析以下简历和JD的匹配度：\n\n【简历】\n${truncatedResume}\n\n【岗位描述(JD)】\n${truncatedJd}` 
+          content: `分析简历和JD匹配度：\n\n【简历】\n${truncatedResume}\n\n【JD】\n${truncatedJd}` 
         },
       ],
       { 
-        max_tokens: 4000, 
+        max_tokens: 2000, 
         temperature: 0.3,
         json_mode: true 
       }
