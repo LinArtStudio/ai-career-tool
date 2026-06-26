@@ -4,15 +4,6 @@ import { useState } from "react";
 // 产品配置
 const PRODUCTS = [
   {
-    key: "quiz",
-    name: "AI职业竞争力测评",
-    priceCNY: 0,
-    description: "5分钟了解你的AI能力水平",
-    icon: "🎯",
-    category: "free",
-    features: ["能力图谱", "个性化路径", "短板分析"],
-  },
-  {
     key: "resume_diagnosis",
     name: "简历诊断",
     priceCNY: 0,
@@ -42,43 +33,40 @@ const PRODUCTS = [
   {
     key: "resume_rewrite",
     name: "AI改简历",
-    priceCNY: 71.3,
+    priceCNY: 9.9,
     description: "一键优化简历，AI专业改写",
     icon: "✨",
     category: "single",
-    hot: false,
-  },
-  {
-    key: "resume_generate",
-    name: "AI生成简历",
-    priceCNY: 143.3,
-    description: "从零生成完整专业简历",
-    icon: "📝",
-    category: "single",
-    hot: false,
   },
   {
     key: "interview_full",
     name: "AI模拟面试",
-    priceCNY: 143.3,
+    priceCNY: 19.9,
     description: "5道定制题+评分+面试官视角",
     icon: "🎤",
     category: "single",
     hot: true,
   },
   {
+    key: "jd_match_full",
+    name: "JD智能诊断",
+    priceCNY: 9.9,
+    description: "多维度匹配+差距分析+面试预测",
+    icon: "🎯",
+    category: "single",
+  },
+  {
     key: "cover_letter",
     name: "AI求职信",
-    priceCNY: 71.3,
+    priceCNY: 9.9,
     description: "基于简历+JD定制求职信",
     icon: "✉️",
     category: "single",
-    hot: false,
   },
   {
     key: "sprint_weekly",
     name: "冲刺卡-周卡",
-    priceCNY: 143.3,
+    priceCNY: 19.9,
     description: "全功能无限使用7天",
     icon: "🔥",
     category: "sprint",
@@ -86,7 +74,7 @@ const PRODUCTS = [
   {
     key: "sprint_monthly",
     name: "冲刺卡-月卡",
-    priceCNY: 287.3,
+    priceCNY: 39.9,
     description: "全功能无限使用30天",
     icon: "⚡",
     category: "sprint",
@@ -95,7 +83,7 @@ const PRODUCTS = [
   {
     key: "sprint_quarterly",
     name: "冲刺卡-季卡",
-    priceCNY: 575.3,
+    priceCNY: 99.9,
     description: "全功能无限使用90天",
     icon: "💎",
     category: "sprint",
@@ -103,7 +91,7 @@ const PRODUCTS = [
   {
     key: "lifetime",
     name: "终身会员",
-    priceCNY: 921.6,
+    priceCNY: 199,
     description: "一次付费，永久使用所有功能",
     icon: "👑",
     category: "lifetime",
@@ -111,19 +99,12 @@ const PRODUCTS = [
 ];
 
 export default function PricingPage() {
-  const [loading, setLoading] = useState<string | null>(null);
-  const [showQRCode, setShowQRCode] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<string>("");
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
-  const handleBuy = async (productKey: string) => {
-    // 暂时显示赞赏码
-    setSelectedProduct(productKey);
-    setShowQRCode(true);
-  };
-
-  const closeQRCode = () => {
-    setShowQRCode(false);
-    setSelectedProduct("");
+  const handleBuy = (product: any) => {
+    setSelectedProduct(product);
+    setShowPayModal(true);
   };
 
   const freeProducts = PRODUCTS.filter((p) => p.category === "free");
@@ -136,55 +117,14 @@ export default function PricingPage() {
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-2">
         💎 选择适合你的方案
       </h1>
-      <p className="text-gray-600 text-center mb-6 text-sm md:text-base">
+      <p className="text-gray-600 text-center mb-10 text-sm md:text-base">
         基础功能永久免费，按需付费，无订阅压力
       </p>
 
-      {/* 免费试用引导 */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 mb-8">
-        <div className="flex flex-col md:flex-row items-center gap-6">
-          <div className="flex-1">
-            <h2 className="text-lg font-bold text-green-800 mb-2">
-              🎁 免费试用付费功能
-            </h2>
-            <p className="text-green-700 mb-4">
-              新用户注册即可免费体验：
-            </p>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-sm text-green-700">
-                <span className="text-green-500">✓</span> AI模拟面试 1次（价值¥19.9）
-              </li>
-              <li className="flex items-center gap-2 text-sm text-green-700">
-                <span className="text-green-500">✓</span> AI改简历 1次（价值¥9.9）
-              </li>
-              <li className="flex items-center gap-2 text-sm text-green-700">
-                <span className="text-green-500">✓</span> JD智能诊断 3次（价值¥29.7）
-              </li>
-              <li className="flex items-center gap-2 text-sm text-green-700">
-                <span className="text-green-500">✓</span> AI职业竞争力测评（免费）
-              </li>
-            </ul>
-          </div>
-          <div className="text-center">
-            <a
-              href="/quiz"
-              className="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition"
-            >
-              🎯 免费测评，领取试用额度
-            </a>
-            <p className="text-xs text-green-600 mt-2">
-              总价值 ¥59.5 · 限时免费
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* 免费功能 */}
       <div className="mb-10">
-        <h2 className="text-lg font-bold mb-4 text-green-700">
-          ✅ 免费功能（永久免费）
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <h2 className="text-lg font-bold mb-4 text-green-700">✅ 免费功能（永久免费）</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {freeProducts.map((f, i) => (
             <div
               key={i}
@@ -200,9 +140,7 @@ export default function PricingPage() {
 
       {/* 单次付费 */}
       <div className="mb-10">
-        <h2 className="text-lg font-bold mb-4 text-blue-700">
-          🎯 单次付费（即用即走）
-        </h2>
+        <h2 className="text-lg font-bold mb-4 text-blue-700">🎯 单次付费（即用即走）</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {singleProducts.map((product) => (
             <div
@@ -221,15 +159,12 @@ export default function PricingPage() {
               <div className="text-2xl font-bold text-blue-600 my-2">
                 ¥{product.priceCNY}
               </div>
-              <div className="text-xs text-gray-500 mb-3">
-                {product.description}
-              </div>
+              <div className="text-xs text-gray-500 mb-3">{product.description}</div>
               <button
-                onClick={() => handleBuy(product.key)}
-                disabled={loading === product.key}
-                className="w-full py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                onClick={() => handleBuy(product)}
+                className="w-full py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
               >
-                {loading === product.key ? "处理中..." : "立即购买"}
+                立即购买
               </button>
             </div>
           ))}
@@ -238,9 +173,7 @@ export default function PricingPage() {
 
       {/* 冲刺卡 */}
       <div className="mb-10">
-        <h2 className="text-lg font-bold mb-4 text-purple-700">
-          🔥 求职冲刺卡（全功能无限）
-        </h2>
+        <h2 className="text-lg font-bold mb-4 text-purple-700">🔥 求职冲刺卡（全功能无限）</h2>
         <div className="grid grid-cols-3 gap-3">
           {sprintProducts.map((product) => (
             <div
@@ -258,15 +191,12 @@ export default function PricingPage() {
               <div className="text-3xl font-bold text-purple-600">
                 ¥{product.priceCNY}
               </div>
-              <div className="text-xs text-gray-400 mt-2 mb-3">
-                {product.description}
-              </div>
+              <div className="text-xs text-gray-400 mt-2 mb-3">{product.description}</div>
               <button
-                onClick={() => handleBuy(product.key)}
-                disabled={loading === product.key}
-                className="w-full py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                onClick={() => handleBuy(product)}
+                className="w-full py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 transition-colors"
               >
-                {loading === product.key ? "处理中..." : "立即购买"}
+                立即购买
               </button>
             </div>
           ))}
@@ -286,85 +216,40 @@ export default function PricingPage() {
               一次付费 · 永久使用 · 所有功能
             </div>
             <div className="text-xs text-red-500 mb-4">
-              限前500名 · 原价¥2145.6
+              限前500名 · 原价¥399
             </div>
             <div className="flex flex-wrap justify-center gap-2 text-xs mb-4">
-              {[
-                "无限简历诊断",
-                "无限AI改简历",
-                "无限AI生成简历",
-                "无限模拟面试",
-                "无限JD匹配",
-                "无限求职信",
-                "无限职业规划",
-                "面试真题库",
-                "简历模板库",
-              ].map((f, i) => (
-                <span
-                  key={i}
-                  className="bg-white px-2 py-1 rounded-full border"
-                >
+              {["无限简历诊断", "无限AI改简历", "无限AI生成简历", "无限模拟面试", "无限JD匹配", "无限求职信", "无限职业规划", "面试真题库", "简历模板库"].map((f, i) => (
+                <span key={i} className="bg-white px-2 py-1 rounded-full border">
                   ✓ {f}
                 </span>
               ))}
             </div>
             <button
-              onClick={() => handleBuy(lifetimeProduct.key)}
-              disabled={loading === lifetimeProduct.key}
-              className="px-8 py-3 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              onClick={() => handleBuy(lifetimeProduct)}
+              className="px-8 py-3 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 transition-colors"
             >
-              {loading === lifetimeProduct.key ? "处理中..." : "立即开通"}
+              立即开通
             </button>
           </div>
         </div>
       )}
 
-      {/* 价值对比 */}
-      <div className="bg-gray-50 rounded-xl p-6 md:p-8 mb-6">
-        <h2 className="text-lg font-bold mb-4">💡 为什么选择我们？</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-medium mb-2 text-green-700">✅ 我们的优势</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>• 免费测评，了解你的AI能力水平</li>
-              <li>• 个性化学习路径，针对性提升</li>
-              <li>• 项目制学习，产出可展示的作品集</li>
-              <li>• 面试问题预测（独家功能）</li>
-              <li>• 150+大厂真题，覆盖字节、腾讯、阿里</li>
-              <li>• 价格远低于培训机构（¥1-3万）</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-medium mb-2 text-red-700">❌ 其他平台的问题</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>• 培训机构价格高（¥1-3万）</li>
-              <li>• 在线课程与求职脱节</li>
-              <li>• 求职平台缺乏学习功能</li>
-              <li>• 知识碎片化，不成体系</li>
-              <li>• 缺乏实战项目和作品集</li>
-              <li>• 无个性化路径推荐</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
       {/* 支付说明 */}
       <div className="bg-blue-50 rounded-xl p-6 md:p-8 mb-6">
-        <h2 className="text-lg font-bold mb-4 text-blue-800">
-          💳 支付说明
-        </h2>
-        <div className="space-y-2 text-sm text-blue-700">
-          <p>
-            • 支持{" "}
-            <strong>Visa、Mastercard、PayPal、Apple Pay、Google Pay</strong>{" "}
-            等国际支付方式
-          </p>
-          <p>
-            • <strong>支付宝、微信支付</strong> 即将支持
-          </p>
-          <p>• 支付由 Creem 安全处理，符合 PCI DSS 标准</p>
-          <p>• 支付成功后立即开通权限，无需等待</p>
-          <p>• 支持 190+ 国家/地区的税务合规</p>
+        <h2 className="text-lg font-bold mb-4 text-blue-800">💳 支付说明</h2>
+        <div className="space-y-3 text-sm text-blue-700">
+          <p><strong>支付方式</strong>：微信扫码支付 / 支付宝扫码支付</p>
+          <p><strong>支付流程</strong>：</p>
+          <ol className="list-decimal list-inside space-y-1 ml-4">
+            <li>点击"立即购买"按钮</li>
+            <li>保存支付二维码图片</li>
+            <li>打开微信/支付宝扫码支付</li>
+            <li>截图支付凭证发送给客服</li>
+            <li>5分钟内开通权限</li>
+          </ol>
+          <p><strong>客服微信</strong>：ai-career-tool</p>
+          <p><strong>客服邮箱</strong>：support@ai-career-tool.com</p>
         </div>
       </div>
 
@@ -374,66 +259,57 @@ export default function PricingPage() {
         <div className="space-y-4 text-sm">
           <div>
             <h3 className="font-medium mb-1">免费版够用吗？</h3>
-            <p className="text-gray-600">
-              免费版每天可以做3次简历诊断+3次JD匹配+1道模拟面试题+1次职业规划，足够日常使用。如果需要AI直接帮你改简历或完整模拟面试，可以单次付费。
-            </p>
+            <p className="text-gray-600">免费版每天可以做3次简历诊断+3次JD匹配+1道模拟面试题，足够日常使用。如果需要AI直接帮你改简历或完整模拟面试，可以单次付费。</p>
           </div>
           <div>
             <h3 className="font-medium mb-1">单次付费后能用多久？</h3>
-            <p className="text-gray-600">
-              单次付费的功能永久有效，不限时间。比如购买一次AI改简历，生成的简历你可以永久使用。
-            </p>
+            <p className="text-gray-600">单次付费的功能永久有效，不限时间。比如购买一次AI改简历，生成的简历你可以永久使用。</p>
           </div>
           <div>
-            <h3 className="font-medium mb-1">
-              冲刺卡和终身会员有什么区别？
-            </h3>
-            <p className="text-gray-600">
-              冲刺卡是短期无限使用（周/月/季），适合正在找工作的用户。终身会员是一次付费永久使用所有功能，适合长期需要的用户。
-            </p>
+            <h3 className="font-medium mb-1">冲刺卡和终身会员有什么区别？</h3>
+            <p className="text-gray-600">冲刺卡是短期无限使用（周/月/季），适合正在找工作的用户。终身会员是一次付费永久使用所有功能，适合长期需要的用户。</p>
           </div>
           <div>
-            <h3 className="font-medium mb-1">如何免费试用付费功能？</h3>
-            <p className="text-gray-600">
-              注册账号后，即可免费体验AI模拟面试1次、AI改简历1次、JD智能诊断3次。总价值¥59.5，限时免费。
-            </p>
+            <h3 className="font-medium mb-1">支付后多久开通？</h3>
+            <p className="text-gray-600">发送支付凭证后，客服会在5分钟内开通权限。如遇高峰期，可能需要等待15分钟。</p>
           </div>
         </div>
       </div>
 
-      {/* 赞赏码弹窗 */}
-      {showQRCode && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closeQRCode}>
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+      {/* 支付弹窗 */}
+      {showPayModal && selectedProduct && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowPayModal(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg font-bold text-center mb-4">💳 扫码支付</h3>
             
             <div className="text-center mb-4">
-              <p className="text-sm text-gray-600 mb-2">您选择了：<strong>{selectedProduct}</strong></p>
-              <p className="text-xs text-gray-500">请使用微信或支付宝扫描下方二维码支付</p>
+              <p className="text-sm text-gray-600 mb-2">您选择了：<strong>{selectedProduct.name}</strong></p>
+              <p className="text-2xl font-bold text-blue-600">¥{selectedProduct.priceCNY}</p>
             </div>
 
-            {/* 赞赏码占位 */}
+            {/* 支付二维码占位 */}
             <div className="bg-gray-100 rounded-xl p-8 text-center mb-4">
               <div className="text-4xl mb-2">📱</div>
-              <p className="text-sm text-gray-500">赞赏码位置</p>
-              <p className="text-xs text-gray-400 mt-1">（请替换为您的赞赏码图片）</p>
+              <p className="text-sm text-gray-500">请截图此页面</p>
+              <p className="text-xs text-gray-400 mt-1">使用微信或支付宝扫码支付</p>
             </div>
 
             {/* 支付说明 */}
             <div className="bg-blue-50 rounded-lg p-4 mb-4">
-              <h4 className="text-sm font-bold text-blue-800 mb-2">📌 支付说明</h4>
+              <h4 className="text-sm font-bold text-blue-800 mb-2">📌 支付步骤</h4>
               <ol className="text-xs text-blue-700 space-y-1">
-                <li>1. 扫码支付对应金额</li>
-                <li>2. 截图支付凭证</li>
-                <li>3. 发送到客服微信：ai-career-tool</li>
-                <li>4. 5分钟内开通权限</li>
+                <li>1. 截图此页面（包含产品信息和二维码）</li>
+                <li>2. 打开微信或支付宝，扫描二维码支付</li>
+                <li>3. 支付完成后，截图支付凭证</li>
+                <li>4. 发送给客服微信：ai-career-tool</li>
+                <li>5. 5分钟内开通权限</li>
               </ol>
             </div>
 
             {/* 按钮 */}
             <div className="flex gap-2">
               <button
-                onClick={closeQRCode}
+                onClick={() => setShowPayModal(false)}
                 className="flex-1 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50"
               >
                 取消
