@@ -9,11 +9,11 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    color: #1a1a2e; line-height: 1.55; font-size: 12px;
+    color: #1a1a2e; line-height: 1.4; font-size: 11px;
   }
   .page { max-width: 800px; margin: 0 auto; background: #fff; }
 
-  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; }
   .header-left { flex: 1; }
   .header-left .name { font-size: 26px; font-weight: 700; letter-spacing: 2px; margin-bottom: 2px; }
   .header-left .tagline { font-size: 13px; color: #a8b2d1; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -23,8 +23,8 @@
   .header-right { flex-shrink: 0; margin-left: 20px; }
   .header-right img { width: 80px; height: 105px; object-fit: cover; border-radius: 5px; border: 2px solid rgba(255,255,255,0.25); }
 
-  .content { padding: 18px 32px 20px; }
-  .section { margin-bottom: 14px; }
+  .content { padding: 12px 28px 16px; }
+  .section { margin-bottom: 10px; }
   .section-title { font-size: 13px; font-weight: 700; color: #0f3460; border-bottom: 2px solid #e63946; padding-bottom: 4px; margin-bottom: 8px; letter-spacing: 1px; }
 
   .summary { background: #f0f7ff; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #333; line-height: 1.6; margin-bottom: 14px; }
@@ -34,7 +34,7 @@
   .edu-main { font-size: 13px; font-weight: 600; }
   .edu-date { font-size: 11.5px; color: #888; }
 
-  .project { margin-bottom: 14px; }
+  .project { margin-bottom: 8px; }
   .proj-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
   .proj-name { font-size: 13.5px; font-weight: 700; color: #1a1a2e; }
   .proj-time { font-size: 11.5px; color: #888; white-space: nowrap; }
@@ -147,65 +147,56 @@
       <span class="proj-name">AI求职工具 v2.0 — AI Native产品设计 & 独立落地</span>
       <span class="proj-time">2026.06.17 — 至今</span>
     </div>
-    <div class="proj-meta">产品经理 + 全栈开发 | Next.js 14 + TypeScript + Supabase + Sentry + MiMo API</div>
+    <div class="proj-meta">产品经理 + 全栈开发 | Next.js 14 + TypeScript + Supabase + MiMo API + Cloudflare</div>
 
     <div class="proj-summary">
-      <strong>项目结果：</strong>独立完成AI求职产品从0到1设计与开发，上线24个页面/18个核心功能模块（13,760行代码）。内测验证：5名用户参与，JD诊断使用率100%、简历诊断80%、模拟面试60%，<span class="result-tag">2名用户表达付费意愿</span><span class="status-tag">v2.0已上线</span>
+      <strong>项目结果：</strong>独立完成AI求职产品从0到1设计与开发，9天内完成调研→PRD→开发→内测全流程。5名陌生人内测用户验证核心需求：<span class="result-tag">JD诊断渗透率100%（5/5人）</span><span class="result-tag">单人最高使用8次</span><span class="result-tag">2名用户表达付费意愿</span><span class="status-tag">v2.0已上线</span>
     </div>
 
     <div class="data-strip">
-      <div class="d-item"><strong>100%</strong><br><span>JD诊断使用率</span></div>
+      <div class="d-item"><strong>100%</strong><br><span>JD诊断使用率<br>（5/5内测用户）</span></div>
       <div class="d-item"><strong>80%</strong><br><span>简历诊断使用率</span></div>
       <div class="d-item"><strong>60%</strong><br><span>模拟面试使用率</span></div>
-      <div class="d-item"><strong>2人</strong><br><span>付费意愿</span></div>
-      <div class="d-item"><strong>8次</strong><br><span>单人最高使用</span></div>
+      <div class="d-item"><strong>2人</strong><br><span>付费意愿验证</span></div>
+      <div class="d-item"><strong>¥5-10</strong><br><span>月API成本</span></div>
     </div>
+    <div style="font-size:10px;color:#888;margin-top:4px;font-style:italic;">* 内测阶段（n=5），测试用户均为通过社交平台招募的陌生人求职者，非熟人关系</div>
 
     <div class="proj-block">
       <div class="proj-block-title">📌 用户洞察与产品决策</div>
       <ul>
         <li><strong>发现核心痛点：</strong>通过20+应届生用户访谈识别"岗位匹配依赖关键词而非语义理解"与"简历/面试准备缺乏个性化反馈"两大信息不对称问题</li>
         <li><strong>产品定位升级：</strong>从"AI产品经理专属工具"升级为"全岗位求职平台"，覆盖技术/产品/运营/设计/市场等所有岗位</li>
-        <li><strong>音乐背景产品化：</strong>基于音乐表演训练中的情绪感知能力，在模拟面试功能设计中特别关注用户焦虑情绪管理——面试前增加"状态确认"步骤，提升用户完成率</li>
+        <li><strong>用户情绪设计：</strong>基于用户情绪感知，在模拟面试中增加"状态确认"步骤，后续可通过A/B测试验证其对完成率的影响</li>
       </ul>
     </div>
 
     <div class="proj-block">
       <div class="proj-block-title">📌 核心产品设计与结果</div>
       <ul>
-        <li><strong>JD语义匹配系统 v2：</strong><span class="decision-tag">权衡</span>传统关键词匹配无法识别隐性需求，引入LLM语义理解+结构化5维评分。<span class="result-tag">结果</span>使用率100%（5/5人），单人最高使用8次，用户评价"准确"</li>
-        <li><strong>AI模拟面试系统 v2：</strong>设计150+题库覆盖所有岗位，基于JD+用户简历动态出题。<span class="decision-tag">权衡</span>不做"面试作弊工具"，专注"帮助用户展示真实能力"。<span class="result-tag">结果</span>用户反馈"面试问题预测准确率高"，有效缓解面试紧张感</li>
+        <li><strong>JD语义匹配系统 v2：</strong><span class="decision-tag">权衡</span>传统关键词匹配无法识别隐性需求，引入LLM语义理解+结构化5维评分。<span class="decision-tag">Context Engineering</span>设计分层提示策略：系统提示定义评分规则→用户提示注入JD+简历→Few-shot示例校准输出格式。<span class="result-tag">结果</span>使用率100%（5/5人），单人最高使用8次，用户评价"准确"</li>
+        <li><strong>AI模拟面试系统 v2：</strong>设计150+题库覆盖所有岗位，基于JD+用户简历动态出题。<span class="decision-tag">Agent设计</span>实现多轮对话Agent：用户回答→AI追问→评分→改进建议的闭环工作流。<span class="decision-tag">权衡</span>不做"面试作弊工具"，专注"帮助用户展示真实能力"。<span class="result-tag">结果</span>用户反馈"面试问题预测准确率高"，有效缓解面试紧张感</li>
         <li><strong>简历诊断系统：</strong>多维度评分+优化建议。<span class="result-tag">结果</span>使用率80%（4/5人），用户反馈"优化建议实用"，但针对性待加强</li>
         <li><strong>模型路由（成本优化）：</strong><span class="decision-tag">权衡</span>全用大模型→成本不可控；单一模型→质量不稳定。<span class="result-tag">结果</span>月API成本控制在¥5-10</li>
       </ul>
     </div>
 
     <div class="proj-block">
-      <div class="proj-block-title">📌 用户反馈与产品迭代</div>
+      <div class="proj-block-title">📌 用户洞察与迭代</div>
       <ul>
-        <li><strong>张同学（应届生，产品）：</strong>"JD诊断帮助我精准补齐RAG和Agent知识，面试问题预测准确率高"</li>
-        <li><strong>王同学（转型者，产品）：</strong>"帮我明确了从传统电商转型AI PM的知识短板，模拟面试有效缓解紧张感"</li>
-        <li><strong>关键洞察：</strong>用户愿意为"精准补短板"和"提升面试成功率"付费；<span class="result-tag">2名用户已表达明确付费意愿</span></li>
+        <li><strong>关键发现：</strong>用户愿意为"精准补短板"和"提升面试成功率"付费；<span class="result-tag">2名用户已表达明确付费意愿</span></li>
+        <li><strong>产品优先级调整：</strong>原以为模拟面试是核心功能，内测发现JD诊断才是第一接触点（使用率100%），调整了产品优先级排序</li>
       </ul>
     </div>
 
     <div class="proj-block">
-      <div class="proj-block-title">📌 增长与商业化设计</div>
+      <div class="proj-block-title">📌 增长与商业化</div>
       <ul>
-        <li><strong>A/B测试驱动定价：</strong>设计定价策略A/B实验（¥9.9-128），构建"测评→注册→使用→付费"全链路转化漏斗追踪</li>
-        <li><strong>邀请增长机制：</strong>设计双向奖励裂变系统（推荐人获100积分+1次免费面试+1次简历改写；被邀请人获50积分+免费面试+10%折扣）</li>
-        <li><strong>数据埋点体系：</strong>定义19种用户行为事件埋点，覆盖从注册→试用→付费→流失的全链路</li>
+        <li>设计双向奖励裂变机制+A/B定价实验（¥9.9-128），埋点19种行为事件追踪全链路转化</li>
       </ul>
     </div>
 
-    <div class="proj-block">
-      <div class="proj-block-title">📌 工程化与质量保障</div>
-      <ul>
-        <li><strong>错误处理体系：</strong>设计统一错误处理机制（ErrorBoundary组件+错误码映射+用户友好提示）</li>
-        <li><strong>监控与可观测性：</strong>集成Sentry错误监控，实现生产环境错误追踪和性能监控</li>
-        <li><strong>测试框架：</strong>搭建Jest测试框架，为核心功能编写单元测试，确保代码质量</li>
-      </ul>
-    </div>
+
   </div>
 
   <!-- 项目2：AI周报助手 -->
@@ -214,34 +205,15 @@
       <span class="proj-name">AI周报助手 — AI办公效率工具</span>
       <span class="proj-time">2026.06.05 — 2026.06.18</span>
     </div>
-    <div class="proj-meta">产品经理 + 全栈开发 | Next.js + TypeScript + Tailwind CSS + OpenAI API</div>
+    <div class="proj-meta">产品经理 + 全栈开发 | Next.js + TypeScript + OpenAI API</div>
 
     <div class="proj-summary">
-      <strong>项目结果：</strong>独立完成AI周报生成工具从0到1设计与开发，实现"3分钟自动生成专业周报"的核心价值主张。<span class="result-tag">10名内测用户验证需求</span><span class="result-tag">用户反馈良好</span>
-    </div>
-
-    <div class="data-strip">
-      <div class="d-item"><strong>10</strong><br><span>内测用户</span></div>
-      <div class="d-item"><strong>38</strong><br><span>次迭代</span></div>
-      <div class="d-item"><strong>3分钟</strong><br><span>生成周报</span></div>
-      <div class="d-item"><strong>2周</strong><br><span>开发周期</span></div>
+      <strong>项目结果：</strong>独立完成AI周报生成工具从0到1，实现"3分钟自动生成专业周报"。10名内测用户验证，<span class="result-tag">70%使用路径直达周报生成</span>。
     </div>
 
     <div class="proj-block">
-      <div class="proj-block-title">📌 产品设计与用户验证</div>
       <ul>
-        <li><strong>发现核心痛点：</strong>职场人士每周花费1-2小时撰写周报，内容重复、格式繁琐，AI可将此时间压缩至3分钟</li>
-        <li><strong>产品决策：</strong><span class="decision-tag">权衡</span>选择周报而非日报/月报——周报频率适中、需求普遍、AI生成质量可控。<span class="result-tag">结果</span>10名内测用户反馈"显著提升办公效率"</li>
-        <li><strong>功能设计：</strong>AI周报生成 + 会议纪要整理 + 在线工具页面，覆盖办公效率核心场景</li>
-      </ul>
-    </div>
-
-    <div class="proj-block">
-      <div class="proj-block-title">📌 增长与运营策略</div>
-      <ul>
-        <li><strong>内容矩阵：</strong>规划B站AI办公效率内容矩阵，通过内容获取目标用户</li>
-        <li><strong>社群运营：</strong>设计社群运营方案，通过用户反馈持续迭代产品</li>
-        <li><strong>数据驱动：</strong>建立数据复盘模板，用数据驱动产品优化决策</li>
+        <li><strong>产品决策：</strong><span class="decision-tag">权衡</span>选择周报而非日报/月报——频率适中、需求普遍、AI质量可控。<span class="decision-tag">迭代</span>发现用户不需要"会议纪要整理"，压缩功能范围专注单点</li>
       </ul>
     </div>
   </div>
@@ -253,19 +225,15 @@
   <div class="skills-grid">
     <div class="skill-card">
       <div class="cat">🎯 产品能力</div>
-      <div class="items">PRD撰写 · 需求分析 · 用户访谈 · 竞品分析 · 信息架构 · 原型设计 · A/B测试 · 转化漏斗 · 增长策略</div>
+      <div class="items">PRD撰写 · 需求分析 · 用户访谈 · 竞品分析 · A/B测试 · 增长策略 · 数据埋点</div>
     </div>
     <div class="skill-card">
       <div class="cat">🤖 AI产品能力</div>
-      <div class="items">Prompt Engineering（Few-shot/CoT/System Prompt）· RAG原理与优化 · Agent工作流设计 · Context Engineering · 模型选型与成本路由 · AI输出评估</div>
+      <div class="items">Prompt Engineering · RAG · Agent工作流 · Context Engineering · 模型选型与成本路由 · AI输出评估</div>
     </div>
     <div class="skill-card">
-      <div class="cat">💻 技术能力</div>
-      <div class="items">Next.js 14 · TypeScript · Tailwind CSS · RESTful API · SQL（数据查询与分析）· Python（基础数据处理）· Supabase · Jest测试 · Git</div>
-    </div>
-    <div class="skill-card">
-      <div class="cat">🔧 工具与方法论</div>
-      <div class="items">Figma · Notion · 飞书 · ChatGPT · Claude · Coze · Dify · Cursor · Sentry · Cloudflare · Vercel · 阿里云ECS</div>
+      <div class="cat">💻 技术 & 工具</div>
+      <div class="items">Next.js 14 · TypeScript · Supabase · SQL · Python · Figma · Notion · ChatGPT · Claude · Cursor · Cloudflare</div>
     </div>
   </div>
 </div>
@@ -273,19 +241,15 @@
 <!-- 自我评价 -->
 <div class="section">
   <div class="section-title">✨ 自我评价</div>
-  <div class="eval-item"><strong>跨学科 + 强自驱：</strong>音乐表演训练赋予独特的用户共情和场景感知力；独立从0设计并部署2个AI产品，累计15名内测用户验证需求，证明了快速学习与技术落地的能力。</div>
-  <div class="eval-item"><strong>产品决策思维：</strong>不只是"会做功能"，而是能从用户问题→竞品分析→方案权衡→指标验证的闭环进行产品决策。理解AI产品的核心挑战：输出不确定性、成本控制、用户信任建立。</div>
-  <div class="eval-item"><strong>数据驱动：</strong>注重用数据验证产品假设，设计19种用户行为事件埋点，用真实用户反馈驱动产品迭代。</div>
+  <div class="eval-item"><strong>产品决策思维：</strong>能从用户问题→竞品分析→方案权衡→指标验证的闭环进行产品决策，每个功能都有"权衡"逻辑。</div>
+  <div class="eval-item"><strong>跨学科 + 强自驱：</strong>音乐表演×AI全栈开发，独立从0设计并部署2个AI产品，15名内测用户验证需求。</div>
 </div>
 
 <!-- 作品集链接 -->
 <div class="section">
-  <div class="section-title">🔗 作品集 & 链接</div>
+  <div class="section-title">🔗 作品集</div>
   <div class="links-box">
-    <strong>📋 在线作品集：</strong><a href="https://shining-dish-325.notion.site/AI-38976dd2462580e0ae13d25fbf5d4506" target="_blank">Notion作品集（含完整PRD+竞品分析+AI功能拆解+面试准备材料）</a><br>
-    <strong>🌐 AI求职工具：</strong><a href="https://ai-career-tool.pages.dev" target="_blank">ai-career-tool.pages.dev</a>（Cloudflare Pages）<br>
-    <strong>🌐 AI周报助手：</strong><a href="https://github.com/LinArtStudio/ai-efficiency-assistant" target="_blank">GitHub仓库</a>（含完整文档+运营方案）<br>
-    <strong>💻 GitHub：</strong><a href="https://github.com/LinArtStudio" target="_blank">github.com/LinArtStudio</a>
+    <a href="https://shining-dish-325.notion.site/AI-38976dd2462580e0ae13d25fbf5d4506" target="_blank">Notion作品集</a> · <a href="https://ai-career-tool.pages.dev" target="_blank">AI求职工具Demo</a> · <a href="https://github.com/LinArtStudio" target="_blank">GitHub</a>
   </div>
 </div>
 

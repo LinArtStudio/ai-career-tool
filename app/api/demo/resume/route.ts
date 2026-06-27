@@ -6,6 +6,14 @@ const DIAGNOSE = `简历专家。分析简历，输出JSON：{score:0-100,summar
 
 const REWRITE = `简历优化专家。根据简历和诊断，输出优化后的完整简历JSON：{optimized_resume:"完整简历文本",key_improvements:["改进1","改进2","改进3"]}`;
 
+const ATS_CHECK = `ATS（简历筛选系统）专家。分析简历的ATS兼容性。
+检查维度：
+1. 格式兼容性：文件格式、编码、排版
+2. 关键词匹配：岗位关键词覆盖率
+3. 结构规范性：模块标题、日期格式、联系方式
+4. 可解析性：表格、图片、特殊字符
+输出JSON：{ats_score:0-100,pass_rate:"通过率估计",issues:[{type:"format/keyword/structure/parsing",severity:"high/medium/low",description:"",suggestion:""}],keywords_found:["找到的关键词"],keywords_missing:["缺失的关键词"]}`;
+
 export async function POST(req: NextRequest) {
   // Check free usage limit
   try {

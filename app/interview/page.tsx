@@ -59,6 +59,10 @@ export default function InterviewPage() {
   const [scores, setScores] = useState<number[]>([]);
   const [showProgress, setShowProgress] = useState(false);
   const [mode, setMode] = useState<"ai" | "bank">("ai");
+  const [followup, setFollowup] = useState<{question: string; type: string; reason: string} | null>(null);
+  const [followupAnswer, setFollowupAnswer] = useState("");
+  const [followupEvaluation, setFollowupEvaluation] = useState<Evaluation | null>(null);
+  const [followupLoading, setFollowupLoading] = useState(false);
 
   const progress = typeof window !== "undefined" ? getProgress() : null;
   const recentRecords = typeof window !== "undefined" ? getRecentRecords(10) : [];
@@ -122,7 +126,57 @@ export default function InterviewPage() {
     finally { setLoading(false); }
   };
 
-  const nextQuestion = () => { setCurrentIdx(currentIdx + 1); setAnswer(""); setEvaluation(null); };
+  const nextQuestion = () => { 
+    setCurrentIdx(currentIdx + 1); 
+    setAnswer(""); 
+    setEvaluation(null); 
+    setFollowup(null);
+    setFollowupAnswer("");
+    setFollowupEvaluation(null);
+  };
+
+  const requestFollowup = async () => {
+    if (!evaluation) return;
+    setFollowupLoading(true);
+    try {
+      const q = questions[currentIdx];
+      const res = await fetch("/api/demo/interview", {
+        method: "POST", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "followup", question: q.question, answer, jobTitle, company }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || "追问生成失败"); return; }
+      setFollowup(data);
+    } catch { setError("网络错误"); }
+    finally { setFollowupLoading(false); }
+  };
+
+  const submitFollowupAnswer = async () => {
+    if (!followupAnswer.trim() || !followup) return;
+    setFollowupLoading(true);
+    try {
+      const q = questions[currentIdx];
+      const res = await fetch("/api/demo/interview", {
+        method: "POST", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "evaluate", question: followup.question, answer: followupAnswer, jobTitle, company }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || "评估失败"); return; }
+      setFollowupEvaluation(data);
+      
+      // 保存追问记录到进度
+      addRecord({
+        type: "interview",
+        company: company || undefined,
+        position: jobTitle,
+        score: data.score,
+        details: { category: "追问", difficulty: "hard", question: followup.question },
+      });
+    } catch { setError("网络错误"); }
+    finally { setFollowupLoading(false); }
+  };
   const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
 
   return (
@@ -289,6 +343,74 @@ export default function InterviewPage() {
                   <p className="text-sm text-purple-700">{evaluation.interviewer_notes}</p>
                 </div>
               )}
+
+              {/* 追问功能 */}
+              {!followup && (
+                <button onClick={requestFollowup} disabled={followupLoading}
+                  className="w-full bg-orange-500 text-white py-2.5 rounded-lg hover:bg-orange-600 transition disabled:opacity-50">
+                  {followupLoading ? "⏳ 生成追问中..." : "🎯 面试官追问"}
+                </button>
+              )}
+
+              {/* 追问问题 */}
+              {followup && (
+                <div className="bg-orange-50 rounded-lg p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-medium text-orange-800">🤔 面试官追问</h4>
+                    <span className="text-xs bg-orange-200 text-orange-700 px-2 py-0.5 rounded">
+                      {followup.type === "clarify" ? "澄清" : 
+                       followup.type === "detail" ? "细节" : 
+                       followup.type === "logic" ? "逻辑" : "压力"}
+                    </span>
+                  </div>
+                  <p className="text-sm text-orange-700 font-medium">{followup.question}</p>
+                  <p className="text-xs text-orange-500">💡 {followup.reason}</p>
+                  
+                  {!followupEvaluation && (
+                    <div>
+                      <textarea 
+                        value={followupAnswer} 
+                        onChange={(e) => setFollowupAnswer(e.target.value)}
+                        placeholder="输入你的追问回答..." 
+                        rows={3}
+                        className="w-full border rounded-lg px-4 py-3 resize-none text-base" />
+                      <button 
+                        onClick={submitFollowupAnswer} 
+                        disabled={!followupAnswer.trim() || followupLoading}
+                        className="mt-3 bg-orange-500 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-orange-600 disabled:opacity-50 transition w-full sm:w-auto">
+                        {followupLoading ? "⏳ 评估中..." : "📤 提交追问回答"}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* 追问评估结果 */}
+                  {followupEvaluation && (
+                    <div className="bg-white rounded-lg p-4 space-y-3">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-orange-600">{followupEvaluation.score}</div>
+                        <div className="text-sm text-gray-500">追问得分</div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="bg-green-50 rounded-lg p-3">
+                          <h5 className="font-medium text-green-800 mb-1 text-sm">✅ 优点</h5>
+                          <ul className="text-xs text-green-700 space-y-1">{followupEvaluation.strengths?.map((s, i) => <li key={i}>• {s}</li>)}</ul>
+                        </div>
+                        <div className="bg-red-50 rounded-lg p-3">
+                          <h5 className="font-medium text-red-800 mb-1 text-sm">⚠️ 不足</h5>
+                          <ul className="text-xs text-red-700 space-y-1">{followupEvaluation.weaknesses?.map((w, i) => <li key={i}>• {w}</li>)}</ul>
+                        </div>
+                      </div>
+                      {followupEvaluation.improved_answer && (
+                        <div className="bg-blue-50 rounded-lg p-3">
+                          <h5 className="font-medium text-blue-800 mb-1 text-sm">📝 参考答案</h5>
+                          <p className="text-xs text-blue-700">{followupEvaluation.improved_answer}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
               <button onClick={nextQuestion}
                 className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition">
                 下一题 →

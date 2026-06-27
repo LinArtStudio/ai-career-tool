@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>用户流程图 - JD智能匹配诊断</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #fff; padding: 40px; }
+  .flow { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+  .step { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; text-align: center; min-width: 100px; box-shadow: 0 2px 8px rgba(102,126,234,0.3); }
+  .step.user { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  .step.ai { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+  .step.output { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1a1a2e; }
+  .arrow { font-size: 24px; color: #667eea; }
+  .title { text-align: center; font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 30px; }
+  .subtitle { text-align: center; font-size: 13px; color: #888; margin-bottom: 40px; }
+  .legend { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="title">JD智能匹配诊断 — 用户流程图</div>
+<div class="subtitle">User Flow: JD Smart Matching Diagnosis</div>
+<div class="flow">
+  <div class="step user">👤 用户粘贴JD</div>
+  <div class="arrow">→</div>
+  <div class="step ai">🤖 AI提取关键词</div>
+  <div class="arrow">→</div>
+  <div class="step ai">🔍 语义匹配简历</div>
+  <div class="arrow">→</div>
+  <div class="step output">📊 5维评分</div>
+  <div class="arrow">→</div>
+  <div class="step output">📋 差距弥合方案</div>
+  <div class="arrow">→</div>
+  <div class="step output">🎯 面试问题预测</div>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#f093fb,#f5576c)"></div> 用户操作</div>
+  <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"></div> AI处理</div>
+  <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"></div> 输出结果</div>
+</div>
+</body>
+</html>

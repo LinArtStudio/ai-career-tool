@@ -1,8 +1,32 @@
 "use client";
 
+import { useState, useEffect } from 'react';
+import { getTrialStatus, getTrialMessage, TrialStatus } from '@/lib/trial';
+
 export default function HomePage() {
+  const [trialStatus, setTrialStatus] = useState<TrialStatus | null>(null);
+
+  useEffect(() => {
+    const status = getTrialStatus();
+    setTrialStatus(status);
+  }, []);
+
   return (
     <div className="min-h-screen">
+      {/* 试用期提示 */}
+      {trialStatus && (
+        <div className={`px-4 py-2 text-center text-sm ${
+          trialStatus.isActive 
+            ? 'bg-green-50 text-green-700' 
+            : 'bg-yellow-50 text-yellow-700'
+        }`}>
+          {getTrialMessage()}
+          {!trialStatus.isActive && (
+            <a href="/pricing" className="ml-2 underline">立即升级</a>
+          )}
+        </div>
+      )}
+
       {/* Hero Section - 针对所有求职者 */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 pt-16 pb-20 md:pt-24 md:pb-28 relative z-10">
@@ -52,6 +76,65 @@ export default function HomePage() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob" />
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000" />
         <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000" />
+      </section>
+
+      {/* 快速开始指南 */}
+      <section className="max-w-5xl mx-auto px-4 py-12 md:py-16">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 md:p-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">🚀 3步开启AI求职之旅</h2>
+          <p className="text-gray-500 text-center mb-8">新用户？按这个顺序使用效果最佳</p>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                step: "1",
+                icon: "🎯",
+                title: "先做测评",
+                desc: "5分钟了解你的AI能力水平，找到提升方向",
+                href: "/quiz",
+                time: "5分钟",
+                free: true
+              },
+              {
+                step: "2",
+                icon: "📄",
+                title: "优化简历",
+                desc: "上传简历，AI帮你诊断问题并给出优化建议",
+                href: "/resume",
+                time: "3分钟",
+                free: true
+              },
+              {
+                step: "3",
+                icon: "🎤",
+                title: "模拟面试",
+                desc: "选择目标岗位，AI模拟真实面试场景",
+                href: "/interview",
+                time: "10分钟",
+                free: false
+              }
+            ].map((item, i) => (
+              <a key={i} href={item.href} className="bg-white rounded-xl p-6 hover:shadow-lg transition-all group">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                    {item.step}
+                  </div>
+                  <div className="text-3xl">{item.icon}</div>
+                </div>
+                <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">{item.title}</h3>
+                <p className="text-gray-500 text-sm mb-4">{item.desc}</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">⏱ {item.time}</span>
+                  {item.free && <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">✅ 免费</span>}
+                </div>
+              </a>
+            ))}
+          </div>
+          
+          <p className="text-center text-gray-400 text-sm mt-6">
+            💡 提示：完成这3步后，你会对自己的求职竞争力有清晰的认识
+          </p>
+        </div>
       </section>
 
       {/* 覆盖岗位类型 */}
