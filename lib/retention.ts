@@ -314,7 +314,7 @@ function checkAchievements(progress: UserProgress): void {
     ...newAchievements.map((a) => ({
       ...a,
       unlockedAt: new Date().toISOString(),
-    }))
+    })) as Achievement[]
   );
 }
 
@@ -325,7 +325,12 @@ function hasAchievement(progress: UserProgress, achievementId: string): boolean 
 
 // 获取成就定义
 function getAchievement(achievementId: string): Achievement | undefined {
-  return ACHIEVEMENTS.find((a) => a.id === achievementId);
+  const achievement = ACHIEVEMENTS.find((a) => a.id === achievementId);
+  if (!achievement) return undefined;
+  return {
+    ...achievement,
+    unlockedAt: new Date().toISOString()
+  };
 }
 
 // 获取统计数据

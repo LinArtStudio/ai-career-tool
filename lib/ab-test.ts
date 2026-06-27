@@ -308,7 +308,7 @@ export function getRecommendedPrice(testId: string): {
   if (!variantId) return null;
 
   const config = getTestVariantConfig(testId, variantId);
-  return config || null;
+  return config as { interviewPrice: number; resumePrice: number; sprintMonthly: number } | null;
 }
 
 // 检查是否为测试用户

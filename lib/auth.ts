@@ -15,6 +15,8 @@ export interface User {
 
 // 获取当前用户
 export async function getCurrentUser(): Promise<User | null> {
+  if (!supabase) return null
+  
   try {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return null
@@ -42,6 +44,8 @@ export async function getCurrentUser(): Promise<User | null> {
 
 // 发送邮箱验证码
 export async function sendEmailCode(email: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) return { success: false, error: 'Supabase未配置' }
+  
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email,
@@ -59,6 +63,8 @@ export async function sendEmailCode(email: string): Promise<{ success: boolean; 
 
 // 验证邮箱验证码
 export async function verifyEmailCode(email: string, token: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) return { success: false, error: 'Supabase未配置' }
+  
   try {
     const { error } = await supabase.auth.verifyOtp({
       email,
@@ -88,6 +94,8 @@ export async function verifyEmailCode(email: string, token: string): Promise<{ s
 
 // 发送手机验证码
 export async function sendPhoneCode(phone: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) return { success: false, error: 'Supabase未配置' }
+  
   try {
     const { error } = await supabase.auth.signInWithOtp({
       phone
@@ -102,6 +110,8 @@ export async function sendPhoneCode(phone: string): Promise<{ success: boolean; 
 
 // 验证手机验证码
 export async function verifyPhoneCode(phone: string, token: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) return { success: false, error: 'Supabase未配置' }
+  
   try {
     const { error } = await supabase.auth.verifyOtp({
       phone,
@@ -131,11 +141,14 @@ export async function verifyPhoneCode(phone: string, token: string): Promise<{ s
 
 // 退出登录
 export async function signOut(): Promise<void> {
+  if (!supabase) return
   await supabase.auth.signOut()
 }
 
 // 监听认证状态变化
 export function onAuthStateChange(callback: (user: User | null) => void) {
+  if (!supabase) return { data: { subscription: { unsubscribe: () => {} } } }
+  
   return supabase.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session?.user) {
       const user = await getCurrentUser()
@@ -148,6 +161,8 @@ export function onAuthStateChange(callback: (user: User | null) => void) {
 
 // 检查是否为付费用户
 export async function checkPremiumStatus(): Promise<boolean> {
+  if (!supabase) return false
+  
   const user = await getCurrentUser()
   if (!user) return false
 
@@ -169,6 +184,8 @@ export async function checkPremiumStatus(): Promise<boolean> {
 
 // 更新用户资料
 export async function updateUserProfile(updates: Partial<User>): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) return { success: false, error: 'Supabase未配置' }
+  
   try {
     const user = await getCurrentUser()
     if (!user) {

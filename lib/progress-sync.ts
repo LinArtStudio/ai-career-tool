@@ -27,7 +27,10 @@ const STORAGE_KEY = "ai-career-progress";
 
 // 获取当前用户ID
 async function getCurrentUserId(): Promise<string | null> {
+    if (!supabase) return null;
   try {
+    if (!supabase) return null
+    if (!supabase) return null;
     const { data: { user } } = await supabase.auth.getUser()
     return user?.id || null
   } catch {
@@ -55,6 +58,7 @@ function saveLocalRecords(records: PracticeRecord[]): void {
 
 // Supabase操作
 async function getCloudRecords(userId: string): Promise<PracticeRecord[]> {
+    if (!supabase) return [];
   try {
     const [interviews, resumes] = await Promise.all([
       supabase
@@ -119,6 +123,7 @@ async function getCloudRecords(userId: string): Promise<PracticeRecord[]> {
 }
 
 async function saveToCloud(record: Omit<PracticeRecord, "id" | "date">): Promise<boolean> {
+    if (!supabase) return false;
   try {
     const userId = await getCurrentUserId()
     if (!userId) return false

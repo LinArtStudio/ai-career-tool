@@ -1,3 +1,7 @@
+// ============================================================
+// Supabase配置和操作
+// ============================================================
+
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || ''
@@ -11,6 +15,12 @@ export const supabase = supabaseUrl && supabaseAnonKey
 // 检查Supabase是否已配置
 export function isSupabaseConfigured(): boolean {
   return supabase !== null
+}
+
+// 辅助函数：获取Supabase客户端（如果未配置则抛出错误）
+function requireSupabase() {
+  if (!supabase) throw new Error('Supabase not configured')
+  return supabase
 }
 
 // 数据库类型定义
@@ -49,7 +59,8 @@ export interface UserProfile {
 
 // 面试记录操作
 export async function saveInterviewRecord(record: InterviewRecord) {
-  const { data, error } = await supabase
+  const client = requireSupabase()
+  const { data, error } = await client
     .from('interview_records')
     .insert(record)
     .select()
@@ -59,7 +70,8 @@ export async function saveInterviewRecord(record: InterviewRecord) {
 }
 
 export async function getInterviewRecords(userId: string, limit = 50) {
-  const { data, error } = await supabase
+  const client = requireSupabase()
+  const { data, error } = await client
     .from('interview_records')
     .select('*')
     .eq('user_id', userId)
@@ -72,7 +84,8 @@ export async function getInterviewRecords(userId: string, limit = 50) {
 
 // 简历记录操作
 export async function saveResumeRecord(record: ResumeRecord) {
-  const { data, error } = await supabase
+  const client = requireSupabase()
+  const { data, error } = await client
     .from('resume_records')
     .insert(record)
     .select()
@@ -82,7 +95,8 @@ export async function saveResumeRecord(record: ResumeRecord) {
 }
 
 export async function getResumeRecords(userId: string, limit = 20) {
-  const { data, error } = await supabase
+  const client = requireSupabase()
+  const { data, error } = await client
     .from('resume_records')
     .select('*')
     .eq('user_id', userId)
@@ -95,7 +109,8 @@ export async function getResumeRecords(userId: string, limit = 20) {
 
 // 用户资料操作
 export async function getUserProfile(userId: string) {
-  const { data, error } = await supabase
+  const client = requireSupabase()
+  const { data, error } = await client
     .from('user_profiles')
     .select('*')
     .eq('id', userId)
@@ -106,7 +121,8 @@ export async function getUserProfile(userId: string) {
 }
 
 export async function updateUserProfile(userId: string, updates: Partial<UserProfile>) {
-  const { data, error } = await supabase
+  const client = requireSupabase()
+  const { data, error } = await client
     .from('user_profiles')
     .upsert({ id: userId, ...updates })
     .select()

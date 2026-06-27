@@ -26,6 +26,7 @@ interface InterviewQuestion {
   difficulty: string;
   answer_tips: string;
   related_jd_item: string;
+  knowledge_points?: string[];
 }
 
 interface JDMatchResult {
