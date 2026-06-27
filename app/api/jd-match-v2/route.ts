@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     );
 
     // 解析JSON结果
-    const parsedResult = parseJSON(result);
+    const parsedResult = parseJSON(result) as Record<string, any>;
 
     // 验证返回数据结构
     if (!parsedResult.match_score || !parsedResult.jd_analysis) {

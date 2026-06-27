@@ -37,6 +37,11 @@ interface JDMatchResult {
     hidden_requirements: string[];
     company_culture?: string;
     salary_range?: string;
+    ai_pm_specific?: {
+      technical_depth: string;
+      product_type: string;
+      key_metrics: string;
+    };
   };
   match_score: MatchScore;
   keywords: {
@@ -84,6 +89,8 @@ interface JDMatchResult {
     situational_questions: InterviewQuestion[];
     stress_questions: InterviewQuestion[];
     company_specific_questions: InterviewQuestion[];
+    ai_pm_technical_questions?: InterviewQuestion[];
+    ai_pm_product_questions?: InterviewQuestion[];
   };
 }
 

@@ -103,7 +103,7 @@ async function handlePaymentSuccess(event: WebhookEvent) {
 async function handleSubscriptionCancelled(event: WebhookEvent) {
   const { customer_email } = event.data
 
-  if (customer_email) {
+  if (customer_email && supabase) {
     // 查找用户
     const { data: users } = await supabase
       .from('user_profiles')
